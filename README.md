@@ -1,4 +1,7 @@
-## *GarageEZ*
+## *GaragEZ(차고지)*
+
+![gez-logo](https://github.com/user-attachments/assets/11a7aaf7-7d11-4633-9221-1368a6ddd543)
+>황승현 제작
 
 <br><br>
 
