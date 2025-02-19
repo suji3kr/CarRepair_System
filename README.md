@@ -13,7 +13,14 @@
 
 ![image](https://github.com/user-attachments/assets/786fe4d8-ce18-4b88-afc2-c9e49068f63e)
 
-* 유스케이스 다이어그램 
+* 유스케이스 다이어그램
+ >강미림 제작
+
+</br>
+
+![image](https://github.com/user-attachments/assets/5e24d28d-0331-4587-93aa-fede3afce4a9)
+* 요구사항 목록
+
 >강미림 제작
 
 </br>
@@ -24,7 +31,7 @@
 
 ![image](https://github.com/user-attachments/assets/49e3ff12-e08e-4a8a-8448-3f8d277c6937)
 
-* 클래스 다이어그램
+* ER 다이어그램
 >박영웅 제작
 
 </br>
@@ -36,10 +43,6 @@
 
 
 
-
-</br>
-
-![image](https://github.com/user-attachments/assets/5e24d28d-0331-4587-93aa-fede3afce4a9)
 
 </br>
 </br></br>
