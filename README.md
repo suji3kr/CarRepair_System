@@ -12,9 +12,25 @@
 
 </br>
 
-데이터베이스 설계 사이트: https://dbdiagram.io/home
+* 데이터베이스 설계 사이트: https://dbdiagram.io/home
+
+</br>
 
 ### 시장 조사  >  DB 설정 (~2/19)  >  데이터 추출 / 와이어 프레임 ( 2/18 ~ 2/21 )   </br>
+
+
+</br>
+
+
+
+
+</br>
+
+![image](https://github.com/user-attachments/assets/5e24d28d-0331-4587-93aa-fede3afce4a9)
+
+</br>
+</br></br>
+
 ### ~3/4: 개발 완료  </br> 
 
 
