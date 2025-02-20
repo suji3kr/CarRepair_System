@@ -1,0 +1,139 @@
+dbdiagram.io 사이트 사용 코드
+
+
+// 사용자 테이블: 고객 및 관리자의 정보를 저장
+Table users {
+id bigint [primary key] // 기본 키
+name varchar(100) // 사용자 이름
+email varchar(100) // 이메일 주소
+password varchar(255) // 비밀번호
+phone varchar(20) // 전화번호
+role enum('USER', 'ADMIN') // 사용자 역할 (일반 사용자, 관리자)
+created_at timestamp // 계정 생성 날짜
+}
+ 
+// 차량 테이블: 사용자가 소유한 차량 정보 저장
+Table vehicles {
+id bigint [primary key] // 기본 키
+owner_id bigint // 차량 소유자 (users 테이블과 연결)
+make varchar(100) // 제조사
+model varchar(100) // 모델명
+year int // 연식
+vin varchar(50) // 차량 고유번호(VIN)
+created_at timestamp // 등록 날짜
+}
+
+// 정비 예약 테이블: 사용자가 정비를 예약한 내역 저장
+Table appointments {
+id bigint [primary key] // 기본 키
+user_id bigint // 예약한 사용자 (users 테이블과 연결)
+vehicle_id bigint // 예약 차량 (vehicles 테이블과 연결)
+service_type varchar(100) // 서비스 유형 (예: 오일 교체, 타이어 정비)
+status enum('예약', '진행중', '완료') // 예약 상태
+scheduled_date timestamp // 예약된 날짜
+created_at timestamp // 예약 생성 날짜
+}
+
+// 정비소 정보 테이블: 정비소 정보를 저장하고 예약과 연결
+Table repair_store {
+id bigint [primary key] // 기본 키
+store_id bigint // 연결된 판매점 (store 테이블과 연결)
+appointment_id bigint // 연결된 정비 예약 (appointments 테이블과 연결)
+location varchar(255) // 정비소 위치
+contact_info varchar(100) // 연락처 정보
+created_at timestamp // 생성 날짜
+}
+
+// 알림 테이블: 사용자에게 전송된 알림을 저장
+Table notifications {
+id bigint [primary key] // 기본 키
+user_id bigint // 알림을 받는 사용자 (users 테이블과 연결)
+message text // 알림 내용
+status enum('읽음', '안읽음') // 읽음 여부
+created_at timestamp // 알림 생성 날짜
+}
+
+// 부품 테이블: 자동차 부품 정보를 저장
+Table parts {
+id bigint [primary key] // 기본 키
+name varchar(100) // 부품 이름
+category varchar(100) // 부품 카테고리
+price decimal(10,2) // 가격
+stock int // 재고 수량
+created_at timestamp // 생성 날짜
+}
+
+// 부품 판매점 테이블: 부품 판매점의 정보 저장
+Table store {
+id bigint [primary key] // 기본 키
+part_id bigint // 부품 ID (parts 테이블과 연결)
+price decimal(10,2) // 가격
+stock int // 재고 수량
+created_at timestamp // 생성 날짜
+}
+
+// 부품 가격 비교 테이블: 여러 판매점에서 제공하는 부품 가격을 저장
+Table part_prices {
+id bigint [primary key] // 기본 키
+part_id bigint // 부품 ID (parts 테이블과 연결)
+store_id bigint // 판매점 ID (store 테이블과 연결)
+price decimal(10,2) // 가격
+created_at timestamp // 생성 날짜
+}
+
+// 트랙 관리 테이블: 관리자가 관리하는 트랙 정보를 저장
+Table setup_tracks {
+id bigint [primary key] // 기본 키
+name varchar(100) // 트랙 이름
+description text // 설명
+created_at timestamp // 생성 날짜
+}
+
+// 관리자 승인 테이블: 예약 및 결제 승인을 관리
+Table approvals {
+id bigint [primary key] // 기본 키
+admin_id bigint // 승인한 관리자 (users 테이블과 연결)
+user_id bigint // 요청한 사용자 (users 테이블과 연결)
+approval_type enum('예약', '결제', '주문 승인', '반품 승인') // 승인 유형
+status enum('승인', '거절') // 승인 상태
+order_id bigint // 승인된 주문 (store_orders 테이블과 연결)
+created_at timestamp // 승인 날짜
+}
+
+// 부품 주문 테이블: 사용자가 부품을 주문한 내역 저장
+Table store_orders {
+id bigint [primary key] // 기본 키
+user_id bigint // 주문한 사용자 (users 테이블과 연결)
+part_id bigint // 주문한 부품 (parts 테이블과 연결)
+quantity int // 주문 수량
+order_price decimal(10,2) // 주문 당시 부품 가격 (parts 테이블의 price 값을 복사)
+total_price decimal(10,2) // 총 가격
+status enum('PENDING', 'SHIPPED', 'DELIVERED', 'CANCELLED', 'RETURNED') // 주문 상태
+order_date timestamp // 주문 날짜
+}
+
+// 정비 기록 테이블: 완료된 정비 내역 저장
+Table maintenance_records {
+id bigint [primary key] // 기본 키
+vehicle_id bigint // 정비된 차량 (vehicles 테이블과 연결)
+user_id bigint // 정비 요청한 사용자 (users 테이블과 연결)
+appointment_id bigint // 관련 예약 ID (appointments 테이블과 연결)
+service_type varchar(100) // 정비 유형
+description text // 정비 상세 설명
+service_date date // 정비 완료 날짜
+cost decimal(10,2) // 정비 비용
+created_at timestamp // 생성 날짜
+}
+
+Ref: appointments.user_id > users.id // many-to-one
+Ref: appointments.vehicle_id > vehicles.id // many-to-one
+Ref: notifications.user_id > users.id // many-to-one
+Ref: part_prices.part_id > parts.id // many-to-one
+Ref: part_prices.store_id > store.id // many-to-one
+Ref: approvals.admin_id > users.id // many-to-one
+Ref: approvals.user_id > users.id // many-to-one
+Ref: approvals.order_id > store_orders.id // many-to-one
+Ref: maintenance_records.appointment_id > appointments.id // many-to-one
+Ref: repair_store.store_id > store.id // many-to-one
+Ref: repair_store.appointment_id > appointments.id // many-to-one
+Ref: store_orders.part_id > parts.id // many-to-one
