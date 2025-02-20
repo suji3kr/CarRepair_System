@@ -51,6 +51,10 @@
 
 ### 시장 조사  >  DB 설정 (~2/19)  >  데이터 추출 / 와이어 프레임 ( 2/18 ~ 2/21 )   </br>
 
+![image](https://github.com/user-attachments/assets/80ef7a30-cc55-436c-93e0-0bb1aeece62a)
+* 메인 화면 제작
+>권민우 제작
+
 
 </br>
 
