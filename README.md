@@ -20,6 +20,12 @@
  >강미림 제작
 
 </br>
+![사용자 로그인 (1)](https://github.com/user-attachments/assets/d95a1f40-f065-4027-bc8e-1cd547c27597)
+
+* 플로우차트
+>권민우 제작
+
+</br>
 
 ![image](https://github.com/user-attachments/assets/5e24d28d-0331-4587-93aa-fede3afce4a9)
 * 요구사항 목록
