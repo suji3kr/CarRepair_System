@@ -53,6 +53,9 @@
 
 ![image](https://github.com/user-attachments/assets/80ef7a30-cc55-436c-93e0-0bb1aeece62a)
 * 메인 화면 제작
+  
+![image](https://github.com/user-attachments/assets/a6607078-f8c1-43e1-ab1f-40a9d6d9448e)
+* 상세 메뉴 부분 제작
 >권민우 제작
 
 
