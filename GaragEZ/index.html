@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>차고지</title>
+    <link rel="shortcut icon" href="./src/images/favicon.png" type="image/x-icon">
+    <link href="https://fonts.cdnfonts.com/css/sf-chaerilidae-2" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; overflow: hidden; background: black; }
+        .loading-screen {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: black;
+            transition: opacity 1.5s ease-out;
+            font-family: 'SF Chaerilidae', sans-serif;
+        }
+        .logo {
+            position: relative;
+            font-size: 6rem;
+            font-weight: bold;
+            color: gray;
+        }
+        .logo-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            color: white;
+            overflow: hidden;
+            clip-path: inset(100% 0 0 0);
+            transition: clip-path 3s ease-out;
+        }
+        .video-container {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity 1.5s ease-out;
+        }
+        video {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%; height: auto;
+            object-fit: cover;
+        }
+        .content {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            z-index: 2;
+        }
+        .content h1 {
+            font-size: 3rem;
+            font-weight: bold;
+        }
+        .content p {
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            color: white;
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-screen" id="loadingScreen">
+        <div class="logo">GaragEZ
+            <div class="logo-overlay" id="logoOverlay">GaragEZ</div>
+        </div>
+    </div>
+    <div class="video-container" id="videoContainer">
+        <video autoplay muted loop>
+            <source src="./src/images/Cardriving.mp4" type="video/mp4">
+        </video>
+        <div class="content">
+            <h1>차고지 GaragEZ</h1>
+            <h2>Car Repair Shop</h2>
+            <p>소중한 당신의 자동차를 위한 선택</p>
+            <button class="btn">더 알아보기</button>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const loadingScreen = document.getElementById("loadingScreen");
+            const logoOverlay = document.getElementById("logoOverlay");
+            const videoContainer = document.getElementById("videoContainer");
+           
+            // 흰색 글자 채우기 애니메이션
+            setTimeout(() => {
+                logoOverlay.style.clipPath = "inset(0% 0 0 0)";
+            }, 100);
+           
+            // 페이드아웃 후 페이지 전환
+            setTimeout(() => {
+                loadingScreen.style.opacity = "0";
+                videoContainer.style.opacity = "1";
+                setTimeout(() => {
+                    loadingScreen.style.display = "none";
+                }, 1500);
+            }, 3000);
+        });
+    </script>
+</body>
+</html>

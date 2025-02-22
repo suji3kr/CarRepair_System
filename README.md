@@ -20,12 +20,6 @@
  >강미림 제작
 
 </br>
-![사용자 로그인 (1)](https://github.com/user-attachments/assets/d95a1f40-f065-4027-bc8e-1cd547c27597)
-
-* 플로우차트
->권민우 제작
-
-</br>
 
 ![image](https://github.com/user-attachments/assets/5e24d28d-0331-4587-93aa-fede3afce4a9)
 * 요구사항 목록
@@ -59,9 +53,6 @@
 
 ![image](https://github.com/user-attachments/assets/80ef7a30-cc55-436c-93e0-0bb1aeece62a)
 * 메인 화면 제작
-  
-![image](https://github.com/user-attachments/assets/a6607078-f8c1-43e1-ab1f-40a9d6d9448e)
-* 상세 메뉴 부분 제작
 >권민우 제작
 
 
