@@ -6,6 +6,7 @@ import Landing from "./pages/Landing";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import MainPage from "./components/MainPage";
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
@@ -26,7 +27,9 @@ const App: React.FC = () => {
     <BrowserRouter>
       <Layout>
         <Routes>
+        
           <Route path="/" element={<Landing />} />
+          <Route path="/menu1" element={<MainPage />} />  
           <Route path="/home" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
