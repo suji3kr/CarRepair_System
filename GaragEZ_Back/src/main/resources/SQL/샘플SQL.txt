@@ -1,0 +1,109 @@
+select * from users;
+select * from vehicles;
+select * from parts;
+select * from store;
+select * from store_orders;
+select * from appointments;
+select * from repair_store;
+select * from notifications;
+select * from part_prices;
+select * from setup_tracks;
+select * from approvals;
+select * from maintenance_records;
+
+
+
+-- 1. 사용자 (users)
+INSERT INTO users (name, email, password, phone, role)
+VALUES
+  ('Alice Smith', 'alice@example.com', 'password123', '010-1234-5678', 'USER'),
+  ('Bob Johnson', 'bob@example.com', 'password456', '010-2345-6789', 'USER'),
+  ('Charlie Admin', 'charlie@admin.com', 'adminpass', '010-3456-7890', 'ADMIN');
+
+-- 2. 차량 (vehicles)
+-- owner_id는 위에서 생성한 사용자의 id를 참조 (예: Alice: id=1, Bob: id=2)
+INSERT INTO vehicles (owner_id, make, model, year, vin)
+VALUES
+  (1, 'Toyota', 'Corolla', 2015, 'VIN000001'),
+  (1, 'Honda', 'Civic', 2018, 'VIN000002'),
+  (2, 'Ford', 'Focus', 2017, 'VIN000003');
+
+-- 3. 부품 (parts)
+INSERT INTO parts (name, category, price, stock)
+VALUES
+  ('Oil Filter', 'Engine', 15.50, 100),
+  ('Brake Pad', 'Brakes', 45.00, 50),
+  ('Air Filter', 'Engine', 20.00, 80),
+  ('Spark Plug', 'Ignition', 10.00, 200);
+
+-- 4. 부품 판매점 (store)
+-- part_id는 위의 parts 테이블의 id를 참조
+INSERT INTO store (part_id, price, stock)
+VALUES
+  (1, 16.00, 90),
+  (2, 46.00, 45),
+  (3, 21.00, 70),
+  (4, 11.00, 190);
+
+-- 5. 부품 주문 (store_orders)
+-- user_id와 part_id는 각각 users, parts 테이블을 참조
+INSERT INTO store_orders (user_id, part_id, quantity, order_price, total_price, status)
+VALUES
+  (1, 1, 2, 16.00, 32.00, 'DELIVERED'),
+  (2, 2, 1, 46.00, 46.00, 'PENDING'),
+  (1, 3, 3, 21.00, 63.00, 'SHIPPED');
+
+-- 6. 정비 예약 (appointments)
+-- user_id와 vehicle_id 참조; scheduled_date는 TIMESTAMP 형식
+INSERT INTO appointments (user_id, vehicle_id, service_type, status, scheduled_date)
+VALUES
+  (1, 1, 'Oil Change', '예약', '2025-03-01 10:00:00'),
+  (2, 3, 'Brake Inspection', '예약', '2025-03-02 14:00:00');
+
+-- 7. 정비소 정보 (repair_store)
+-- store_id와 appointment_id 참조
+INSERT INTO repair_store (store_id, appointment_id, location, contact_info)
+VALUES
+  (1, 1, '123 Main St, City A', '010-1111-2222'),
+  (2, 2, '456 Side St, City B', '010-3333-4444');
+
+-- 8. 알림 (notifications)
+INSERT INTO notifications (user_id, message, status)
+VALUES
+  (1, 'Your appointment is confirmed.', '읽음'),
+  (2, 'Your order has been shipped.', '안읽음');
+
+-- 9. 부품 가격 비교 (part_prices)
+-- part_id와 store_id 참조
+INSERT INTO part_prices (part_id, store_id, price)
+VALUES
+  (1, 1, 16.00),
+  (2, 2, 46.00),
+  (3, 3, 21.00),
+  (4, 4, 11.00);
+
+-- 10. 트랙 관리 (setup_tracks)
+INSERT INTO setup_tracks (name, description)
+VALUES
+  ('Track A', 'High-speed performance track'),
+  ('Track B', 'Technical and twisty course');
+
+-- 11. 관리자 (admin)
+-- user_id 참조 (관리자 역할의 사용자, 여기서는 id=3인 Charlie Admin)
+INSERT INTO admin (user_id)
+VALUES
+  (3);
+
+-- 12. 승인 (approvals)
+-- admin_id, user_id, order_id 참조
+INSERT INTO approvals (admin_id, user_id, approval_type, status, order_id)
+VALUES
+  (1, 1, '예약', '승인', 1),
+  (1, 2, '주문 승인', '승인', 2);
+
+-- 13. 정비 기록 (maintenance_records)
+-- vehicle_id, user_id, appointment_id 참조; service_date는 DATE 형식
+INSERT INTO maintenance_records (vehicle_id, user_id, appointment_id, service_type, description, service_date, cost)
+VALUES
+  (1, 1, 1, 'Oil Change', 'Changed oil and filter', '2025-03-01', 80.00),
+  (3, 2, 2, 'Brake Inspection', 'Inspected brakes and replaced pads', '2025-03-02', 150.00);
