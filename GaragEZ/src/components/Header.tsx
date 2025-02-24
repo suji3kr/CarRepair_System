@@ -11,7 +11,7 @@ const Header: React.FC = () => {
         </div>
 
         <ul className={styles.menu}>
-          <li><Link to="/">Menu1</Link></li>
+          <li><Link to="/menu1">Menu1</Link></li>
           <li><Link to="/menu2">Menu2</Link></li>
           <li><Link to="/menu3">Menu3</Link></li>
           <li><Link to="/menu4">Menu4</Link></li>
