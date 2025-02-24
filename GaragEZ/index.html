@@ -103,12 +103,13 @@
             const loadingScreen = document.getElementById("loadingScreen");
             const logoOverlay = document.getElementById("logoOverlay");
             const videoContainer = document.getElementById("videoContainer");
-           
+
+      
             // 흰색 글자 채우기 애니메이션
             setTimeout(() => {
                 logoOverlay.style.clipPath = "inset(0% 0 0 0)";
             }, 100);
-           
+
             // 페이드아웃 후 페이지 전환
             setTimeout(() => {
                 loadingScreen.style.opacity = "0";
