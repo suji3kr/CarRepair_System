@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - CarRestTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>CarRestTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/com.company.cardatabase.html">com.company.cardatabase</a> &gt; CarRestTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">1</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">1.082s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Tests</a>
+</li>
+<li>
+<a href="#tab1">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">testAuthentication()</td>
+<td class="success">1.082s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>12:36:36.088 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.company.cardatabase.CarRestTest]: CarRestTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+12:36:36.269 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.company.cardatabase.CardatabaseApplication for test class com.company.cardatabase.CarRestTest
+2025-02-11T12:36:36.968+09:00  INFO 11996 --- [cardatabase] [    Test worker] com.company.cardatabase.CarRestTest      : Starting CarRestTest using Java 17.0.0.1 with PID 11996 (started by 06-09 in D:\pyw_data\sbt_data\cardatabase)
+2025-02-11T12:36:36.970+09:00  INFO 11996 --- [cardatabase] [    Test worker] com.company.cardatabase.CarRestTest      : No active profile set, falling back to 1 default profile: &quot;default&quot;
+2025-02-11T12:36:38.338+09:00  INFO 11996 --- [cardatabase] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-02-11T12:36:38.454+09:00  INFO 11996 --- [cardatabase] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 81 ms. Found 3 JPA repository interfaces.
+2025-02-11T12:36:39.212+09:00  INFO 11996 --- [cardatabase] [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-02-11T12:36:39.306+09:00  INFO 11996 --- [cardatabase] [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.5.Final
+2025-02-11T12:36:39.394+09:00  INFO 11996 --- [cardatabase] [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-02-11T12:36:40.790+09:00  INFO 11996 --- [cardatabase] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-02-11T12:36:40.839+09:00  INFO 11996 --- [cardatabase] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-02-11T12:36:41.396+09:00  INFO 11996 --- [cardatabase] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@40cb95c1
+2025-02-11T12:36:41.399+09:00  INFO 11996 --- [cardatabase] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-02-11T12:36:41.502+09:00  INFO 11996 --- [cardatabase] [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.40
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-02-11T12:36:42.730+09:00  INFO 11996 --- [cardatabase] [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table car 
+       drop 
+       foreign key FK2mqqwvxtowv4vddvtsmvtiqa2
+Hibernate: 
+    drop table if exists app_user_seq
+Hibernate: 
+    drop table if exists app_user
+Hibernate: 
+    drop table if exists car
+Hibernate: 
+    drop table if exists owner
+Hibernate: 
+    create table app_user_seq (
+        next_val bigint
+    ) engine=InnoDB
+Hibernate: 
+    insert into app_user_seq values ( 1 )
+Hibernate: 
+    create table app_user (
+        id bigint not null,
+        password varchar(255) not null,
+        role varchar(255) not null,
+        username varchar(255) not null,
+        primary key (id)
+    ) engine=InnoDB
+Hibernate: 
+    create table car (
+        mode_year integer not null,
+        price integer not null,
+        id bigint not null auto_increment,
+        owner bigint,
+        brand varchar(255),
+        color varchar(255),
+        model varchar(255),
+        registration_number varchar(255),
+        primary key (id)
+    ) engine=InnoDB
+Hibernate: 
+    create table owner (
+        ownerid bigint not null auto_increment,
+        firstname varchar(255),
+        lastname varchar(255),
+        primary key (ownerid)
+    ) engine=InnoDB
+Hibernate: 
+    alter table app_user 
+       add constraint UK3k4cplvh82srueuttfkwnylq0 unique (username)
+Hibernate: 
+    alter table car 
+       add constraint FK2mqqwvxtowv4vddvtsmvtiqa2 
+       foreign key (owner) 
+       references owner (ownerid)
+2025-02-11T12:36:43.051+09:00  INFO 11996 --- [cardatabase] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-02-11T12:36:43.505+09:00  INFO 11996 --- [cardatabase] [    Test worker] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl
+2025-02-11T12:36:43.645+09:00  WARN 11996 --- [cardatabase] [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-02-11T12:36:44.514+09:00  INFO 11996 --- [cardatabase] [    Test worker] o.s.v.b.OptionalValidatorFactoryBean     : Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-02-11T12:36:44.961+09:00  INFO 11996 --- [cardatabase] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-02-11T12:36:44.962+09:00  INFO 11996 --- [cardatabase] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-02-11T12:36:44.966+09:00  INFO 11996 --- [cardatabase] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 4 ms
+2025-02-11T12:36:45.013+09:00  INFO 11996 --- [cardatabase] [    Test worker] com.company.cardatabase.CarRestTest      : Started CarRestTest in 8.551 seconds (process running for 10.394)
+Hibernate: 
+    insert 
+    into
+        owner
+        (firstname, lastname) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        owner
+        (firstname, lastname) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        car
+        (mode_year, brand, color, model, owner, price, registration_number) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        car
+        (mode_year, brand, color, model, owner, price, registration_number) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        car
+        (mode_year, brand, color, model, owner, price, registration_number) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        c1_0.id,
+        c1_0.mode_year,
+        c1_0.brand,
+        c1_0.color,
+        c1_0.model,
+        c1_0.owner,
+        c1_0.price,
+        c1_0.registration_number 
+    from
+        car c1_0
+2025-02-11T12:36:45.310+09:00  INFO 11996 --- [cardatabase] [    Test worker] c.c.cardatabase.CardatabaseApplication   : brand: Ford, model Mustang
+2025-02-11T12:36:45.311+09:00  INFO 11996 --- [cardatabase] [    Test worker] c.c.cardatabase.CardatabaseApplication   : brand: Nissan, model Leaf
+2025-02-11T12:36:45.311+09:00  INFO 11996 --- [cardatabase] [    Test worker] c.c.cardatabase.CardatabaseApplication   : brand: Toyota, model Prius
+Hibernate: 
+    select
+        next_val as id_val 
+    from
+        app_user_seq for update
+Hibernate: 
+    update
+        app_user_seq 
+    set
+        next_val= ? 
+    where
+        next_val=?
+Hibernate: 
+    insert 
+    into
+        app_user
+        (password, role, username, id) 
+    values
+        (?, ?, ?, ?)
+Hibernate: 
+    select
+        next_val as id_val 
+    from
+        app_user_seq for update
+Hibernate: 
+    update
+        app_user_seq 
+    set
+        next_val= ? 
+    where
+        next_val=?
+Hibernate: 
+    insert 
+    into
+        app_user
+        (password, role, username, id) 
+    values
+        (?, ?, ?, ?)
+Hibernate: 
+    select
+        au1_0.id,
+        au1_0.password,
+        au1_0.role,
+        au1_0.username 
+    from
+        app_user au1_0 
+    where
+        au1_0.username=?
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /login
+       Parameters = {}
+          Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;, Content-Length:&quot;39&quot;]
+             Body = {&quot;username&quot;:&quot;admin&quot;,&quot;password&quot;:&quot;admin&quot;}
+    Session Attrs = {}
+
+Handler:
+             Type = com.company.cardatabase.web.LoginController
+           Method = com.company.cardatabase.web.LoginController#getToken(AccountCredentials)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = [Vary:&quot;Origin&quot;, &quot;Access-Control-Request-Method&quot;, &quot;Access-Control-Request-Headers&quot;, Authorization:&quot;BearereyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTczOTMzMTQwNn0.7samA9fm2PkJXyOKr8KvTLljzw7m4zAPldesY96aHQE&quot;, Access-Control-Expose-Headers:&quot;Authorization&quot;, X-Content-Type-Options:&quot;nosniff&quot;, X-XSS-Protection:&quot;0&quot;, Cache-Control:&quot;no-cache, no-store, max-age=0, must-revalidate&quot;, Pragma:&quot;no-cache&quot;, Expires:&quot;0&quot;, X-Frame-Options:&quot;DENY&quot;]
+     Content type = null
+             Body = 
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 8.12.1</a> at 2025. 2. 11. 오후 12:36:50</p>
+</div>
+</div>
+</body>
+</html>
