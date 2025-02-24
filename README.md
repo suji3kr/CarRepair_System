@@ -74,10 +74,22 @@
 * ER 다이어그램 추가수정
 >강미림 제작
 
+</br>
 
+![image](https://github.com/user-attachments/assets/e1a66930-59e9-46c1-ac13-0dfdf254c1ea)
+
+</br>
+</br>
+
+* 시퀀스 다이어그램 추가수정
+>황승현 제작
+
+</br>
+</br>
 
 ### 시장 조사  >  DB 설정 (~2/19)  
-</br>
+
+
 </br>
 </br>
 </br>
