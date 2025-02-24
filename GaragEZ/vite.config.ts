@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  base: '/',
   server: {
     port: 3000, // 프론트엔드 서버 포트 설정 (리액트 실행 포트)
     proxy: {
