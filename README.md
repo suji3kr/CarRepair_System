@@ -1,35 +1,60 @@
+</br>
+</br></br>
+</br>
+
+
 ## *GaragEZ(차고지)*
 
+</br>
+</br>
+</br>
+</br>
 
 >차량의 유지 보수를 위한 사이트를 제작하고 사용자의 편의에 맞는 시스템을 구축한다. <br>
  앞서 사용자에게 필요한 유지 기술에 대해 알고 적용하며, <br>
   차량 별 차이점 및 위치 검색을 통해 사용자에게 쉽게 다가가고자 한다. <br>
 
 <br><br>
+</br>
+</br>
 
 
 ![gez-logo](https://github.com/user-attachments/assets/11a7aaf7-7d11-4633-9221-1368a6ddd543)
+ * logo
  >황승현 제작
 <br>
-
+</br>
+</br>
 
 
 ![image](https://github.com/user-attachments/assets/786fe4d8-ce18-4b88-afc2-c9e49068f63e)
 
-* 유스케이스 다이어그램
+* Usecase Diagram
  >강미림 제작
 
 </br>
+</br>
+</br>
 
 ![image](https://github.com/user-attachments/assets/40003205-e817-403d-859c-0c24a6dd504a)
-* 플로우 차트
+
+* Flowchart
 >권민우 제작
 </br>
+</br>
+
+</br>
+
 ![image](https://github.com/user-attachments/assets/5e24d28d-0331-4587-93aa-fede3afce4a9)
+
 * 요구사항 목록
 
  >강미림 제작
 
+
+</br>
+</br>
+</br>
 </br>
 
 * 데이터베이스 설계 참고사이트: https://dbdiagram.io/home
@@ -50,10 +75,24 @@
 >강미림 제작
 
 
+
+### 시장 조사  >  DB 설정 (~2/19)  
+</br>
+</br>
 </br>
 </br>
 
-### 시장 조사  >  DB 설정 (~2/19)  >  데이터 추출 / 와이어 프레임 ( 2/18 ~ 2/21 )   </br>
+
+
+###  데이터 추출 / 와이어 프레임 ( 2/18 ~ 2/21 )   </br>
+</br></br>
+
+![image](https://github.com/user-attachments/assets/a7a58f42-01ec-4d78-8da4-d7f2722cd014)
+* 와이어 프레임
+>황승현 제작
+
+</br>
+</br>
 
 ![image](https://github.com/user-attachments/assets/80ef7a30-cc55-436c-93e0-0bb1aeece62a)
 * 메인 화면 제작
@@ -64,14 +103,15 @@
 
 
 </br>
-
-
-
-
 </br>
-</br></br>
+</br>
+</br>
 
-### ~3/4: 개발 완료  </br> 
+
+
+
+
+### 🚩목표 ~3/4: 개발 완료  </br> 
 
 
 </br></br>
