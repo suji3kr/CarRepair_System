@@ -2,7 +2,7 @@ Create database cardb;
 
 create user 'caruser'@'localhost' identified by '12345';
 
-grant all privileges on restdb.* to 'caruser'@'localhost';
+grant all privileges on cardb.* to 'caruser'@'localhost';
 -----root 에서 권한 주기---> cardb 만들기------------------------------
 
 -- 🚗 차량 정비 시스템 데이터베이스 삭제 및 생성
