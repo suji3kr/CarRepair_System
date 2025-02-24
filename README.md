@@ -21,6 +21,10 @@
 
 </br>
 
+![image](https://github.com/user-attachments/assets/40003205-e817-403d-859c-0c24a6dd504a)
+* 플로우 차트
+>권민우 제작
+</br>
 ![image](https://github.com/user-attachments/assets/5e24d28d-0331-4587-93aa-fede3afce4a9)
 * 요구사항 목록
 
@@ -53,6 +57,9 @@
 
 ![image](https://github.com/user-attachments/assets/80ef7a30-cc55-436c-93e0-0bb1aeece62a)
 * 메인 화면 제작
+  
+![image](https://github.com/user-attachments/assets/3fd53233-d30c-4348-879e-1e1d2fcc3dd9)
+* 세부 메뉴 화면 부분 제작
 >권민우 제작
 
 
