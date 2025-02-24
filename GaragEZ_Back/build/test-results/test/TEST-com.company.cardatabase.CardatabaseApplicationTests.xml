@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.company.cardatabase.CardatabaseApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2025-02-11T03:36:48" hostname="DESKTOP-UCNPHIV" time="0.074">
+  <properties/>
+  <testcase name="처음 해보는 테스트" classname="com.company.cardatabase.CardatabaseApplicationTests" time="0.074"/>
+  <system-out><![CDATA[2025-02-11T12:36:46.469+09:00  INFO 11996 --- [cardatabase] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.company.cardatabase.CardatabaseApplicationTests]: CardatabaseApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-02-11T12:36:46.473+09:00  INFO 11996 --- [cardatabase] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.company.cardatabase.CardatabaseApplication for test class com.company.cardatabase.CardatabaseApplicationTests
+2025-02-11T12:36:47.294+09:00  INFO 11996 --- [cardatabase] [    Test worker] c.c.c.CardatabaseApplicationTests        : Starting CardatabaseApplicationTests using Java 17.0.0.1 with PID 11996 (started by 06-09 in D:\pyw_data\sbt_data\cardatabase)
+2025-02-11T12:36:47.297+09:00  INFO 11996 --- [cardatabase] [    Test worker] c.c.c.CardatabaseApplicationTests        : No active profile set, falling back to 1 default profile: "default"
+2025-02-11T12:36:47.588+09:00  INFO 11996 --- [cardatabase] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-02-11T12:36:47.605+09:00  INFO 11996 --- [cardatabase] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 15 ms. Found 3 JPA repository interfaces.
+2025-02-11T12:36:47.745+09:00  INFO 11996 --- [cardatabase] [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-02-11T12:36:47.751+09:00  INFO 11996 --- [cardatabase] [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-02-11T12:36:47.797+09:00  INFO 11996 --- [cardatabase] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-02-11T12:36:47.799+09:00  INFO 11996 --- [cardatabase] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2025-02-11T12:36:47.828+09:00  INFO 11996 --- [cardatabase] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection com.mysql.cj.jdbc.ConnectionImpl@61f990b
+2025-02-11T12:36:47.829+09:00  INFO 11996 --- [cardatabase] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2025-02-11T12:36:47.832+09:00  INFO 11996 --- [cardatabase] [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-2)']
+	Database driver: undefined/unknown
+	Database version: 8.0.40
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-02-11T12:36:47.920+09:00  INFO 11996 --- [cardatabase] [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table car 
+       drop 
+       foreign key FK2mqqwvxtowv4vddvtsmvtiqa2
+Hibernate: 
+    drop table if exists app_user_seq
+Hibernate: 
+    drop table if exists app_user
+Hibernate: 
+    drop table if exists car
+Hibernate: 
+    drop table if exists owner
+Hibernate: 
+    create table app_user_seq (
+        next_val bigint
+    ) engine=InnoDB
+Hibernate: 
+    insert into app_user_seq values ( 1 )
+Hibernate: 
+    create table app_user (
+        id bigint not null,
+        password varchar(255) not null,
+        role varchar(255) not null,
+        username varchar(255) not null,
+        primary key (id)
+    ) engine=InnoDB
+Hibernate: 
+    create table car (
+        mode_year integer not null,
+        price integer not null,
+        id bigint not null auto_increment,
+        owner bigint,
+        brand varchar(255),
+        color varchar(255),
+        model varchar(255),
+        registration_number varchar(255),
+        primary key (id)
+    ) engine=InnoDB
+Hibernate: 
+    create table owner (
+        ownerid bigint not null auto_increment,
+        firstname varchar(255),
+        lastname varchar(255),
+        primary key (ownerid)
+    ) engine=InnoDB
+Hibernate: 
+    alter table app_user 
+       add constraint UK3k4cplvh82srueuttfkwnylq0 unique (username)
+Hibernate: 
+    alter table car 
+       add constraint FK2mqqwvxtowv4vddvtsmvtiqa2 
+       foreign key (owner) 
+       references owner (ownerid)
+2025-02-11T12:36:48.273+09:00  INFO 11996 --- [cardatabase] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-02-11T12:36:48.342+09:00  INFO 11996 --- [cardatabase] [    Test worker] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl
+2025-02-11T12:36:48.391+09:00  WARN 11996 --- [cardatabase] [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-02-11T12:36:48.644+09:00  INFO 11996 --- [cardatabase] [    Test worker] o.s.v.b.OptionalValidatorFactoryBean     : Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-02-11T12:36:48.784+09:00  INFO 11996 --- [cardatabase] [    Test worker] c.c.c.CardatabaseApplicationTests        : Started CardatabaseApplicationTests in 1.93 seconds (process running for 14.165)
+Hibernate: 
+    insert 
+    into
+        owner
+        (firstname, lastname) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        owner
+        (firstname, lastname) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        car
+        (mode_year, brand, color, model, owner, price, registration_number) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        car
+        (mode_year, brand, color, model, owner, price, registration_number) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        car
+        (mode_year, brand, color, model, owner, price, registration_number) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        c1_0.id,
+        c1_0.mode_year,
+        c1_0.brand,
+        c1_0.color,
+        c1_0.model,
+        c1_0.owner,
+        c1_0.price,
+        c1_0.registration_number 
+    from
+        car c1_0
+2025-02-11T12:36:48.854+09:00  INFO 11996 --- [cardatabase] [    Test worker] c.c.cardatabase.CardatabaseApplication   : brand: Ford, model Mustang
+2025-02-11T12:36:48.855+09:00  INFO 11996 --- [cardatabase] [    Test worker] c.c.cardatabase.CardatabaseApplication   : brand: Nissan, model Leaf
+2025-02-11T12:36:48.855+09:00  INFO 11996 --- [cardatabase] [    Test worker] c.c.cardatabase.CardatabaseApplication   : brand: Toyota, model Prius
+Hibernate: 
+    select
+        next_val as id_val 
+    from
+        app_user_seq for update
+Hibernate: 
+    update
+        app_user_seq 
+    set
+        next_val= ? 
+    where
+        next_val=?
+Hibernate: 
+    insert 
+    into
+        app_user
+        (password, role, username, id) 
+    values
+        (?, ?, ?, ?)
+Hibernate: 
+    select
+        next_val as id_val 
+    from
+        app_user_seq for update
+Hibernate: 
+    update
+        app_user_seq 
+    set
+        next_val= ? 
+    where
+        next_val=?
+Hibernate: 
+    insert 
+    into
+        app_user
+        (password, role, username, id) 
+    values
+        (?, ?, ?, ?)
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

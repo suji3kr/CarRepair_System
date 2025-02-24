@@ -1,0 +1,46 @@
+server:
+  port: 80
+
+spring:
+  data:
+    rest:
+      basePath: /api
+  devtools:
+    livereload:
+      enabled: true # 브라우저 LiveReload 활성화
+    restart:
+      enabled: true  # 코드 변경 시 애플리케이션 자동 재시작
+  main:
+    banner-mode: "off"
+  application:
+    name: cardatabase
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/webdb
+    username: dbuser
+    password: 12345
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+
+logging:
+  level:
+    org:
+      thymeleaf: DEBUG
+      hibernate:
+        SQL: INFO
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+
+springdoc:
+  api-docs:
+    path: /api-docs
+    swagger-ui:
+      path: /swagger-ui.html
+      enabled: true

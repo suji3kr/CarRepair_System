@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.company.cardatabase.OwnerRepositoryTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2025-02-11T03:36:49" hostname="DESKTOP-UCNPHIV" time="0.795">
+  <properties/>
+  <testcase name="deleteOwner()" classname="com.company.cardatabase.OwnerRepositoryTest" time="0.73"/>
+  <testcase name="saveOwner()" classname="com.company.cardatabase.OwnerRepositoryTest" time="0.063"/>
+  <system-out><![CDATA[2025-02-11T12:36:49.010+09:00  INFO 11996 --- [cardatabase] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.company.cardatabase.OwnerRepositoryTest]: OwnerRepositoryTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-02-11T12:36:49.032+09:00  INFO 11996 --- [cardatabase] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.company.cardatabase.CardatabaseApplication for test class com.company.cardatabase.OwnerRepositoryTest
+Hibernate: 
+    insert 
+    into
+        owner
+        (firstname, lastname) 
+    values
+        (?, ?)
+Hibernate: 
+    select
+        o1_0.ownerid,
+        o1_0.firstname,
+        o1_0.lastname 
+    from
+        owner o1_0
+Hibernate: 
+    select
+        c1_0.owner,
+        c1_0.id,
+        c1_0.mode_year,
+        c1_0.brand,
+        c1_0.color,
+        c1_0.model,
+        c1_0.price,
+        c1_0.registration_number 
+    from
+        car c1_0 
+    where
+        c1_0.owner=?
+Hibernate: 
+    select
+        c1_0.owner,
+        c1_0.id,
+        c1_0.mode_year,
+        c1_0.brand,
+        c1_0.color,
+        c1_0.model,
+        c1_0.price,
+        c1_0.registration_number 
+    from
+        car c1_0 
+    where
+        c1_0.owner=?
+Hibernate: 
+    select
+        c1_0.owner,
+        c1_0.id,
+        c1_0.mode_year,
+        c1_0.brand,
+        c1_0.color,
+        c1_0.model,
+        c1_0.price,
+        c1_0.registration_number 
+    from
+        car c1_0 
+    where
+        c1_0.owner=?
+Hibernate: 
+    delete 
+    from
+        car 
+    where
+        id=?
+Hibernate: 
+    delete 
+    from
+        owner 
+    where
+        ownerid=?
+Hibernate: 
+    delete 
+    from
+        car 
+    where
+        id=?
+Hibernate: 
+    delete 
+    from
+        car 
+    where
+        id=?
+Hibernate: 
+    delete 
+    from
+        owner 
+    where
+        ownerid=?
+Hibernate: 
+    delete 
+    from
+        owner 
+    where
+        ownerid=?
+Hibernate: 
+    select
+        count(*) 
+    from
+        owner o1_0
+Hibernate: 
+    insert 
+    into
+        owner
+        (firstname, lastname) 
+    values
+        (?, ?)
+Hibernate: 
+    select
+        o1_0.ownerid,
+        o1_0.firstname,
+        o1_0.lastname 
+    from
+        owner o1_0 
+    where
+        o1_0.firstname=?
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
