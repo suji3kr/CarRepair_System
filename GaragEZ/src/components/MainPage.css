@@ -1,0 +1,170 @@
+/* MainPage.css */
+
+.hero-section {
+  background: url('/src/images/hankook.jpg') center center / cover !important;
+}
+.main-container {
+  font-family: sans-serif;
+}
+
+.hero-section {
+  background: url('/path-to-hero-image.jpg') center center / cover;
+  color: white;
+  text-align: center;
+  height: 700px;
+  width: 2000px;
+  position: relative;
+  padding: 0;
+  margin: 0;
+  display: flex;
+}
+
+.hero-logos img {
+  height: 48px;
+  margin: 0 15px;
+}
+
+.nav-icons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  padding: 20px 0;
+  align-items: center;
+  height: 100px;
+}
+
+.nav-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.nav-icon {
+  width: 100px;           /* 사각형으로 크게 설정 */
+  height: 100px;
+  background-color: #f7f8fa;
+  border-radius: 0;       /* 완전한 사각형 형태로 변경 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a7a9ac;
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+/* 활성화 스타일 */
+.nav-button.active .nav-icon {
+  background-color: #141920;
+  color: #ffffff;
+}
+
+/* 텍스트 스타일 */
+.nav-button span {
+  font-size: 15px;
+  color: #606060;
+  white-space: nowrap;
+}
+
+/* 활성화된 버튼의 텍스트 스타일 */
+.nav-button.active span {
+  color: #141920;
+  font-weight: bold;
+}
+
+/* 클릭(활성화) 효과 추가 */
+.nav-button:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+
+
+.banner-section {
+  background-color: #f9fafb;
+  padding: 40px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.banner-container img {
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.section-heading,
+.event-itemshop,
+.reviews {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+.section-heading h2,
+.reviews h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.subheading {
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.primary-button,
+.secondary-button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.primary-button {
+  background-color: #000;
+  color: #fff;
+  border: none;
+}
+
+.secondary-button {
+  background-color: #e5e7eb;
+  border: none;
+}
+
+.event-itemshop {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.event-itemshop img {
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.review-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.review-card {
+  border: 1px solid #e5e7eb;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.reviewer-name {
+  margin-top: 8px;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
