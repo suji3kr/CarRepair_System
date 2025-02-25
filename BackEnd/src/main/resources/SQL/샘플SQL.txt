@@ -117,3 +117,12 @@ VALUES
   (1, '예약한 정비소에서 차량에 대한 설명이 부족했지만, 결과는 좋았습니다.'),
   (3, '가격 대비 서비스 품질이 우수하여 적극 추천합니다.'),
   (2, '수리 후 이상 소음이 발생해 추가 점검을 받았습니다. 서비스 개선이 필요합니다.');
+
+
+
+-- 결제 샘플 데이터 삽입
+INSERT INTO payments (order_id, amount, payment_method, payment_status)
+VALUES
+  (1, 150.00, 'CARD', 'COMPLETED'),
+  (2, 75.50, 'CASH', 'PENDING'),
+  (3, 200.00, 'ONLINE', 'FAILED');
