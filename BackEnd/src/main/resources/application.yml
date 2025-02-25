@@ -44,3 +44,8 @@ springdoc:
     swagger-ui:
       path: /swagger-ui.html
       enabled: true
+
+openapi:
+  chatbot:
+    url: "https://api.example.com/chatbot"
+    api-key: "your-api-key"
