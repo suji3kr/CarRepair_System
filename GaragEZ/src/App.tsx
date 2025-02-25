@@ -6,7 +6,7 @@ import Landing from "./pages/Landing";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
-import MainPage from "./components/MainPage";
+import MainPage from "./pages/review/MainPage";
 import ChatBot from "./components/ChatBot";
 
 
