@@ -1,14 +1,8 @@
-/* MainPage.css */
+/* MainPage.module.css */
 
-.hero-section {
+/* Hero Section */
+.heroSection {
   background: url('/src/images/hankook.jpg') center center / cover !important;
-}
-.main-container {
-  font-family: sans-serif;
-}
-
-.hero-section {
-  background: url('/path-to-hero-image.jpg') center center / cover;
   color: white;
   text-align: center;
   height: 700px;
@@ -19,12 +13,13 @@
   display: flex;
 }
 
-.hero-logos img {
+.heroLogos img {
   height: 48px;
   margin: 0 15px;
 }
 
-.nav-icons {
+/* Navigation Icons */
+.navIcons {
   display: flex;
   justify-content: center;
   gap: 16px;
@@ -33,7 +28,7 @@
   height: 100px;
 }
 
-.nav-button {
+.navButton {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -43,11 +38,11 @@
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.nav-icon {
-  width: 100px;           /* 사각형으로 크게 설정 */
+.navIcon {
+  width: 100px;
   height: 100px;
   background-color: #f7f8fa;
-  border-radius: 0;       /* 완전한 사각형 형태로 변경 */
+  border-radius: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -57,53 +52,53 @@
 }
 
 /* 활성화 스타일 */
-.nav-button.active .nav-icon {
+.navButtonActive .navIcon {
   background-color: #141920;
   color: #ffffff;
 }
 
 /* 텍스트 스타일 */
-.nav-button span {
+.navButton span {
   font-size: 15px;
   color: #606060;
   white-space: nowrap;
 }
 
 /* 활성화된 버튼의 텍스트 스타일 */
-.nav-button.active span {
+.navButtonActive span {
   color: #141920;
   font-weight: bold;
 }
 
 /* 클릭(활성화) 효과 추가 */
-.nav-button:active {
+.navButton:active {
   transform: translateY(2px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
-
-
-.banner-section {
+/* 배너 섹션 */
+.bannerSection {
   background-color: #f9fafb;
   padding: 40px 0;
   display: flex;
   justify-content: center;
 }
 
-.banner-container img {
+.bannerContainer img {
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.section-heading,
-.event-itemshop,
+/* Section Styling */
+.sectionHeading,
+.eventItemShop,
 .reviews {
   max-width: 800px;
   margin: 0 auto;
   padding: 40px 0;
 }
 
-.section-heading h2,
+.sectionHeading h2,
 .reviews h2 {
   font-size: 1.5rem;
   font-weight: bold;
@@ -115,55 +110,57 @@
   margin-bottom: 8px;
 }
 
-.button-group {
+.buttonGroup {
   display: flex;
   gap: 12px;
   margin-top: 24px;
 }
 
-.primary-button,
-.secondary-button {
+.primaryButton,
+.secondaryButton {
   padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
 }
 
-.primary-button {
+.primaryButton {
   background-color: #000;
   color: #fff;
   border: none;
 }
 
-.secondary-button {
+.secondaryButton {
   background-color: #e5e7eb;
   border: none;
 }
 
-.event-itemshop {
+/* Event & ItemShop Section */
+.eventItemShop {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
 }
 
-.event-itemshop img {
+.eventItemShop img {
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.review-cards {
+/* Review Section */
+.reviewCards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
 }
 
-.review-card {
+.reviewCard {
   border: 1px solid #e5e7eb;
   padding: 16px;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
-.reviewer-name {
+.reviewerName {
   margin-top: 8px;
   color: #6b7280;
   font-size: 0.875rem;

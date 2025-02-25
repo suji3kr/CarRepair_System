@@ -1,6 +1,6 @@
 // src/pages/ReviewPage.tsx
 import React from 'react';
-import ReviewBoard from '../components/review/ReviewBoard';
+import ReviewBoard from './review/ReviewBoard';
 
 const ReviewPage: React.FC = () => {
   return (

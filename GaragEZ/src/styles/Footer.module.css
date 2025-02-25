@@ -1,0 +1,155 @@
+/* 푸터 전체 스타일 */
+.footer {
+  width: 100vw; /* 전체 화면 너비 */
+  background-color: #121212;
+  color: white;
+  padding: 40px 0;
+  font-family: Arial, sans-serif;
+  position: relative;
+  left: 0;
+  right: 0;
+}
+
+/* 상단 영역 스타일 */
+.footerTop {
+  background-image: url("/images/Footer-back.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%; /* 필요에 따라 크기 지정 */
+  height: 200px; /* 높이 지정 */
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 텍스트 정렬 */
+.footerText h2 {
+  padding-top: 20px;
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+.footerText p {
+  font-size: 14px;
+  color: #b0b0b0;
+}
+
+/* 로고 정렬 */
+.footerLogos {
+  display: flex;
+  justify-content: center; /* 가로 중앙 정렬 */
+  align-items: center; /* 세로 중앙 정렬 (필요한 경우) */
+  gap: 40px; /* 이미지 간격 */
+}
+
+
+.footerLogos img {
+  height: 40px;
+  display: block;
+}
+
+/* 하단 영역 스타일 */
+.footerBottom {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+/* 사이트 이름 및 소셜 아이콘 */
+.footerSite {
+  flex-grow: 1;
+  min-width: 200px;
+  text-align: left;
+}
+
+.footerSite h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.footerIcons {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.footerIcons a {
+  text-decoration: none;
+}
+
+.footerIcons .icon {
+  font-size: 25px;
+  color: white;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.footerIcons .icon:hover {
+  color: #fbbc05; /* 노란색 효과 */
+  transform: scale(1.1);
+}
+
+/* 링크 섹션 */
+.footerLinks {
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  right: 20px;
+  gap: 50px;
+  flex-grow: 2;
+}
+
+.footerColumn {
+  min-width: 150px;
+}
+
+.footerColumn h3 {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.footerColumn ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footerColumn ul li {
+  margin-bottom: 5px;
+}
+
+.footerColumn ul li a {
+  color: #b0b0b0;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.footerColumn ul li a:hover {
+  color: white;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .footerBottom {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footerLinks {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footerSite {
+    text-align: center;
+  }
+}

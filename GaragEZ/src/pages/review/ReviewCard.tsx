@@ -1,4 +1,3 @@
-// src/components/review/ReviewCard.tsx
 import React from 'react';
 import { Review } from './ReviewBoard';
 

@@ -1,4 +1,3 @@
-// src/components/review/ReviewBoard.tsx
 import React, { useState, FormEvent } from 'react';
 import ReviewCard from './ReviewCard';
 
