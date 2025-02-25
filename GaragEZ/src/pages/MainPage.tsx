@@ -1,8 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../styles/MainPage.module.css";
 import Layout from "../components/Layout";
+import { Review } from "./review/ReviewBoard";
+import axios from "axios";
 
 const MainPage: React.FC = () => {
+  const [reviews, setReviews] = useState<Review[]>([]);
+
+  useEffect(() => {
+    axios.get<Review[]>('http://localhost:8094/api/reviews')
+      .then(response => {
+        setReviews(response.data);
+      })
+      .catch(error => {
+        console.error('리뷰를 불러오는 중 오류 발생:', error);
+      });
+  }, []);
+
   return (
     <Layout>
       <div className={styles.mainContainer}>
@@ -54,12 +68,17 @@ const MainPage: React.FC = () => {
         <section className={styles.reviews}>
           <h2>차고지 리뷰</h2>
           <div className={styles.reviewCards}>
-            {["A terrific place of praise", "A fantastic bit of feedback", "A genuinely glowing review"].map((review, idx) => (
-              <div key={idx} className={styles.reviewCard}>
-                <p className={styles.reviewText}>"{review}"</p>
-                <div className={styles.reviewAuthor}>Name</div>
-              </div>
-            ))}
+            {reviews.length > 0 ? (
+              reviews.map(review => (
+                <div key={review.id} className={styles.reviewCard}>
+                  <p className={styles.reviewText}>"{review.content}"</p>
+                  <div className={styles.reviewAuthor}>{review.user.username}</div>
+                  <div className={styles.reviewDate}>{new Date(review.createdAt).toLocaleString()}</div>
+                </div>
+              ))
+            ) : (
+              <p className={styles.noReviews}>작성된 리뷰가 없습니다.</p>
+            )}
           </div>
         </section>
       </div>
