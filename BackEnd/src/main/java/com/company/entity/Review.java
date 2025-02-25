@@ -27,4 +27,9 @@ public class Review {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
+
+    @CreationTimestamp
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
 }
