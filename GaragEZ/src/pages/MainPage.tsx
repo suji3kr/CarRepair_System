@@ -13,6 +13,7 @@ import GarageIcon from '@mui/icons-material/Garage';
 import CelebrationIcon from '@mui/icons-material/Celebration';
 
 
+
 const MainPage: React.FC = () => {
   const [reviews, setReviews] = useState<Review[]>([]);
 
@@ -53,30 +54,37 @@ const MainPage: React.FC = () => {
 
         {/* 배너 자리 */}
         <section className={styles.bannerSection}>
-          <img src="/special-event-banner.jpg" alt="이벤트 배너" className={styles.bannerImg} />
+          <img src="images/event.png" alt="이벤트 배너" className={styles.bannerImg} />
         </section>
 
-        {/* Section Heading */}
-        <section className={styles.sectionHeading}>
-          <h2>Section heading</h2>
-          <p className={styles.subheading}>Subheading</p>
-          <p className={styles.subheading}>Subheading</p>
-          <p className={styles.subheading}>Subheading</p>
-          <div className={styles.buttonGroup}>
-            <button className={styles.primaryButton}>Button</button>
-            <button className={styles.secondaryButton}>Secondary button</button>
-          </div>
-        </section>
+{/* Section Heading + Image 컨테이너 */}
+<section className={styles.sectionContainer}>
+  {/* 왼쪽: Section Heading */}
+  <div className={styles.sectionHeading}>
+    <h2>Section heading</h2>
+    <p className={styles.subheading}>Subheading</p>
+    <p className={styles.subheading}>Subheading</p>
+    <p className={styles.subheading}>Subheading</p>
+
+    <div className={styles.buttonGroup}>
+      <button className={styles.primaryButton}>Button</button>
+      <button className={styles.secondaryButton}>Secondary button</button>
+    </div>
+  </div>
+
+
+</section>
+
 
         {/* Event & ItemShop Section */}
         <section className={styles.eventItemShop}>
           <div className={styles.event}>
-            <img src="/event-image.jpg" alt="Event" className={styles.sectionImg} />
+            <img src="images/pears.png" alt="Event" className={styles.sectionImg} />
             <h3>Event</h3>
             <p className={styles.sectionSubheading}>Subheading</p>
           </div>
           <div className={styles.itemShop}>
-            <img src="/itemshop-image.jpg" alt="ItemShop" className={styles.sectionImg} />
+            <img src="images/fruits.png" alt="ItemShop" className={styles.sectionImg} />
             <h3>ItemShop</h3>
             <p className={styles.sectionSubheading}>Subheading</p>
           </div>

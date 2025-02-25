@@ -13,6 +13,12 @@
   display: flex;
 }
 
+.sectionImg {
+  width: 1500px;  /* 원하는 크기로 설정 */
+  height: auto;  /* 가로 비율 유지 */
+  max-width: 100%; /* 부모 요소보다 커지지 않도록 설정 */
+}
+
 .heroLogos img {
   height: 48px;
   margin: 0 15px;
@@ -80,10 +86,13 @@
 .bannerSection {
   background-color: #f9fafb;
   padding: 40px 0;
+  
   display: flex;
   justify-content: center;
 }
-
+.bannerImg{
+  width: 1200px;
+}
 .bannerContainer img {
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
