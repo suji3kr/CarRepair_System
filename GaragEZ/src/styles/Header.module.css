@@ -27,6 +27,11 @@
     color: inherit;
     text-decoration: none;
   }
+
+  .logo img{
+    width: 70px;
+    height: auto;
+  }
   
   .menu {
     list-style: none;

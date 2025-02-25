@@ -1,4 +1,3 @@
-// src/components/review/ReviewBoard.tsx
 import React, { useState, useEffect, FormEvent } from 'react';
 import axios from 'axios';
 import ReviewCard from './ReviewCard';
@@ -64,6 +63,7 @@ const ReviewBoard: React.FC = () => {
       <h2>리뷰 작성</h2>
       <form onSubmit={handleSubmit}>
         <div>
+
           <label htmlFor="author">작성자 (아이디): </label>
           <input
             type="text"

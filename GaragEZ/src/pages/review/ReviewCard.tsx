@@ -18,6 +18,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
         overflow: 'hidden'
       }}
     >
+
       {/* 상단: 리뷰 내용 크게 표시 */}
       <div
         style={{
@@ -35,7 +36,9 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
         {review.profile ? (
           <img
             src={review.profile}
+
             alt={`${review.user.username} 프로필`}
+
             style={{
               width: '60px',
               height: '60px',
@@ -56,11 +59,13 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
           ></div>
         )}
         <div style={{ textAlign: 'left' }}>
+
           <div style={{ fontSize: '1.2rem', fontWeight: 500 }}>
             {review.user.username}
           </div>
           <div style={{ fontSize: '0.9rem', color: '#666' }}>
             {new Date(review.createdAt).toLocaleString()}
+
           </div>
         </div>
       </div>
