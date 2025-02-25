@@ -3,6 +3,15 @@ import styles from "../styles/MainPage.module.css";
 import Layout from "../components/Layout";
 import { Review } from "./review/ReviewBoard";
 import axios from "axios";
+import TireRepairIcon from '@mui/icons-material/Build'; // TireRepair 아이콘 대체
+import CarRepairIcon from '@mui/icons-material/DirectionsCar'; // CarRepair 아이콘 대체
+import BatteryAlertIcon from '@mui/icons-material/BatteryAlert';
+import HandymanIcon from '@mui/icons-material/Handyman';
+import BuildIcon from '@mui/icons-material/Build';
+import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
+import GarageIcon from '@mui/icons-material/Garage';
+import CelebrationIcon from '@mui/icons-material/Celebration';
+
 
 const MainPage: React.FC = () => {
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -25,13 +34,22 @@ const MainPage: React.FC = () => {
 
         {/* Navigation Icons */}
         <nav className={styles.navIcons}>
-          {["타이어", "엔진오일", "배터리", "악세사리", "튜닝", "세차", "차량용품", "이벤트"].map((item, idx) => (
-            <button key={idx} className={styles.navButton}>
-              <div className={styles.iconPlaceholder}></div>
-              <span>{item}</span>
-            </button>
-          ))}
-        </nav>
+      {["타이어", "엔진오일", "배터리", "악세사리", "튜닝", "세차", "차량용품", "이벤트"].map((item, idx) => (
+        <button key={idx} className={styles.navButton}>
+          <div className={styles.iconPlaceholder}>
+            {idx === 0 && <TireRepairIcon className={styles.navIcon} />}
+            {idx === 1 && <CarRepairIcon className={styles.navIcon} />}
+            {idx === 2 && <BatteryAlertIcon className={styles.navIcon} />}
+            {idx === 3 && <HandymanIcon className={styles.navIcon} />}
+            {idx === 4 && <BuildIcon className={styles.navIcon} />}
+            {idx === 5 && <CleaningServicesIcon className={styles.navIcon} />}
+            {idx === 6 && <GarageIcon className={styles.navIcon} />}
+            {idx === 7 && <CelebrationIcon className={styles.navIcon} />}
+          </div>
+          <span>{item}</span>
+        </button>
+      ))}
+    </nav>
 
         {/* 배너 자리 */}
         <section className={styles.bannerSection}>
