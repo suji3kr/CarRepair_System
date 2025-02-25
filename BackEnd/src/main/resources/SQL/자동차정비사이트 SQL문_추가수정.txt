@@ -182,4 +182,16 @@ CREATE TABLE reviews (
 );
 
 
+-- 결제 테이블 생성 (payments)
+CREATE TABLE payments (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  order_id BIGINT NOT NULL,
+  amount DECIMAL(10,2) NOT NULL,
+  payment_method ENUM('CARD', 'CASH', 'ONLINE') NOT NULL,
+  payment_status ENUM('PENDING', 'COMPLETED', 'FAILED') NOT NULL,
+  payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (order_id) REFERENCES store_orders(id) ON DELETE CASCADE
+);
+
+
 SET FOREIGN_KEY_CHECKS=1;
