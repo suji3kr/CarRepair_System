@@ -1,12 +1,37 @@
-import React from 'react';
+// src/MainPage.tsx
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './MainPage.css';
 
+interface Review {
+  id: number;
+  content: string;
+  createdAt: string;
+  // 백엔드에서 user 객체 내에 username(혹은 아이디) 반환한다고 가정
+  user: {
+    id: number;
+    username: string;
+  };
+}
+
 const MainPage: React.FC = () => {
+  const [reviews, setReviews] = useState<Review[]>([]);
+
+  useEffect(() => {
+    axios.get<Review[]>('http://localhost:8094/api/reviews')
+      .then(response => {
+        setReviews(response.data);
+      })
+      .catch(error => {
+        console.error('리뷰를 불러오는 중 오류 발생:', error);
+      });
+  }, []);
+
   return (
     <div className="main-container font-sans">
       {/* Hero Section */}
       <section className="hero-section">
-
+        {/* Hero content 여기에 추가 */}
       </section>
 
       {/* Navigation Icons */}
@@ -53,13 +78,30 @@ const MainPage: React.FC = () => {
       {/* 차고지 리뷰 */}
       <section className="reviews">
         <h2>차고지 리뷰</h2>
-        <div className="review-cards">
-          {["A terrific place of praise", "A fantastic bit of feedback", "A genuinely glowing review"].map((review, idx) => (
-            <div key={idx} className="review-card">
-              <p className="review-text">"{review}"</p>
-              <div className="review-author">Name</div>
-            </div>
-          ))}
+        <div className="review-cards" style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+          {reviews.length > 0 ? (
+            reviews.map(review => (
+              <div key={review.id} className="review-card" style={{
+                width: '300px',
+                border: '1px solid #ddd',
+                borderRadius: '8px',
+                padding: '1rem',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+              }}>
+                <p className="review-text" style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>
+                  "{review.content}"
+                </p>
+                <div className="review-author" style={{ fontWeight: 500 }}>
+                  {review.user.username}
+                </div>
+                <div className="review-date" style={{ fontSize: '0.9rem', color: '#666' }}>
+                  {new Date(review.createdAt).toLocaleString()}
+                </div>
+              </div>
+            ))
+          ) : (
+            <p>작성된 리뷰가 없습니다.</p>
+          )}
         </div>
       </section>
     </div>
