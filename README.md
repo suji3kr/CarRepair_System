@@ -76,7 +76,8 @@
 
 </br>
 
-![image](https://github.com/user-attachments/assets/e1a66930-59e9-46c1-ac13-0dfdf254c1ea)
+![car sequence diagram](https://github.com/user-attachments/assets/3e534f48-4666-48ba-ac92-fa6b7dd66104)
+
 
 </br>
 </br>
