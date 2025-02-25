@@ -1,4 +1,3 @@
-// src/components/review/ReviewCard.tsx
 import React from 'react';
 import { Review } from './ReviewBoard';
 
@@ -19,7 +18,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
         overflow: 'hidden'
       }}
     >
-      {/* 상단: 리뷰 내용을 크게 표시 */}
+      {/* 상단: 리뷰 내용 크게 표시 */}
       <div
         style={{
           backgroundColor: '#f9f9f9',
@@ -36,7 +35,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
         {review.profile ? (
           <img
             src={review.profile}
-            alt={`${review.author} 프로필`}
+            alt={`${review.user.username} 프로필`}
             style={{
               width: '60px',
               height: '60px',
@@ -57,9 +56,11 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
           ></div>
         )}
         <div style={{ textAlign: 'left' }}>
-          <div style={{ fontSize: '1.2rem', fontWeight: 500 }}>{review.author}</div>
+          <div style={{ fontSize: '1.2rem', fontWeight: 500 }}>
+            {review.user.username}
+          </div>
           <div style={{ fontSize: '0.9rem', color: '#666' }}>
-            {review.createdAt.toLocaleString()}
+            {new Date(review.createdAt).toLocaleString()}
           </div>
         </div>
       </div>
