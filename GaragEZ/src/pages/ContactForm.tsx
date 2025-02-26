@@ -29,11 +29,11 @@ const ContactForm: React.FC = () => {
 
   return (
     <Layout>
+      <br></br><br></br>
       <div className={styles.container}>
         {/* 배너 */}
         <div className={styles.banner}>
-          <h1>믿을 수 있는 정비</h1>
-          <h2>GaragEZ</h2>
+
         </div>
 
         {/* 폼 영역 */}

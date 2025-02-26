@@ -12,14 +12,18 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@fullpage/react-fullpage": "^0.1.48",
     "@mui/icons-material": "^6.4.5",
     "@mui/material": "^6.4.5",
     "axios": "^1.7.9",
+    "core-js": "^3.40.0",
     "framer-motion": "^12.4.7",
+    "fullpage.js": "^4.0.33",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
-    "react-router-dom": "^7.2.0"
+    "react-router-dom": "^7.2.0",
+    "regenerator-runtime": "^0.14.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",

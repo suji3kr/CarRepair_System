@@ -5,6 +5,7 @@ import styles from "../styles/Footer.module.css";
 const Footer = () => {
   return (
     <footer className={styles.footer}>
+      <div className={styles.footer_content}>
       {/* 상단 영역 */}
       <div className={styles.footerTop}>
         <div className={styles.footerText}>
@@ -52,6 +53,7 @@ const Footer = () => {
             </div>
           ))}
         </div>
+      </div>
       </div>
     </footer>
   );
