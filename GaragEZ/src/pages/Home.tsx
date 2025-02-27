@@ -1,105 +1,137 @@
-// pages/Home.tsx
-import React, { useEffect } from "react";
-import styled from "@emotion/styled";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import React, { useEffect, useState } from "react";
+import styles from "../styles/home.module.css"; // ✅ CSS Modules 사용
 
-const SnapContainer = styled.div`
-  height: 100vh;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
+const easeInOutCubic = (t: number) => {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+};
 
-  /* 브라우저별 스크롤바 숨기기 */
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-  &::-webkit-scrollbar { /* 나머지: chrome, opera 등 */
-    display: none;
-  }
-  
-  & > section {
-    height: 100vh;
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    overflow:hidden;
-  }
-`;
+// ✅ smoothScrollTo 함수를 useEffect 바깥으로 이동
+const smoothScrollTo = (element: HTMLElement, target: number, duration: number, setHideImage: React.Dispatch<React.SetStateAction<boolean>>) => {
+  const start = element.scrollTop;
+  const change = target - start;
+  const startTime = performance.now();
 
-const ImageSection = styled.section`
-  /* 섹션 내 내용물을 완전히 채우도록 설정 */
-  & img {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* 이미지 비율을 유지하면서 영역을 완전히 채움 */
-    object-position: center; /* 이미지의 중앙을 표시 */
-  }
-`;
+  element.classList.remove("active");
+
+  const animateScroll = (currentTime: number) => {
+    const elapsedTime = currentTime - startTime;
+    const progress = Math.min(elapsedTime / duration, 1);
+    element.scrollTop = start + change * easeInOutCubic(progress);
+
+    if (progress < 1) {
+      window.requestAnimationFrame(animateScroll);
+    } else {
+      element.classList.add("active");
+    }
+  };
+
+  setHideImage(false);
+  window.requestAnimationFrame(animateScroll);
+};
 
 const Home: React.FC = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [hideImage, setHideImage] = useState(false);
+
   useEffect(() => {
-    // 휠 이벤트를 최적화하기 위한 쓰로틀링 함수
+    const container = document.querySelector(`.${styles.snapContainer}`) as HTMLElement;
     let isScrolling = false;
-    const container = document.querySelector('.snap-container');
-    
+    let scrollTimeout: ReturnType<typeof setTimeout> | null = null;
+    let autoScrollTimeout: ReturnType<typeof setTimeout> | null = null;
+    let idleTimeout: ReturnType<typeof setTimeout> | null = null;
+
+    const handleUserActivity = () => {
+      if (idleTimeout) clearTimeout(idleTimeout);
+      idleTimeout = window.setTimeout(autoScroll, 5000);
+    };
+
     const handleWheel = (e: WheelEvent) => {
       if (isScrolling) return;
       isScrolling = true;
-      
-      const container = e.currentTarget as HTMLElement;
-      const sections = container.querySelectorAll('section');
-      const containerHeight = container.clientHeight;
+      handleUserActivity();
+
+      const sections = container.querySelectorAll("section");
       const currentScrollTop = container.scrollTop;
-      
-      // 현재 보이는 섹션의 인덱스 계산
-      const currentIndex = Math.round(currentScrollTop / containerHeight);
-      
-      // 스크롤 방향 결정
-      const direction = e.deltaY > 0 ? 1 : -1;
-      const nextIndex = Math.max(0, Math.min(sections.length - 1, currentIndex + direction));
-      
-      // 다음 섹션으로 부드럽게 스크롤
-      container.scrollTo({
-        top: nextIndex * containerHeight,
-        behavior: 'smooth'
-      });
-      
-      // 스크롤 완료 후 플래그 재설정
-      setTimeout(() => {
+      const containerHeight = container.clientHeight;
+
+      const currentIndex = Math.floor(currentScrollTop / containerHeight);
+      const nextIndex = Math.max(0, Math.min(sections.length - 1, currentIndex + (e.deltaY > 0 ? 1 : -1)));
+
+      setActiveIndex(nextIndex);
+      smoothScrollTo(container, nextIndex * containerHeight, 1300, setHideImage);
+
+      scrollTimeout = window.setTimeout(() => {
         isScrolling = false;
-      }, 800); // 스크롤 애니메이션 시간보다 약간 더 길게 설정
-      
+      }, 1400);
+
       e.preventDefault();
     };
-    
+
+    const autoScroll = () => {
+      if (isScrolling) return;
+
+      const sections = container.querySelectorAll("section");
+      const totalSections = sections.length;
+      const containerHeight = container.clientHeight;
+      const currentScrollTop = container.scrollTop;
+
+      const currentIndex = Math.floor(currentScrollTop / containerHeight);
+      const isLastPage = currentIndex === totalSections - 1;
+      const nextIndex = isLastPage ? 0 : currentIndex + 1;
+
+      setActiveIndex(nextIndex);
+      const delay = isLastPage ? 6000 : 3500;
+
+      smoothScrollTo(container, nextIndex * containerHeight, 1300, setHideImage);
+      autoScrollTimeout = window.setTimeout(autoScroll, delay);
+    };
+
     if (container) {
-      container.addEventListener('wheel', handleWheel, { passive: false });
-      
+      container.addEventListener("wheel", handleWheel, { passive: false });
+      container.addEventListener("touchstart", handleUserActivity);
+      document.addEventListener("keydown", handleUserActivity);
+
+      autoScrollTimeout = window.setTimeout(autoScroll, 3500);
+
       return () => {
-        container.removeEventListener('wheel', handleWheel);
+        container.removeEventListener("wheel", handleWheel);
+        container.removeEventListener("touchstart", handleUserActivity);
+        document.removeEventListener("keydown", handleUserActivity);
+        if (scrollTimeout) clearTimeout(scrollTimeout);
+        if (autoScrollTimeout) clearTimeout(autoScrollTimeout);
+        if (idleTimeout) clearTimeout(idleTimeout);
       };
     }
   }, []);
 
+  return (
+    <div style={{ width: "100vw" }}>
+      {/* ✅ 목차를 화면에 고정 */}
+      <div className={styles.navContainer}>
+        {["Cars", "Mechanic", "Consult", "Repair"].map((title, index) => (
+          <div 
+            key={index} 
+            className={`${styles.navItem} ${activeIndex === index ? styles.activeNav : ""}`}
+            onClick={() => {
+              setActiveIndex(index);
+              setHideImage(false);
+              const container = document.querySelector(`.${styles.snapContainer}`) as HTMLElement;
+              smoothScrollTo(container, index * window.innerHeight, 1300, setHideImage);
+            }}
+          >
+            {title}
+          </div>
+        ))}
+      </div>
 
-    return (
-    <div style={{width:'100vw'}}>
-        <Header />
-        <SnapContainer>
-            <section><h1>환영합니다!</h1></section>
-            <ImageSection><img src="/images/cars.jpg" alt="" style={{ width: "100%" }} /></ImageSection>
-            <ImageSection><img src="/images/mechanic.jpg" alt="" style={{ width: "100%" }} /></ImageSection>
-            <ImageSection><img src="/images/consult.jpg" alt="" style={{ width: "100%" }} /></ImageSection>
-            <ImageSection><img src="/images/repair.jpg" alt="" style={{ width: "100%" }} /></ImageSection>
-            <section style={{backgroundColor:"#121212"}}><Footer /></section>
-        </SnapContainer>
+      <div className={styles.snapContainer}>
+        <section className={styles.section}><img src="/images/cars.jpg" alt="Cars" className={hideImage ? styles.hidden : ""} /></section>
+        <section className={styles.section}><img src="/images/mechanic.jpg" alt="Mechanic" className={hideImage ? styles.hidden : ""} /></section>
+        <section className={styles.section}><img src="/images/consult.jpg" alt="Consult" className={hideImage ? styles.hidden : ""} /></section>
+        <section className={styles.section}><img src="/images/repair.jpg" alt="Repair" className={hideImage ? styles.hidden : ""} /></section>
+      </div>
     </div>
-    );
+  );
 };
 
 export default Home;
