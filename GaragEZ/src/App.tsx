@@ -9,7 +9,9 @@ import MainPage from "./pages/MainPage";
 import ChatBot from "./components/ChatBot";
 import ContactForm from "./pages/ContactForm";
 import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
 import PartsShop from "./pages/PartsShop";
+
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
@@ -47,6 +49,7 @@ const LayoutWrapper: React.FC = () => {
         <Route path="/contact" element={<ContactForm />} />
         <Route path="/chat-bot" element={<ChatBot />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route path="/partshop" element={<PartsShop />} />
       </Routes>
     </Layout>

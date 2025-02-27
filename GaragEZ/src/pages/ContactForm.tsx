@@ -7,7 +7,6 @@ const ContactForm: React.FC = () => {
     Name: "",
     carType: "",
     model: "",
-    carDetails: "",
     email: "",
     phoneNumber: "",
     message: "",
@@ -29,62 +28,51 @@ const ContactForm: React.FC = () => {
 
   return (
     <Layout>
-      <br></br><br></br>
-      <div className={styles.container}>
-        {/* 배너 */}
-        <div className={styles.banner}>
-
-        </div>
+      <div className={styles.contactContainer}>
+        {/* 기존 배너 유지 */}
+        <div className={styles.contactBanner}></div>
 
         {/* 폼 영역 */}
         <form className={styles.contactForm} onSubmit={handleSubmit}>
-          <h2>Contact me</h2>
+          <h2>문의하기</h2>
 
-          <div className={styles.row}>
-            <div className={styles.inputGroup}>
-              <label>이름</label>
-              <input type="text" name="Name" value={formData.Name} onChange={handleChange} required />
-            </div>
-           
+          <div className={styles.contactInputGroup}>
+            <label>이름</label>
+            <input type="text" name="Name" value={formData.Name} onChange={handleChange} required />
           </div>
 
-          <div className={styles.row}>
-            <div className={styles.inputGroup}>
-              <label>어떤 종류의 차인가요?</label>
-              <input type="text" name="carType" value={formData.carType} onChange={handleChange} required />
-            </div>
-            <div className={styles.inputGroup}>
-              <label>모델명</label>
-              <input type="text" name="model" value={formData.model} onChange={handleChange} required />
-            </div>
+          <div className={styles.contactInputGroup}>
+            <label>어떤 종류의 차인가요?</label>
+            <input type="text" name="carType" value={formData.carType} onChange={handleChange} required />
           </div>
 
-          <div className={styles.inputGroup}>
-            <label>차량연계</label>
-            <input type="text" name="carDetails" value={formData.carDetails} onChange={handleChange} />
+          <div className={styles.contactInputGroup}>
+            <label>모델명</label>
+            <input type="text" name="model" value={formData.model} onChange={handleChange} required />
           </div>
 
-          <div className={styles.inputGroup}>
+
+          <div className={styles.contactInputGroup}>
             <label>이메일 주소</label>
             <input type="email" name="email" value={formData.email} onChange={handleChange} required />
           </div>
 
-          <div className={styles.inputGroup}>
+          <div className={styles.contactInputGroup}>
             <label>전화번호</label>
             <input type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} required />
           </div>
 
-          <div className={styles.inputGroup}>
+          <div className={styles.contactInputGroup}>
             <label>기타 기재사항</label>
             <textarea name="message" value={formData.message} onChange={handleChange} required />
           </div>
 
-          <div className={styles.inputGroup}>
+          <div className={styles.contactInputGroup}>
             <label>참고할 사항</label>
             <textarea name="additionalNotes" value={formData.additionalNotes} onChange={handleChange} />
           </div>
 
-          <button type="submit" className={styles.submitButton}>Submit</button>
+          <button type="submit" className={styles.contactSubmitButton}>제출하기</button>
         </form>
       </div>
     </Layout>

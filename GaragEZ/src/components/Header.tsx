@@ -70,6 +70,9 @@ const Header: React.FC = () => {
         <Link to="/login" className={styles.loginButton}>
           <FaUser className={styles.loginIcon} /> 로그인
         </Link>
+        <Link to="/signup" className={styles.loginButton}>
+          <FaUser className={styles.loginIcon} /> 회원가입
+        </Link>
       </nav>
     </header>
   );

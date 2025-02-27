@@ -1,7 +1,8 @@
-/* 컨테이너 */
-.contactContainer {
+
+/* 회원가입 컨테이너 */
+.signupContainer {
   width: 100%;
-  max-width: 600px;
+  max-width: 500px;
   margin: 80px auto 0;
   padding: 30px;
   background: white;
@@ -9,33 +10,28 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* 기존 배너 이미지 유지 */
-.contactBanner {
-  width: 100%;
-  height: 200px; /* 기존 높이 유지 */
-  background: url('/images/thumbs.jpg') center/cover no-repeat;
-  border-radius: 10px 10px 0 0;
-}
-
-/* 폼 스타일 */
-.contactForm {
-  padding: 20px;
-}
-
-/* 제목 스타일 */
-.contactForm h2 {
+/* 제목 */
+.signupTitle {
   text-align: center;
   font-size: 24px;
   color: #333;
+  margin-bottom: 10px;
+}
+
+/* 설명 */
+.signupDescription {
+  text-align: center;
+  font-size: 14px;
+  color: #666;
   margin-bottom: 20px;
 }
 
 /* 입력 필드 그룹 */
-.contactInputGroup {
+.signupFormGroup {
   margin-bottom: 15px;
 }
 
-.contactInputGroup label {
+.signupFormGroup label {
   display: block;
   font-size: 14px;
   font-weight: bold;
@@ -43,8 +39,8 @@
 }
 
 /* 입력 필드 */
-.contactInputGroup input,
-.contactInputGroup textarea {
+.signupFormGroup input,
+.signupFormGroup select {
   width: 100%;
   padding: 10px;
   font-size: 14px;
@@ -53,21 +49,31 @@
   transition: border 0.3s ease-in-out;
 }
 
-.contactInputGroup input:focus,
-.contactInputGroup textarea:focus {
+.signupFormGroup input:focus,
+.signupFormGroup select:focus {
   border-color: #007BFF;
   outline: none;
 }
 
-/* 텍스트 영역 */
-.contactInputGroup textarea {
-  height: 80px;
-  resize: none;
+/* 체크박스 */
+.signupTerms {
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.signupTerms input {
+  margin-right: 5px;
 }
 
 /* 버튼 스타일 */
-.contactSubmitButton {
-  width: 100%;
+.signupFormActions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.signupButton {
+  width: 48%;
   padding: 12px;
   background: #007BFF;
   color: white;
@@ -78,18 +84,24 @@
   transition: background 0.3s;
 }
 
-.contactSubmitButton:hover {
+.signupButton:hover {
   background: #0056b3;
 }
 
-/* 반응형 */
+/* 모바일 반응형 */
 @media (max-width: 768px) {
-  .contactContainer {
+  .signupContainer {
     max-width: 90%;
     padding: 20px;
   }
 
-  .contactSubmitButton {
+  .signupButton {
     width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .signupFormActions {
+    flex-direction: column;
+    align-items: center;
   }
 }
