@@ -2,16 +2,36 @@
 
 /* Hero Section */
 .heroSection {
-  background: url('/src/images/hankook.jpg') center center / cover !important;
+  background: url('/src/images/hankook.jpg') center center / cover no-repeat !important;
   color: white;
   text-align: center;
-  height: 700px;
-  width: 1900px;
+  height: 70vh; /* 화면 높이에 맞춰 조정 */
+  width: 100vw; /* 뷰포트 너비에 맞게 */
+  min-height: 400px; /* 너무 작아지는 것 방지 */
   position: relative;
   padding: 0;
-  margin: 0;
+  margin: 0 auto; /* 가운데 정렬 */
   display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+/* 태블릿 */
+@media (max-width: 1024px) {
+  .heroSection {
+    height: 60vh; /* 화면 크기에 맞춰 조정 */
+    min-height: 350px;
+  }
+}
+
+/* 모바일 */
+@media (max-width: 768px) {
+  .heroSection {
+    height: 50vh; /* 모바일에 맞게 줄이기 */
+    min-height: 300px;
+  }
+}
+
 
 .sectionImg {
   width: 1500px;  /* 원하는 크기로 설정 */
@@ -29,9 +49,8 @@
   display: flex;
   justify-content: center;
   gap: 16px;
-  padding: 20px 0;
+  padding: 17px 0;
   height: 100px;
-  
 }
 
 .navButton {
@@ -42,26 +61,30 @@
   background: none;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
-  
+  outline: none; /* 기본 브라우저 스타일 제거 */
 }
 
+/* 아이콘 스타일 */
 .navIcon {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   background-color: #f7f8fa;
-  border-radius: 0;
+  border-radius: 8px; /* 모서리를 약간 둥글게 */
   display: flex;
   align-items: center;
   justify-content: center;
   color: #a7a9ac;
   font-size: 36px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
+  border: 2px solid transparent; /* 기본적으로 테두리 없음 */
+  transition: all 0.2s ease-in-out;
 }
 
 /* 활성화 스타일 */
 .navButtonActive .navIcon {
   background-color: #141920;
   color: #ffffff;
+  border: 2px solid black; /* 클릭 시 명확한 테두리 */
 }
 
 /* 텍스트 스타일 */
@@ -77,10 +100,22 @@
   font-weight: bold;
 }
 
-/* 클릭(활성화) 효과 추가 */
+/* 클릭 효과 개선 */
 .navButton:active {
-  transform: translateY(2px);
+  transform: scale(0.95); /* 클릭 시 부드럽게 축소 */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* 반응형 스타일 (모바일 최적화) */
+@media (max-width: 768px) {
+  .navIcon {
+    width: 60px;
+    height: 60px;
+    font-size: 28px;
+  }
+  .navButton span {
+    font-size: 13px;
+  }
 }
 
 /* 배너 섹션 */
@@ -173,11 +208,22 @@
 }
 
 .reviewCard {
-  width: 300px;
+  width: 360px;
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 1rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 모바일 */
+@media (max-width: 768px) {
+  .reviewCard {
+    width: auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
 }
 
 .reviewText {

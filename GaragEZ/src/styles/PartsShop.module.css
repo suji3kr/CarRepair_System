@@ -1,0 +1,104 @@
+.container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  justify-content: center;
+  margin-top: 100px;
+  position: relative;
+  margin-left: 40px;
+}
+
+.sidebar {
+  width: 100px;
+  background: #f8f8f8;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.category h3 {
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.category ul {
+  list-style: none;
+  padding: 0;
+}
+
+.category li {
+  padding: 5px 0;
+  cursor: pointer;
+}
+
+/* 새로운 컨테이너: 아이템 그리드와 페이지네이션을 감싸는 요소 */
+.itemsContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 아이템 그리드: 5열 그리드 레이아웃 */
+.itemsGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  justify-content: center;
+}
+
+.itemCard {
+  background: white;
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
+  border-radius: 8px;
+  width: 250px;
+  height: 250px;
+}
+
+.itemCard img {
+  margin-top: 20px;
+  width: 150px;
+  height: 150px;
+}
+
+.itemInfo {
+  margin-top: 8px;
+}
+
+.itemName {
+  font-weight: bold;
+}
+
+.itemPrice {
+  color: #f60;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 40px;
+  margin-bottom: 60px;
+  width: 100%;
+}
+
+.pagination button {
+  padding: 8px 12px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  font-size: 16px;
+  font-weight: bold;
+}

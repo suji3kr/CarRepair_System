@@ -95,12 +95,22 @@ input[type="password"]:focus {
   margin-right: 8px;
 }
 
-/* ✅ 로그인 버튼 스타일 */
+
+/* ✅ 불필요한 `fieldset` 기본 스타일 제거 */
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+/* ✅ 일반 로그인 버튼을 Google 로그인 버튼에 맞게 조정 */
 input[type="submit"] {
   width: 100%;
-  height: 50px;
+  height: auto; /* 고정 높이 제거 */
+  padding: 10px 0; /* Google 버튼과 동일한 내부 여백 */
   background: #7da7d9;
-  font-size: 17px;
+  font-size: 16px; /* Google 버튼과 일치하도록 조정 */
   color: white;
   font-weight: bold;
   border: none;
@@ -114,17 +124,11 @@ input[type="submit"]:hover {
   background: #5d91c5;
 }
 
-/* ✅ 아이디 저장 체크박스 */
-.loginMain p.checkbox {
-  font-size: 14px;
-  text-align: left;
-  margin-top: 10px;
+/* ✅ 구글 로그인 버튼 스타일 */
+.googleLogin {
+  margin-top: 20px;
 }
 
-/* ✅ 불필요한 `fieldset` 기본 스타일 제거 */
-fieldset {
-  border: 0;
-  margin: 0;
-  padding: 0;
-  width: 100%;
+.signup {
+  padding-top: 10px;
 }
