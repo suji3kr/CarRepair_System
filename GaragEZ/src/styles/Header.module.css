@@ -1,62 +1,150 @@
+/* 헤더 스타일 */
 .header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.4); /* 투명도 조절 */
-    backdrop-filter: blur(10px); /* 배경 흐림 효과 */
-    color: white;
-    z-index: 100;
-  }
-  
-  .nav {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 15px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .logo {
-    font-size: 24px;
-    font-weight: bold;
-  }
-  
-  .logo a {
-    color: inherit;
-    text-decoration: none;
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  color: white;
+  z-index: 100;
+}
 
-  .logo img{
-    width: 70px;
-    height: auto;
-  }
-  
-  .menu {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    gap: 40px;
-  }
-  
-  .menu li a {
-    color: inherit;
-    text-decoration: none;
-    font-size: 18px;
-    transition: color 0.3s ease;
-  }
-  
-  .menu li a:hover {
-    color: #ddd;
-  }
-  
-  .searchButton {
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
-    font-size: 20px;
-  }
-  
+/* 네비게이션 바 */
+.nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 로고 크기 조정 */
+.logo img {
+  width: 70px;
+  height: auto;
+}
+
+/* 메뉴 */
+.menuWrapper {
+  position: relative;
+}
+
+/* 메뉴 리스트 */
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 40px;
+}
+
+.menu li a {
+  color: inherit;
+  text-decoration: none;
+  font-size: 18px;
+  transition: color 0.3s ease;
+}
+
+.menu li a:hover {
+  color: #ddd;
+}
+
+/* 드롭다운 전체 컨테이너 */
+.dropdownContainer {
+  position: fixed;
+  top: 100%; /* 네비게이션 바로 아래 위치 */
+  left: 0;
+  width: 100%;
+  height: 500px;
+  background: rgba(0, 0, 0, 0.7); /* 어두운 반투명 배경 */
+  backdrop-filter: blur(15px);
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* 드롭다운 내부 박스 */
+.dropdownBox {
+  width: 80%;
+  max-width: 1000px;
+  margin-top: 50px;
+}
+
+/* 메뉴 전체를 호버하면 드롭다운 표시 */
+.menuWrapper:hover .dropdownContainer {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* 드롭다운 내부 컨텐츠 정렬 */
+.dropdownContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+}
+
+/* 각 카테고리 타이틀 및 리스트 중앙 정렬 */
+.category {
+  text-align: center;
+  flex: 1;
+}
+
+/* 대메뉴 타이틀 */
+.category h3 {
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 10px;
+}
+
+/* 드롭다운 리스트 */
+.category ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.category li {
+  padding: 8px 0;
+}
+
+.category li a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  display: block;
+}
+
+.category li a:hover {
+  color: #007bff;
+}
+
+/* 로그인 버튼 스타일 */
+.loginButton {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.loginButton:hover {
+  color: #ddd;
+}
+
+/* 로그인 아이콘 스타일 */
+.loginIcon {
+  margin-right: 8px;
+  font-size: 20px;
+}
