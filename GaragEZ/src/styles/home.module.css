@@ -1,0 +1,78 @@
+/* ✅ 전체 컨테이너 */
+.snapContainer {
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: none;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ✅ 스크롤이 멈추면 스냅 적용 */
+.snapContainer.active {
+  scroll-snap-type: y mandatory;
+}
+
+/* ✅ 스크롤바 숨기기 */
+.snapContainer::-webkit-scrollbar {
+  display: none;
+}
+
+/* ✅ 개별 섹션 */
+.section {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  scroll-snap-align: start;
+}
+
+/* ✅ 이미지 스타일 */
+.section img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: opacity 1s ease-in-out;
+}
+
+/* ✅ 이미지가 사라지는 클래스 */
+.hidden {
+  opacity: 0;
+}
+
+/* ✅ 네비게이션을 화면 왼쪽 중앙에 배치 */
+.navContainer {
+  position: fixed; /* ✅ 화면에 항상 유지 */
+  left: 20px; /* ✅ 왼쪽에 배치 */
+  top: 50%; /* ✅ 중앙 정렬 */
+  transform: translateY(-50%); /* ✅ 정확한 중앙 정렬 */
+  display: flex;
+  flex-direction: column; /* ✅ 세로 정렬 */
+  gap: 20px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 10px;
+  border-radius: 10px;
+  z-index: 1000;
+}
+
+/* ✅ 네비게이션 아이템 */
+.navItem {
+  padding: 12px 18px;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.3s ease-in-out;
+  text-align: center;
+  width: 120px;
+}
+
+/* ✅ 현재 선택된 네비게이션 스타일 */
+.navItem:hover, .activeNav {
+  background-color: rgba(255, 255, 255, 0.8);
+  color: black;
+}
