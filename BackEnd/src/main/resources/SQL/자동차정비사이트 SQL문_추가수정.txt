@@ -20,6 +20,9 @@ DROP TABLE IF EXISTS vehicles;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS parts;
 DROP TABLE IF EXISTS admin;
+DROP TABLE IF EXISTS reviews;
+DROP TABLE IF EXISTS payments;
+
 SET FOREIGN_KEY_CHECKS=1;
 
 -- 👤 사용자 테이블: 고객 및 관리자의 정보를 저장

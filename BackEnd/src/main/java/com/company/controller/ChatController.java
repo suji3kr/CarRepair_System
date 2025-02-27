@@ -1,6 +1,6 @@
 package com.company.controller;
 
-import com.company.dto.ChatRequest;
+import com.company.dto.chat.ChatRequest;
 import com.company.dto.ChatResponse;
 import com.company.service.ChatService;
 import org.springframework.http.ResponseEntity;

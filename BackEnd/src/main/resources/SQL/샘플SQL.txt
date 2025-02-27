@@ -10,6 +10,8 @@ select * from part_prices;
 select * from setup_tracks;
 select * from approvals;
 select * from maintenance_records;
+select * from reviews;
+select * from payments;
 
 
 
