@@ -6,11 +6,17 @@
   color: white;
   text-align: center;
   height: 700px;
-  width: 2000px;
+  width: 1900px;
   position: relative;
   padding: 0;
   margin: 0;
   display: flex;
+}
+
+.sectionImg {
+  width: 1500px;  /* 원하는 크기로 설정 */
+  height: auto;  /* 가로 비율 유지 */
+  max-width: 100%; /* 부모 요소보다 커지지 않도록 설정 */
 }
 
 .heroLogos img {
@@ -24,8 +30,8 @@
   justify-content: center;
   gap: 16px;
   padding: 20px 0;
-  align-items: center;
   height: 100px;
+  
 }
 
 .navButton {
@@ -36,6 +42,7 @@
   background: none;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
+  
 }
 
 .navIcon {
@@ -80,13 +87,22 @@
 .bannerSection {
   background-color: #f9fafb;
   padding: 40px 0;
+  margin: 0 auto; /* 가로 중앙 정렬 */
   display: flex;
   justify-content: center;
+  width: 100%; /* 부모 컨테이너 전체 너비 */
+  max-width: 1200px; /* 추가 */
 }
-
+.bannerImg{
+  display: block;
+  width: 1200px;
+  max-width: 100%; /* 반응형 대응 */
+  margin: 0 auto; /* 가로 중앙 정렬 */
+}
 .bannerContainer img {
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
 }
 
 /* Section Styling */

@@ -8,6 +8,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import MainPage from "./pages/MainPage";
 import ChatBot from "./components/ChatBot";
+import ContactForm from "./pages/ContactForm";
 
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -35,6 +36,7 @@ const App: React.FC = () => {
           <Route path="/home" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/menu3" element={<ContactForm />} />
           <Route path="/chat-bot" element={<ChatBot />} /> 
           {/* TODO: 나중에 chatbot을 레이아웃에 fab(Floating Action Button)로 옮기기 */}
         </Routes>
