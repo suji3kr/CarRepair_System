@@ -1,0 +1,107 @@
+
+/* 회원가입 컨테이너 */
+.signupContainer {
+  width: 100%;
+  max-width: 500px;
+  margin: 80px auto 0;
+  padding: 30px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 제목 */
+.signupTitle {
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* 설명 */
+.signupDescription {
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* 입력 필드 그룹 */
+.signupFormGroup {
+  margin-bottom: 15px;
+}
+
+.signupFormGroup label {
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* 입력 필드 */
+.signupFormGroup input,
+.signupFormGroup select {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: border 0.3s ease-in-out;
+}
+
+.signupFormGroup input:focus,
+.signupFormGroup select:focus {
+  border-color: #007BFF;
+  outline: none;
+}
+
+/* 체크박스 */
+.signupTerms {
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.signupTerms input {
+  margin-right: 5px;
+}
+
+/* 버튼 스타일 */
+.signupFormActions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.signupButton {
+  width: 48%;
+  padding: 12px;
+  background: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.signupButton:hover {
+  background: #0056b3;
+}
+
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+  .signupContainer {
+    max-width: 90%;
+    padding: 20px;
+  }
+
+  .signupButton {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .signupFormActions {
+    flex-direction: column;
+    align-items: center;
+  }
+}
