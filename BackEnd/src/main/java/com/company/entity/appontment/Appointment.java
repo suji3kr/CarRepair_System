@@ -1,5 +1,8 @@
-package com.company.entity;
+package com.company.entity.appontment;
 
+import com.company.entity.AppointmentStatus;
+import com.company.entity.user.User;
+import com.company.entity.vehicle.Vehicle;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

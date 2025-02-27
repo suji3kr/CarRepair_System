@@ -1,5 +1,6 @@
-package com.company.entity;
+package com.company.entity.review;
 
+import com.company.entity.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;

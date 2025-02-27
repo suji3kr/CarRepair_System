@@ -196,5 +196,14 @@ CREATE TABLE payments (
   FOREIGN KEY (order_id) REFERENCES store_orders(id) ON DELETE CASCADE
 );
 
+-- AI 크롤링된 상품 데이터를 저장하는 테이블 추가
+CREATE TABLE ai_product (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    price INT NOT NULL,
+    image_url VARCHAR(500),
+    link VARCHAR(500),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
 SET FOREIGN_KEY_CHECKS=1;

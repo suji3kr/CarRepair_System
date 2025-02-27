@@ -1,5 +1,8 @@
-package com.company.entity;
+package com.company.entity.approval;
 
+import com.company.entity.user.Admin;
+import com.company.entity.order.StoreOrder;
+import com.company.entity.user.User;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

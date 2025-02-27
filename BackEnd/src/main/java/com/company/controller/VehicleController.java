@@ -1,6 +1,6 @@
 package com.company.controller;
 
-import com.company.entity.Vehicle;
+import com.company.entity.vehicle.Vehicle;
 import com.company.service.VehicleService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;

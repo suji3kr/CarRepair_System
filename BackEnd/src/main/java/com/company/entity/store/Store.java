@@ -1,5 +1,6 @@
-package com.company.entity;
+package com.company.entity.store;
 
+import com.company.entity.part.Part;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

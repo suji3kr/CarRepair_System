@@ -1,4 +1,4 @@
-package com.company.entity;
+package com.company.entity.ai;
 
 import jakarta.persistence.*;
 import lombok.*;

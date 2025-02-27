@@ -1,5 +1,6 @@
-package com.company.entity;
+package com.company.entity.user;
 
+import com.company.entity.role.Role;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

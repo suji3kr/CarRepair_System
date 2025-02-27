@@ -1,6 +1,6 @@
 package com.company.service;
 
-import com.company.entity.Review;
+import com.company.entity.review.Review;
 import com.company.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

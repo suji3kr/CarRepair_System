@@ -1,6 +1,6 @@
 package com.company.controller;
 
-import com.company.entity.MaintenanceRecord;
+import com.company.entity.maintenance.MaintenanceRecord;
 import com.company.service.MaintenanceRecordService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;

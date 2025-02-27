@@ -1,6 +1,6 @@
 package com.company.controller;
 
-import com.company.entity.Review;
+import com.company.entity.review.Review;
 import com.company.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

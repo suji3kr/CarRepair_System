@@ -1,0 +1,74 @@
+.chatbot {
+  width: 400px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  background: #f9f9f9;
+  position: fixed; /* 화면에 고정 */
+  bottom: 20px; /* 화면 하단에서 20px 띄움 */
+  right: 20px; /* 화면 우측에서 20px 띄움 */
+  z-index: 1000; /* 네비게이션 바보다 위에 배치 */
+  max-height: 500px; /* 최대 높이 설정 */
+  overflow-y: auto; /* 채팅 내용이 많아지면 스크롤 가능 */
+}
+
+.messages {
+  max-height: 300px;
+  overflow-y: auto;
+  padding-bottom: 20px; /* 입력창과 겹치지 않게 여백 추가 */
+}
+
+.message {
+  padding: 8px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.user {
+  background: #d1e7fd;
+  text-align: right;
+}
+
+.bot {
+  background: #e8e8e8;
+  text-align: left;
+}
+
+.searchButton {
+  display: block;
+  margin: 10px auto;
+  padding: 8px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.productList {
+  margin-top: 10px;
+  background: #fff;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.productItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.productItem img {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.input-area {
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  background: #fff;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+}

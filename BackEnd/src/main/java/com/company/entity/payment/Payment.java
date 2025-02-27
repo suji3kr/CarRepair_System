@@ -1,5 +1,8 @@
-package com.company.entity;
+package com.company.entity.payment;
 
+import com.company.entity.PaymentMethod;
+import com.company.entity.PaymentStatus;
+import com.company.entity.order.StoreOrder;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

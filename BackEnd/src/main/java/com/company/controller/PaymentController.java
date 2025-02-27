@@ -1,6 +1,6 @@
 package com.company.controller;
 
-import com.company.entity.Payment;
+import com.company.entity.payment.Payment;
 import com.company.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

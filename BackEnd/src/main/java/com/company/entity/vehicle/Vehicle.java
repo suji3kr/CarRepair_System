@@ -1,5 +1,7 @@
-package com.company.entity;
+package com.company.entity.vehicle;
 
+import com.company.entity.maintenance.MaintenanceRecord;
+import com.company.entity.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

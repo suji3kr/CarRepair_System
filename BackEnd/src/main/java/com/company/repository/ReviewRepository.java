@@ -1,6 +1,6 @@
 package com.company.repository;
 
-import com.company.entity.Review;
+import com.company.entity.review.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
