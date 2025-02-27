@@ -16,10 +16,10 @@ const Header: React.FC = () => {
         <div className={styles.menuWrapper}>
           <ul className={styles.menu}>
             <li><Link to="/menu1">회사소개</Link></li>
-            <li><Link to="/menu2">견적·상담</Link></li>
-            <li><Link to="/menu3">부품샵</Link></li>
-            <li><Link to="/menu4">이벤트</Link></li>
-            <li><Link to="/menu5">가까운 가게</Link></li>
+            <li><Link to="/contact">견적·상담</Link></li>
+            <li><Link to="/partshop">부품샵</Link></li>
+            <li><Link to="/event">이벤트</Link></li>
+            <li><Link to="/store">가까운 가게</Link></li>
           </ul>
 
           {/* 전체 화면을 덮는 드롭다운 박스 */}
