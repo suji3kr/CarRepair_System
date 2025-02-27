@@ -10,6 +10,7 @@ import MainPage from "./pages/MainPage";
 import ChatBot from "./components/ChatBot";
 import ContactForm from "./pages/ContactForm";
 import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
@@ -44,10 +45,10 @@ const LayoutWrapper: React.FC = () => {
         <Route path="/menu1" element={<MainPage />} />
         <Route path="/home" element={<Home />} />
         <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
         <Route path="/menu3" element={<ContactForm />} />
         <Route path="/chat-bot" element={<ChatBot />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
       </Routes>
     </Layout>
   );

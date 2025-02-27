@@ -1,81 +1,95 @@
-/* 전체 컨테이너 */
-.container {
+/* 컨테이너 */
+.contactContainer {
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  text-align: center;
+  max-width: 600px;
+  margin: 80px auto 0;
+  padding: 30px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* 배너 스타일 */
-.banner {
-  background: url("/images/thumbs.jpg") no-repeat center/cover;
-  padding: 100px;
-  text-align: center;
-  color: white;
-  height: 400px;
-  font-size: 24px;
-  font-weight: bold;
+/* 기존 배너 이미지 유지 */
+.contactBanner {
+  width: 100%;
+  height: 200px; /* 기존 높이 유지 */
+  background: url('/images/thumbs.jpg') center/cover no-repeat;
+  border-radius: 10px 10px 0 0;
 }
-
-
 
 /* 폼 스타일 */
 .contactForm {
-  background: #fff;
   padding: 20px;
-  border-radius: 8px;
-  width: 800px;
-  margin: auto;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+/* 제목 스타일 */
 .contactForm h2 {
+  text-align: center;
+  font-size: 24px;
+  color: #333;
   margin-bottom: 20px;
 }
 
-/* 입력 그룹 */
-.row {
-  display: flex;
-  gap: 10px;
+/* 입력 필드 그룹 */
+.contactInputGroup {
   margin-bottom: 15px;
 }
 
-.inputGroup {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-}
-
-.inputGroup label {
+.contactInputGroup label {
+  display: block;
+  font-size: 14px;
   font-weight: bold;
   margin-bottom: 5px;
 }
 
-.inputGroup input,
-.inputGroup textarea {
+/* 입력 필드 */
+.contactInputGroup input,
+.contactInputGroup textarea {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ddd;
+  font-size: 14px;
+  border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 16px;
+  transition: border 0.3s ease-in-out;
+}
+
+.contactInputGroup input:focus,
+.contactInputGroup textarea:focus {
+  border-color: #007BFF;
+  outline: none;
+}
+
+/* 텍스트 영역 */
+.contactInputGroup textarea {
+  height: 80px;
+  resize: none;
 }
 
 /* 버튼 스타일 */
-.submitButton {
+.contactSubmitButton {
   width: 100%;
   padding: 12px;
-  background-color: black;
+  background: #007BFF;
   color: white;
-  font-size: 16px;
   border: none;
-  cursor: pointer;
-  margin-top: 10px;
   border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
   transition: background 0.3s;
 }
 
-.submitButton:hover {
-  background-color: darkgray;
+.contactSubmitButton:hover {
+  background: #0056b3;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .contactContainer {
+    max-width: 90%;
+    padding: 20px;
+  }
+
+  .contactSubmitButton {
+    width: 100%;
+  }
 }
