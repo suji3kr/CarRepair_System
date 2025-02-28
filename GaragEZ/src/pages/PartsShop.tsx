@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // ✅ 네비게이션 추가
 import styles from "../styles/PartsShop.module.css";
 import Layout from "../components/Layout";
 import { fetchParts } from "../services/partService"; // API 호출 함수 가져오기
@@ -15,6 +16,7 @@ type Part = {
 const categories = ["CPU", "GPU", "RAM", "Storage"]; // Spring Boot에서 제공하는 카테고리
 
 const PartsShop: React.FC = () => {
+  const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState<string>("CPU");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -36,7 +38,7 @@ const PartsShop: React.FC = () => {
 
   // 선택한 카테고리의 부품 필터링
   const filteredParts = parts.filter((part) => part.category === selectedCategory);
-  const totalPages = Math.ceil(filteredParts.length / 25);
+  const totalPages = Math.max(1, Math.ceil(filteredParts.length / 25)); // 최소 1페이지 보장
   const displayedItems = filteredParts.slice((currentPage - 1) * 25, currentPage * 25);
 
   return (
@@ -64,23 +66,33 @@ const PartsShop: React.FC = () => {
             {isLoading
               ? Array.from({ length: 10 }).map((_, index) => (
                   <div key={index} className={styles.itemCard}>
-                    <Skeleton variant="rectangular" width={70} height={70} />
+                    <Skeleton variant="rectangular" width={120} height={120} />
                     <div className={styles.itemInfo}>
                       <Skeleton width="80%" height={20} />
                       <Skeleton width="60%" height={20} />
                     </div>
                   </div>
                 ))
-              : displayedItems.map((part) => (
-                  <div key={part.id} className={styles.itemCard}>
-                    <div className={styles.itemInfo}>
-                      <p className={styles.itemName}>{part.name}</p>
-                      <p className={styles.itemCategory}>{part.category}</p>
-                      <p className={styles.itemPrice}>${part.price}</p>
-                      <p className={styles.itemStock}>재고: {part.stock}</p>
+              : displayedItems.length > 0 ? (
+                  displayedItems.map((part) => (
+                    <div
+                      key={part.id}
+                      className={styles.itemCard}
+                      onClick={() => navigate(`/part/${part.id}`)} // ✅ 클릭 시 상세 페이지 이동
+                    >
+                      <img
+                        src={`https://picsum.photos/120/120?random=${part.id}`} // ✅ 랜덤 이미지 추가
+                        alt={part.name}
+                      />
+                      <div className={styles.itemInfo}>
+                        <p className={styles.itemName}>{part.name}</p>
+                        <p className={styles.itemPrice}>${part.price.toFixed(2)}</p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))
+                ) : (
+                  <p>해당 카테고리에 상품이 없습니다.</p>
+                )}
           </div>
 
           {/* 페이지네이션 */}

@@ -54,7 +54,16 @@
   border-radius: 8px;
   width: 250px;
   height: 250px;
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer; /* ✅ 커서 변경 */
 }
+
+/* 마우스를 올렸을 때 약간 확대 효과 추가 */
+.itemCard:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
 
 .itemCard img {
   margin-top: 20px;

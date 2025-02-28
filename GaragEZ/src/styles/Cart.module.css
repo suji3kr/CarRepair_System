@@ -1,0 +1,131 @@
+.cartContainer {
+  text-align: center;
+  padding: 20px;
+  max-width: 600px;
+  margin: 100px auto;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* ✅ 장바구니 리스트가 많아지면 스크롤 가능하도록 설정 */
+.cartContent {
+  flex-grow: 1; /* ✅ 남은 공간을 채우도록 설정 */
+  overflow-y: auto;
+  padding-bottom: 80px; /* ✅ 주문 버튼과 겹치지 않도록 패딩 추가 */
+}
+
+.cartTitle {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.divider {
+  margin: 15px 0;
+  border: none;
+  border-top: 1px solid #ddd;
+}
+
+.emptyCart {
+  color: gray;
+  font-size: 18px;
+}
+
+/* ✅ 전체 선택 */
+.selectAllContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.cartList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cartItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.cartItem input {
+  margin-right: 10px;
+}
+
+/* ✅ 수량 조절 */
+.quantityControls {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.quantityControls button {
+  background-color: #ddd;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.quantityControls button:hover {
+  background-color: #bbb;
+}
+
+/* ✅ 삭제 버튼 */
+.deleteButton {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.deleteButton:hover {
+  background-color: darkred;
+}
+
+/* ✅ 주문 버튼 스타일 (하단 고정) */
+.orderButtons {
+  position: absolute; /* ✅ 컨테이너 내에서 하단 고정 */
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  padding: 15px 0;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  border-top: 1px solid #ddd;
+}
+
+.selectedOrderButton,
+.allOrderButton {
+  padding: 12px 24px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.selectedOrderButton {
+  background-color: gray;
+  color: white;
+}
+
+.allOrderButton {
+  background-color: black;
+  color: white;
+}
+
+.selectedOrderButton:disabled,
+.allOrderButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
