@@ -1,55 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "../styles/PartsShop.module.css";
 import Layout from "../components/Layout";
+import { fetchParts } from "../services/partService"; // API 호출 함수 가져오기
+import { Skeleton } from "@mui/material";
 
-const categories = [
-  { title: "CPU", subcategories: ["Intel", "AMD"] },
-  { title: "GPU", subcategories: ["NVIDIA", "AMD"] },
-  { title: "RAM", subcategories: ["DDR4", "DDR5"] },
-  { title: "Storage", subcategories: ["SSD", "HDD"] },
-];
-
-const getRandomImage = () => {
-  const randomId = Math.floor(Math.random() * 1000);
-  return `https://picsum.photos/70?random=${randomId}`;
+type Part = {
+  id: number;
+  name: string;
+  category: string;
+  price: number;
+  stock: number;
 };
 
-const itemsPerPage = 25;
-
-const itemsData = {
-  CPU: Array.from({ length: 100 }, (_, i) => ({
-    id: i + 1,
-    name: `CPU Item ${i + 1}`,
-    price: `$${(Math.random() * 1000).toFixed(2)}`,
-    imageUrl: getRandomImage(),
-  })),
-  GPU: Array.from({ length: 100 }, (_, i) => ({
-    id: i + 1,
-    name: `GPU Item ${i + 1}`,
-    price: `$${(Math.random() * 1000).toFixed(2)}`,
-    imageUrl: getRandomImage(),
-  })),
-  RAM: Array.from({ length: 100 }, (_, i) => ({
-    id: i + 1,
-    name: `RAM Item ${i + 1}`,
-    price: `$${(Math.random() * 500).toFixed(2)}`,
-    imageUrl: getRandomImage(),
-  })),
-  Storage: Array.from({ length: 100 }, (_, i) => ({
-    id: i + 1,
-    name: `Storage Item ${i + 1}`,
-    price: `$${(Math.random() * 500).toFixed(2)}`,
-    imageUrl: getRandomImage(),
-  })),
-};
+const categories = ["CPU", "GPU", "RAM", "Storage"]; // Spring Boot에서 제공하는 카테고리
 
 const PartsShop: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState(categories[0]?.title || "CPU");
-  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedCategory, setSelectedCategory] = useState<string>("CPU");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [parts, setParts] = useState<Part[]>([]);
 
-  const totalPages = Math.ceil((itemsData[selectedCategory]?.length || 0) / itemsPerPage);
-  const displayedItems =
-    itemsData[selectedCategory]?.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage) || [];
+  // 🚀 API에서 부품 데이터 가져오기
+  useEffect(() => {
+    setIsLoading(true);
+    fetchParts()
+      .then((data) => {
+        setParts(data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching parts:", error);
+        setIsLoading(false);
+      });
+  }, []);
+
+  // 선택한 카테고리의 부품 필터링
+  const filteredParts = parts.filter((part) => part.category === selectedCategory);
+  const totalPages = Math.ceil(filteredParts.length / 25);
+  const displayedItems = filteredParts.slice((currentPage - 1) * 25, currentPage * 25);
 
   return (
     <Layout>
@@ -60,17 +48,12 @@ const PartsShop: React.FC = () => {
             <div key={index} className={styles.category}>
               <h3
                 onClick={() => {
-                  setSelectedCategory(category.title);
+                  setSelectedCategory(category);
                   setCurrentPage(1);
                 }}
               >
-                {category.title}
+                {category}
               </h3>
-              <ul>
-                {category.subcategories.map((sub, subIndex) => (
-                  <li key={subIndex}>{sub}</li>
-                ))}
-              </ul>
             </div>
           ))}
         </div>
@@ -78,15 +61,26 @@ const PartsShop: React.FC = () => {
         {/* 오른쪽 아이템 목록 및 페이지네이션 */}
         <div className={styles.itemsContainer}>
           <div className={styles.itemsGrid}>
-            {displayedItems.map((item) => (
-              <div key={item.id} className={styles.itemCard}>
-                <img src={item.imageUrl} alt={item.name} />
-                <div className={styles.itemInfo}>
-                  <p className={styles.itemName}>{item.name}</p>
-                  <p className={styles.itemPrice}>{item.price}</p>
-                </div>
-              </div>
-            ))}
+            {isLoading
+              ? Array.from({ length: 10 }).map((_, index) => (
+                  <div key={index} className={styles.itemCard}>
+                    <Skeleton variant="rectangular" width={70} height={70} />
+                    <div className={styles.itemInfo}>
+                      <Skeleton width="80%" height={20} />
+                      <Skeleton width="60%" height={20} />
+                    </div>
+                  </div>
+                ))
+              : displayedItems.map((part) => (
+                  <div key={part.id} className={styles.itemCard}>
+                    <div className={styles.itemInfo}>
+                      <p className={styles.itemName}>{part.name}</p>
+                      <p className={styles.itemCategory}>{part.category}</p>
+                      <p className={styles.itemPrice}>${part.price}</p>
+                      <p className={styles.itemStock}>재고: {part.stock}</p>
+                    </div>
+                  </div>
+                ))}
           </div>
 
           {/* 페이지네이션 */}
@@ -97,10 +91,7 @@ const PartsShop: React.FC = () => {
             <span>
               {currentPage} / {totalPages}
             </span>
-            <button
-              disabled={currentPage === totalPages}
-              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-            >
+            <button disabled={currentPage === totalPages} onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}>
               다음
             </button>
           </div>
