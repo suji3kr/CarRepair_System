@@ -13,6 +13,9 @@ import SignUp from "./pages/SignUp";
 import PartsShop from "./pages/PartsShop";
 import Event from "./pages/Event";
 import Map from "./pages/Map";
+import PartDetail from "./pages/PartDetail";
+import Cart from "./pages/Cart";
+
 
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -55,6 +58,9 @@ const LayoutWrapper: React.FC = () => {
         <Route path="/event" element={<Event />} />
         <Route path="/partshop" element={<PartsShop />} />
         <Route path="/Map" element={<Map />} />
+        <Route path="/part/:id" element={<PartDetail />} /> {/* 상세 페이지 추가 */}
+        <Route path="/cart" element={<Cart />} />
+
       </Routes>
     </Layout>
   );
