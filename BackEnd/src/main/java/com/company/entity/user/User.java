@@ -2,10 +2,11 @@ package com.company.entity.user;
 
 import com.company.entity.role.Role;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -23,7 +24,7 @@ public class User {
     @Column(unique = true)
     private String email;
 
-    private String password;
+    private String password; // Google 로그인 사용자는 null 가능
 
     private String phone;
 

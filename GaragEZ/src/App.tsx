@@ -9,13 +9,9 @@ import MainPage from "./pages/MainPage";
 import ChatBot from "./pages/ChatBot";
 import ContactForm from "./pages/ContactForm";
 import Login from "./pages/Login";
-<<<<<<< Updated upstream
 import SignUp from "./pages/SignUp";
 import PartsShop from "./pages/PartsShop";
 
-=======
-import RPAComponent from "./components/RpaComponent";
->>>>>>> Stashed changes
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
@@ -35,18 +31,8 @@ const App: React.FC = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Landing />} />
-<<<<<<< Updated upstream
           <Route path="*" element={<LayoutWrapper />} />
-=======
-          <Route path="/menu1" element={<MainPage />} />  
-          <Route path="/home" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/menu3" element={<ContactForm />} />
-          <Route path="/chat-bot" element={<ChatBot />} /> 
-          <Route path="/login" element={<Login />} /> 
-          <Route path="/rpa" element={<RPAComponent />}/>
->>>>>>> Stashed changes
-        </Routes>
+          </Routes>
       </BrowserRouter>
     </GoogleOAuthProvider>
   );
