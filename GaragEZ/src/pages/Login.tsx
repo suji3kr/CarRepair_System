@@ -121,7 +121,7 @@ const Login = () => {
                                     </li>
 
                                     <p className={styles.signup}>
-                                        아직 회원이 아니신가요? <a href="/">회원가입하러가기</a>
+                                        아직 회원이 아니신가요? <a href="/signup">회원가입하러가기</a>
                                     </p>
                                 </ul>
                             </fieldset>
