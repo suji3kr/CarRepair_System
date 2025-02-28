@@ -1,5 +1,6 @@
 package com.company.entity.user;
 
+import com.company.entity.car.CarInfo;
 import com.company.entity.role.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -19,14 +20,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String userId; // 사용자 아이디 (email, username 등)
     private String name;
-
-    @Column(unique = true)
     private String email;
-
-    private String password; // Google 로그인 사용자는 null 가능
-
+    private String password;
     private String phone;
+    private String telecom; // 통신사
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -34,4 +33,9 @@ public class User {
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    // 🚗 차량 정보
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "car_info_id")
+    private CarInfo carInfo;
 }
