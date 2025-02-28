@@ -19,7 +19,7 @@ const Header: React.FC = () => {
             <li><Link to="/contact">견적·상담</Link></li>
             <li><Link to="/partshop">부품샵</Link></li>
             <li><Link to="/event">이벤트</Link></li>
-            <li><Link to="/store">가까운 가게</Link></li>
+            <li><Link to="/map">가까운 가게</Link></li>
           </ul>
 
           {/* 전체 화면을 덮는 드롭다운 박스 */}
@@ -67,12 +67,15 @@ const Header: React.FC = () => {
         </div>
 
         {/* 로그인 버튼 */}
+        <div className={styles.authButtons}>
+
         <Link to="/login" className={styles.loginButton}>
           <FaUser className={styles.loginIcon} /> 로그인
         </Link>
         <Link to="/signup" className={styles.loginButton}>
           <FaUser className={styles.loginIcon} /> 회원가입
         </Link>
+        </div>
       </nav>
     </header>
   );
