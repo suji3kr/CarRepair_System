@@ -11,6 +11,8 @@ import ContactForm from "./pages/ContactForm";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import PartsShop from "./pages/PartsShop";
+import Event from "./pages/Event";
+import Map from "./pages/Map";
 
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -50,7 +52,9 @@ const LayoutWrapper: React.FC = () => {
         <Route path="/chat-bot" element={<ChatBot />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/event" element={<Event />} />
         <Route path="/partshop" element={<PartsShop />} />
+        <Route path="/Map" element={<Map />} />
       </Routes>
     </Layout>
   );

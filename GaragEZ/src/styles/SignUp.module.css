@@ -105,3 +105,24 @@
     align-items: center;
   }
 }
+.termsContainer {
+  max-height: 100px; /* 스크롤이 나타날 수 있도록 제한된 높이 설정 */
+  overflow-y: auto; /* 내용이 넘칠 경우 세로 스크롤 생성 */
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+}
+
+.termsLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: bold;
+}
+
+.termsLabel input:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+

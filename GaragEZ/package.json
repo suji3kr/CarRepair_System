@@ -14,6 +14,7 @@
     "@emotion/styled": "^11.14.0",
     "@fullpage/react-fullpage": "^0.1.48",
     "@mui/icons-material": "^6.4.5",
+    "@react-google-maps/api": "^2.20.6",
     "@mui/material": "^6.4.6",
     "@react-oauth/google": "^0.12.1",
     "axios": "^1.7.9",

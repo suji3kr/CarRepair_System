@@ -148,3 +148,9 @@
   margin-right: 8px;
   font-size: 20px;
 }
+
+.authButtons {
+  display: flex;
+  gap: 15px;
+  margin-left: 0;
+}
