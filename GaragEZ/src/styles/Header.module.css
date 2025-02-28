@@ -57,7 +57,7 @@
   top: 100%; /* 네비게이션 바로 아래 위치 */
   left: 0;
   width: 100%;
-  height: 500px;
+  height: 200px;
   background: rgba(0, 0, 0, 0.7); /* 어두운 반투명 배경 */
   backdrop-filter: blur(15px);
   display: flex;
@@ -72,7 +72,7 @@
 .dropdownBox {
   width: 80%;
   max-width: 1000px;
-  margin-top: 50px;
+  margin-top: 25px;
 }
 
 /* 메뉴 전체를 호버하면 드롭다운 표시 */
@@ -126,7 +126,7 @@
 }
 
 /* 로그인 버튼 스타일 */
-.loginButton {
+.loginButton, .signupButton, .cartButton{
   display: flex;
   align-items: center;
   background: none;
@@ -139,14 +139,22 @@
   transition: color 0.3s ease;
 }
 
-.loginButton:hover {
-  color: #ddd;
-}
-
 /* 로그인 아이콘 스타일 */
 .loginIcon {
+  padding-top: 3px;
   margin-right: 8px;
-  font-size: 20px;
+  font-size: 25px;
+}
+
+.signupIcon {
+  margin-right: 3px;
+  font-size: 25px;
+  padding-top: 3px;
+}
+
+.cartIcon {
+  font-size: 23px;
+  padding-top: 4px;
 }
 
 .authButtons {

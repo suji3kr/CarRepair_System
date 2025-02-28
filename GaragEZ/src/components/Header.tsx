@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaUser } from "react-icons/fa"; // 로그인 아이콘
+import { FaShoppingCart, FaSignInAlt, FaUser, FaUserPlus } from "react-icons/fa"; // 로그인 아이콘
 import styles from "../styles/Header.module.css";
 
 const Header: React.FC = () => {
@@ -69,11 +69,14 @@ const Header: React.FC = () => {
         {/* 로그인 버튼 */}
         <div className={styles.authButtons}>
 
-        <Link to="/login" className={styles.loginButton}>
-          <FaUser className={styles.loginIcon} /> 로그인
+        <Link to="/login" className={styles.loginButton} title="로그인">
+          <FaSignInAlt className={styles.loginIcon} />
         </Link>
-        <Link to="/signup" className={styles.loginButton}>
-          <FaUser className={styles.loginIcon} /> 회원가입
+        <Link to="/signup" className={styles.signupButton} title="회원가입">
+          <FaUserPlus className={styles.signupIcon} />
+        </Link>
+        <Link to="/cart" className={styles.cartButton} title="장바구니">
+          <FaShoppingCart className={styles.cartIcon} /> 
         </Link>
         </div>
       </nav>
