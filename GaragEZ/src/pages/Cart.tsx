@@ -89,6 +89,8 @@ const Cart: React.FC = () => {
     const totalAmount = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
     const orderName = items.map((item) => item.name).join(", ");
 
+    
+
     setPaymentStatus({ status: "PENDING", message: "" });
 
     const paymentId = randomId();
@@ -125,6 +127,9 @@ const Cart: React.FC = () => {
       alert(`결제 검증 실패: ${await completeResponse.text()}`);
     }
   };
+    // ✅ 총 가격 계산 함수
+    const calculateTotal = (items: CartItem[]) =>
+      items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   return (
     <Layout>
@@ -166,9 +171,19 @@ const Cart: React.FC = () => {
                   </div>
                 ))}
               </div>
+              {/* ✅ 총 가격 표시 */}
+              <br></br>
+              <br></br>
+         <div className={styles.priceSummary}>
+          <h3>총 결제 금액</h3>
+          <p>선택한 상품 합계: <strong>{calculateTotal(selectedItems).toLocaleString()}원</strong></p>
+          <p>전체 상품 합계: <strong>{calculateTotal(cartItems).toLocaleString()}원</strong></p>
+        </div>
             </>
           )}
+          
         </div>
+         
 
         {/* ✅ 주문 버튼 */}
         <div className={styles.orderButtons}>
