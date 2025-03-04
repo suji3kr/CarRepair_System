@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import { GoogleMap, Marker, InfoWindow, useJsApiLoader } from "@react-google-maps/api";
 import styles from "../styles/Map.module.css"; // CSS 파일 import
 import Layout from "../components/Layout";
 
@@ -19,6 +19,7 @@ const Map: React.FC = () => {
   });
 
   const [center, setCenter] = useState(defaultCenter);
+  const [selectedMarker, setSelectedMarker] = useState<{ lat: number; lng: number; name: string; address: string } | null>(null);
 
   // 사용자의 현재 위치 가져오기
   useEffect(() => {
@@ -35,6 +36,27 @@ const Map: React.FC = () => {
       );
     }
   }, []);
+
+  // 마커 클릭 시 주소 변환 함수
+  const handleMarkerClick = (marker: { lat: number; lng: number; name: string }) => {
+    const geocoder = new window.google.maps.Geocoder();
+    const latlng = { lat: marker.lat, lng: marker.lng };
+
+    geocoder.geocode({ location: latlng }, (results, status) => {
+      if (status === "OK" && results[0]) {
+        setSelectedMarker({
+          ...marker,
+          address: results[0].formatted_address, // 변환된 주소 저장
+        });
+      } else {
+        console.error("주소를 가져올 수 없습니다.", status);
+        setSelectedMarker({
+          ...marker,
+          address: "주소 정보를 찾을 수 없습니다.",
+        });
+      }
+    });
+  };
 
   if (!isLoaded) return <div>Loading Map...</div>;
 
@@ -54,8 +76,25 @@ const Map: React.FC = () => {
           zoom={12} // 사용자 위치 중심이므로 확대 조정
         >
           {predefinedMarkers.map((marker) => (
-            <Marker key={marker.id} position={{ lat: marker.lat, lng: marker.lng }} label={marker.name} />
+            <Marker
+              key={marker.id}
+              position={{ lat: marker.lat, lng: marker.lng }}
+              label={marker.name}
+              onClick={() => handleMarkerClick(marker)} // 마커 클릭 시 주소 변환
+            />
           ))}
+
+          {selectedMarker && (
+            <InfoWindow
+              position={{ lat: selectedMarker.lat, lng: selectedMarker.lng }}
+              onCloseClick={() => setSelectedMarker(null)}
+            >
+              <div style={{ padding: "10px", fontSize: "14px" }}>
+                <h3 style={{ margin: "0 0 5px 0" }}>{selectedMarker.name}</h3>
+                <p>{selectedMarker.address}</p>
+              </div>
+            </InfoWindow>
+          )}
         </GoogleMap>
       </div>
     </Layout>

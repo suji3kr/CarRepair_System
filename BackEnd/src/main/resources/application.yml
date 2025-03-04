@@ -49,3 +49,7 @@ openapi:
   chatbot:
     url: "https://api.example.com/chatbot"
     api-key: "your-api-key"
+
+portone:
+  api-key: "channel-key-9b50a96f-1e67-41c2-81b3-1600e73d2a31"
+  api-secret: "test_sk_d26DlbXAaV0xQbpa7y1VqY50Q9RB"
