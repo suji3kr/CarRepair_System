@@ -31,19 +31,16 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   );
 };
 
+
+
 const App: React.FC = () => {
   return (
     <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
       <AuthProvider>
         <BrowserRouter>
-          <Header />
           <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="*" element={<LayoutWrapper />} />
+            <Route path="/" element={<Landing />} /> {/* ✅ Landing 페이지 (Header 없음) */}
+            <Route path="*" element={<LayoutWrapper />} /> {/* ✅ 다른 모든 페이지는 Layout 적용 */}
           </Routes>
         </BrowserRouter>
       </AuthProvider>
