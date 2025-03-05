@@ -20,6 +20,7 @@ spring:
     username: caruser
     password: 12345
   jpa:
+    open-in-view: false
     properties:
       hibernate:
         format_sql: true
