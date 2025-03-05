@@ -35,7 +35,6 @@ public class UserService {
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setPhone(request.getPhone());
-        user.setTelecom(request.getTelecom());
         user.setRole(Role.valueOf("ROLE_USER")); // 기본값 ROLE_USER 설정 (필요시 관리자 처리)
         user.setCarInfo(carInfo); // 차량 정보 연결
 

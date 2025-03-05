@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google"; // Google OAuth 추가
+import { AuthProvider } from "./components/AuthContext"; // AuthContext 불러오기
 import Header from "./components/Header";
 import Landing from "./pages/Landing";
 import Home from "./pages/Home";
@@ -33,12 +34,19 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 const App: React.FC = () => {
   return (
     <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="*" element={<LayoutWrapper />} />
+      <AuthProvider>
+        <BrowserRouter>
+          <Header />
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="*" element={<LayoutWrapper />} />
           </Routes>
-      </BrowserRouter>
+        </BrowserRouter>
+      </AuthProvider>
     </GoogleOAuthProvider>
   );
 };
