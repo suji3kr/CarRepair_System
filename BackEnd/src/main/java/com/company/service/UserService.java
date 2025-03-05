@@ -18,7 +18,7 @@ public class UserService {
     private final CarInfoRepository carInfoRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public static User registerUser(UserSignupRequest request) {
+    public User registerUser(UserSignupRequest request) {
         // 🚗 차량 정보 생성
         CarInfo carInfo = new CarInfo();
         carInfo.setCarModel(request.getCarModel());
@@ -26,7 +26,7 @@ public class UserService {
         carInfo.setCoOwner(request.isCoOwner());
         carInfo.setCoOwnerName(request.getCoOwnerName());
         carInfo.setCoOwnerPhone(request.getCoOwnerPhone());
-        carInfoRepository.save(carInfo); // 차량 정보 저장
+        CarInfoRepository.save(carInfo); // 차량 정보 저장
 
         // 👤 사용자 정보 저장
         User user = new User();
