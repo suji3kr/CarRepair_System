@@ -48,7 +48,7 @@ const LayoutWrapper: React.FC = () => {
   return (
     <Layout>
       <Routes>
-        <Route path="/menu1" element={<MainPage />} />
+        <Route path="/main" element={<MainPage />} />
         <Route path="/home" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<ContactForm />} />
