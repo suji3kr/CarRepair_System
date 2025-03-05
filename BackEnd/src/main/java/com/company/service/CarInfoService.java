@@ -1,6 +1,7 @@
 package com.company.service;
 
 import com.company.entity.car.CarInfo;
+import com.company.entity.vehicle.Vehicle;
 import com.company.repository.CarInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,12 +23,12 @@ public class CarInfoService {
         carInfo.setCoOwnerPhone(coOwnerPhone);
 
         // 차량 정보 저장
-        return carInfoRepository.save(carInfo);
+        return CarInfoRepository.save(carInfo).getCarInfo();
     }
 
     // 차량 정보를 ID로 조회하는 메소드
     public CarInfo getCarInfoById(Long carInfoId) {
-        return carInfoRepository.findById(carInfoId)
+        return (CarInfo) CarInfoRepository.findbyId(carInfoId)
                 .orElseThrow(() -> new RuntimeException("차량 정보를 찾을 수 없습니다. ID: " + carInfoId));
     }
 
@@ -44,7 +45,7 @@ public class CarInfoService {
         carInfo.setCoOwnerPhone(coOwnerPhone);
 
         // 수정된 차량 정보 저장
-        return carInfoRepository.save(carInfo);
+        return CarInfoRepository.save(carInfo).getCarInfo();
     }
 
     // 차량 정보 삭제 메소드

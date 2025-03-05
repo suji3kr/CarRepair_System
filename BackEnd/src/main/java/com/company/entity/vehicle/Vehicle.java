@@ -13,6 +13,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Inheritance
 public class Vehicle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

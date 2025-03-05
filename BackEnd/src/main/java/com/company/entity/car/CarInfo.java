@@ -1,16 +1,18 @@
 package com.company.entity.car;
 
+import com.company.entity.vehicle.Vehicle;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "car_info")  // 테이블 이름 확인
 @Data
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
-public class CarInfo {
+public class CarInfo extends Vehicle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
