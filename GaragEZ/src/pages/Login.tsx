@@ -15,7 +15,7 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch("/api/auth/login", {
+            const response = await fetch("/api/users/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -45,6 +45,7 @@ const Login = () => {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ tokenId: response.credential }), // ✅ response.credential 사용
+                credentials: "include",  // ✅ CORS 요청에서 쿠키 포함
             });
 
             if (!res.ok) throw new Error("Google 로그인 실패");
