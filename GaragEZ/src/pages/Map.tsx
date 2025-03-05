@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { GoogleMap, Marker, InfoWindow, useJsApiLoader } from "@react-google-maps/api";
-import styles from "../styles/Map.module.css"; // CSS 파일 import
+import styles from "../styles/Map.module.css";
 import Layout from "../components/Layout";
 
 const defaultCenter = { lat: 37.5665, lng: 126.978 }; // 기본값: 서울
@@ -19,6 +19,7 @@ const Map: React.FC = () => {
   });
 
   const [center, setCenter] = useState(defaultCenter);
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [selectedMarker, setSelectedMarker] = useState<{ lat: number; lng: number; name: string; address: string } | null>(null);
 
   // 사용자의 현재 위치 가져오기
@@ -26,13 +27,19 @@ const Map: React.FC = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setCenter({
+          const userPos = {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
-          });
+          };
+          setCenter(userPos);
+          setUserLocation(userPos);
         },
-        (error) => console.error("위치 가져오기 오류:", error),
-        { enableHighAccuracy: true } // 더 정확한 위치 사용
+        (error) => {
+          console.error("위치 가져오기 오류:", error);
+          // 위치 권한이 거부되거나 오류 발생 시 기본 위치 사용
+          setUserLocation(null);
+        },
+        { enableHighAccuracy: true }
       );
     }
   }, []);
@@ -46,7 +53,7 @@ const Map: React.FC = () => {
       if (status === "OK" && results[0]) {
         setSelectedMarker({
           ...marker,
-          address: results[0].formatted_address, // 변환된 주소 저장
+          address: results[0].formatted_address,
         });
       } else {
         console.error("주소를 가져올 수 없습니다.", status);
@@ -73,17 +80,37 @@ const Map: React.FC = () => {
             boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
           }}
           center={center}
-          zoom={12} // 사용자 위치 중심이므로 확대 조정
+          zoom={12}
         >
+           {/* ✅ 사용자 위치 마커 (라벨 추가) */}
+           {userLocation && (
+            <Marker
+              position={userLocation}
+              label={{
+                text: "내 위치", // ✅ 마커에 표시할 텍스트
+                color: "black",
+                fontSize: "16px",
+                fontWeight: "bold",
+              }}
+              icon={{
+                url: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+                scaledSize: new window.google.maps.Size(40, 40),
+              }}
+              title="내 위치"
+            />
+          )}
+
+          {/* 사전 정의된 마커들 */}
           {predefinedMarkers.map((marker) => (
             <Marker
               key={marker.id}
               position={{ lat: marker.lat, lng: marker.lng }}
               label={marker.name}
-              onClick={() => handleMarkerClick(marker)} // 마커 클릭 시 주소 변환
+              onClick={() => handleMarkerClick(marker)}
             />
           ))}
 
+          {/* 선택된 마커의 정보 창 */}
           {selectedMarker && (
             <InfoWindow
               position={{ lat: selectedMarker.lat, lng: selectedMarker.lng }}

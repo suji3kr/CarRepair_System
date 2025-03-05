@@ -86,7 +86,7 @@ const PartsShop: React.FC = () => {
                       />
                       <div className={styles.itemInfo}>
                         <p className={styles.itemName}>{part.name}</p>
-                        <p className={styles.itemPrice}>${part.price.toFixed(2)}</p>
+                        <p className={styles.itemPrice}>{part.price}원</p>
                       </div>
                     </div>
                   ))
