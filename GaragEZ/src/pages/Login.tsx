@@ -15,7 +15,7 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch("/api/users/login", {
+            const response = await fetch("http://localhost:8094/api/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -39,7 +39,7 @@ const Login = () => {
     // Google 로그인 요청
     const handleGoogleSuccess = async (response: GoogleCredentialResponse) => { 
         try {
-            const res = await fetch("/api/auth/google-login", {
+            const res = await fetch("http://localhost:8094/api/auth/google-login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
