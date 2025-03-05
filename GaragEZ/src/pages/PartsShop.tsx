@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // ✅ 네비게이션 추가
+import { useNavigate } from "react-router-dom";
 import styles from "../styles/PartsShop.module.css";
 import Layout from "../components/Layout";
-import { fetchParts } from "../services/partService"; // API 호출 함수 가져오기
+import { fetchParts } from "../services/partService";
 import { Skeleton } from "@mui/material";
 
 type Part = {
@@ -13,16 +13,15 @@ type Part = {
   stock: number;
 };
 
-const categories = ["CPU", "GPU", "RAM", "Storage"]; // Spring Boot에서 제공하는 카테고리
+const categories = ["엔진오일", "타이어", "와이퍼", "ETC"];
 
 const PartsShop: React.FC = () => {
   const navigate = useNavigate();
-  const [selectedCategory, setSelectedCategory] = useState<string>("CPU");
+  const [selectedCategory, setSelectedCategory] = useState<string>("엔진오일");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [parts, setParts] = useState<Part[]>([]);
 
-  // 🚀 API에서 부품 데이터 가져오기
   useEffect(() => {
     setIsLoading(true);
     fetchParts()
@@ -36,31 +35,44 @@ const PartsShop: React.FC = () => {
       });
   }, []);
 
-  // 선택한 카테고리의 부품 필터링
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+    setTimeout(() => {
+      const mainContainer = document.querySelector("main");
+      if (mainContainer) {
+        mainContainer.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }, 100);
+  };
+  
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+    setCurrentPage(1); // 페이지 초기화
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 100);
+  };
+
+
   const filteredParts = parts.filter((part) => part.category === selectedCategory);
-  const totalPages = Math.max(1, Math.ceil(filteredParts.length / 25)); // 최소 1페이지 보장
+  const totalPages = Math.max(1, Math.ceil(filteredParts.length / 25));
   const displayedItems = filteredParts.slice((currentPage - 1) * 25, currentPage * 25);
 
   return (
     <Layout>
       <div className={styles.container}>
-        {/* 왼쪽 사이드바 */}
         <div className={styles.sidebar}>
-          {categories.map((category, index) => (
-            <div key={index} className={styles.category}>
-              <h3
-                onClick={() => {
-                  setSelectedCategory(category);
-                  setCurrentPage(1);
-                }}
-              >
-                {category}
-              </h3>
-            </div>
-          ))}
-        </div>
+  {categories.map((category, index) => (
+    <div key={index} className={styles.category}>
+      <h3
+        onClick={() => handleCategoryChange(category)}
+      >
+        {category}
+      </h3>
+    </div>
+  ))}
+</div>
 
-        {/* 오른쪽 아이템 목록 및 페이지네이션 */}
         <div className={styles.itemsContainer}>
           <div className={styles.itemsGrid}>
             {isLoading
@@ -78,15 +90,19 @@ const PartsShop: React.FC = () => {
                     <div
                       key={part.id}
                       className={styles.itemCard}
-                      onClick={() => navigate(`/part/${part.id}`)} // ✅ 클릭 시 상세 페이지 이동
+                      onClick={() => navigate(`/part/${part.id}`)}
                     >
                       <img
-                        src={`https://picsum.photos/120/120?random=${part.id}`} // ✅ 랜덤 이미지 추가
+                        src={`https://picsum.photos/120/120?random=${part.id}`}
                         alt={part.name}
                       />
                       <div className={styles.itemInfo}>
-                        <p className={styles.itemName}>{part.name}</p>
-                        <p className={styles.itemPrice}>${part.price.toFixed(2)}</p>
+                        <p className={styles.itemName} title={part.name}>
+                          {part.name.length > 14 ? `${part.name.slice(0, 14)}...` : part.name}
+                        </p>
+                        <p className={styles.itemPrice}>
+                          {part.price.toLocaleString("ko-KR")}원
+                        </p>
                       </div>
                     </div>
                   ))
@@ -95,15 +111,16 @@ const PartsShop: React.FC = () => {
                 )}
           </div>
 
+
           {/* 페이지네이션 */}
           <div className={styles.pagination}>
-            <button disabled={currentPage === 1} onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}>
+            <button disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>
               이전
             </button>
             <span>
               {currentPage} / {totalPages}
             </span>
-            <button disabled={currentPage === totalPages} onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}>
+            <button disabled={currentPage === totalPages} onClick={() => handlePageChange(currentPage + 1)}>
               다음
             </button>
           </div>
