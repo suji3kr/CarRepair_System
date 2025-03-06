@@ -4,14 +4,9 @@ import styles from "../styles/PartsShop.module.css";
 import Layout from "../components/Layout";
 import { fetchParts } from "../services/partService"; // API 호출 함수 가져오기
 import { Skeleton } from "@mui/material";
+import { Part } from "../types/PartsShop";
 
-type Part = {
-  id: number;
-  name: string;
-  category: string;
-  price: number;
-  stock: number;
-};
+
 
 const categories = ["CPU", "GPU", "RAM", "Storage"]; // Spring Boot에서 제공하는 카테고리
 
