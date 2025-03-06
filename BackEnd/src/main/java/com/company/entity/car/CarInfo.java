@@ -1,5 +1,6 @@
 package com.company.entity.car;
 
+import com.company.entity.user.User;
 import com.company.entity.vehicle.Vehicle;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,4 +23,8 @@ public class CarInfo extends Vehicle {
     private boolean coOwner;  // 공동 소유주 여부
     private String coOwnerName;  // 공동 소유주 이름
     private String coOwnerPhone;  // 공동 소유주 전화번호
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")  // User 테이블의 외래 키
+    private User user;
 }

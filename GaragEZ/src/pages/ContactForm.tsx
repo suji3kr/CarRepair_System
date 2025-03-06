@@ -90,7 +90,9 @@ const ContactForm: React.FC = () => {
 
           <div className={styles.contactInputGroup}>
             <label>로그인한 회원이름이 여기 뜹니다</label>
+            <label>이름</label>
             <input type="text" name="userId" value={formData.userId} onChange={handleChange} required />
+            <input type="text" name="name" value={formData.name} onChange={handleChange} required />
           </div>
 
           <div className={styles.contactInputGroup}>
@@ -101,6 +103,7 @@ const ContactForm: React.FC = () => {
               <option value="2">여기에 띄워서</option>
               <option value="3">선택하게 하기</option>
             </select>
+            
           </div>
 
           <div className={styles.contactInputGroup}>
