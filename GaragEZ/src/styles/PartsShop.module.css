@@ -1,22 +1,27 @@
 .container {
   display: flex;
-  gap: 20px;
-  padding: 20px;
   justify-content: center;
   margin-top: 100px;
   position: relative;
-  margin-left: 40px;
 }
 
 .sidebar {
-  width: 100px;
+
+  position: sticky; /* 스크롤 시 고정 */
+  top: 100px; /* 상단에서 20px 떨어진 위치 유지 */
+  left: 0px;
+  width: 200px;
+  height: 400px; /* 화면 높이만큼 확장 */
   background: #f8f8f8;
   padding: 15px;
   border-radius: 8px;
+  text-align: center;
+  padding-top: 70px;
 }
 
+
 .category h3 {
-  margin-bottom: 10px;
+  margin-bottom: 50px;
   cursor: pointer;
 }
 
@@ -32,6 +37,7 @@
 
 /* 새로운 컨테이너: 아이템 그리드와 페이지네이션을 감싸는 요소 */
 .itemsContainer {
+  min-height: 600px;
   width: 100%;
   display: flex;
   flex-direction: column;

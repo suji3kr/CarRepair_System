@@ -118,7 +118,7 @@
   position: absolute;
   display: flex;
   flex-wrap: wrap;
-  right: 20px;
+  right: 150px;
   gap: 50px;
   flex-grow: 2;
 }
@@ -150,6 +150,26 @@
 .footerColumn ul li a:hover {
   color: white;
 }
+
+.footerInfo {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #ccc;
+}
+
+.footerInfo p {
+  margin: 5px 0;
+}
+
+.footerInfo a {
+  color: #ccc;
+  text-decoration: none;
+}
+
+.footerInfo a:hover {
+  text-decoration: underline;
+}
+
 
 /* 반응형 스타일 */
 @media (max-width: 768px) {
