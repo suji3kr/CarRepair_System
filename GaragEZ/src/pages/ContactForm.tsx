@@ -4,7 +4,7 @@ import styles from "../styles/ContactForm.module.css"; // CSS 모듈 import
 
 const ContactForm: React.FC = () => {
   const [formData, setFormData] = useState({
-    Name: "",
+    name: "",
     carType: "",
     model: "",
     email: "",
@@ -38,12 +38,7 @@ const ContactForm: React.FC = () => {
 
           <div className={styles.contactInputGroup}>
             <label>이름</label>
-            <input type="text" name="Name" value={formData.Name} onChange={handleChange} required />
-          </div>
-
-          <div className={styles.contactInputGroup}>
-            <label>어떤 종류의 차인가요?</label>
-            <input type="text" name="carType" value={formData.carType} onChange={handleChange} required />
+            <input type="text" name="name" value={formData.name} onChange={handleChange} required />
           </div>
 
           <div className={styles.contactInputGroup}>
@@ -63,13 +58,8 @@ const ContactForm: React.FC = () => {
           </div>
 
           <div className={styles.contactInputGroup}>
-            <label>기타 기재사항</label>
+            <label>기재사항</label>
             <textarea name="message" value={formData.message} onChange={handleChange} required />
-          </div>
-
-          <div className={styles.contactInputGroup}>
-            <label>참고할 사항</label>
-            <textarea name="additionalNotes" value={formData.additionalNotes} onChange={handleChange} />
           </div>
 
           <button type="submit" className={styles.contactSubmitButton}>제출하기</button>
