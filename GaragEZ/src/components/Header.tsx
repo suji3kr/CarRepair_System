@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaShoppingCart, FaSignInAlt, FaUser, FaUserPlus } from "react-icons/fa"; // 로그인 아이콘
+import { FaShoppingCart, FaSignInAlt, FaUserPlus } from "react-icons/fa"; // 로그인 아이콘
 import styles from "../styles/Header.module.css";
 
 const Header: React.FC = () => {
@@ -15,7 +15,7 @@ const Header: React.FC = () => {
 
         <div className={styles.menuWrapper}>
           <ul className={styles.menu}>
-            <li><Link to="/menu1">회사소개</Link></li>
+            <li><Link to="/about">회사소개</Link></li>
             <li><Link to="/contact">견적·상담</Link></li>
             <li><Link to="/partshop">부품샵</Link></li>
             <li><Link to="/event">이벤트</Link></li>

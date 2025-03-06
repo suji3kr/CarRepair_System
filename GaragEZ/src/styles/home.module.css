@@ -76,3 +76,29 @@
   background-color: rgba(255, 255, 255, 0.8);
   color: black;
 }
+
+.buttonContainer {
+  position: absolute;
+  bottom: 200px; /* 하단에서 약간 위로 */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pageButton {
+  background: rgba(0, 0, 0, 0.5); /* 흐린 배경 */
+  color: white;
+  font-size: 24px;
+  border-radius: 15px;
+  padding: 20px 30px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s ease-in-out;
+  border: 3px solid #fff;
+}
+
+.pageButton:hover {
+  background: rgba(0, 0, 0, 0.8); /* hover 시 색상 진하게 */
+}

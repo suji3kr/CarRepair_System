@@ -1,7 +1,7 @@
 .eventContainer {
   width: 100%;
   max-width: 5000px;
-  margin: 80px auto 0;
+  margin: 40px auto 0;
   padding: 30px;
   background: white;
   border-radius: 10px;
@@ -24,4 +24,8 @@
 
 .eventImage:hover {
   transform: scale(1.05);
+}
+
+.eventContainer h2 {
+  margin-top: 50px;
 }
