@@ -25,7 +25,6 @@ public class User {
     private String email;
     private String password;
     private String phone;
-    private String telecom; // 통신사
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -35,7 +34,7 @@ public class User {
     private LocalDateTime createdAt;
 
     // 🚗 차량 정보
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "car_info_id")
     private CarInfo carInfo;
 }

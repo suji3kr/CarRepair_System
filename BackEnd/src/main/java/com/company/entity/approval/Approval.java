@@ -1,6 +1,6 @@
 package com.company.entity.approval;
 
-import com.company.entity.user.Admin;
+//import com.company.entity.user.Admin;
 import com.company.entity.order.StoreOrder;
 import com.company.entity.user.User;
 import jakarta.persistence.*;
@@ -20,10 +20,10 @@ public class Approval {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 관리자(Admin)와 다대일 관계 (ON DELETE SET NULL)
-    @ManyToOne
-    @JoinColumn(name = "admin_id", nullable = true)
-    private Admin admin;
+//    // 관리자(Admin)와 다대일 관계 (ON DELETE SET NULL)
+//    @ManyToOne
+//    @JoinColumn(name = "admin_id", nullable = true)
+//    private Admin admin;
 
     // 승인 대상 사용자
     @ManyToOne

@@ -1,10 +1,3 @@
-Create database cardb;
-
-create user 'caruser'@'localhost' identified by '12345';
-
-grant all privileges on cardb.* to 'caruser'@'localhost';
------root 에서 권한 주기---> cardb 만들기------------------------------
-
 -- 🚗 차량 정비 시스템 데이터베이스 삭제 및 재생성
 SET FOREIGN_KEY_CHECKS=0;
 
@@ -18,6 +11,7 @@ DROP TABLE IF EXISTS notifications;
 DROP TABLE IF EXISTS setup_tracks;
 DROP TABLE IF EXISTS appointments;
 DROP TABLE IF EXISTS vehicles;
+DROP TABLE IF EXISTS user_vehicles;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS parts;
 DROP TABLE IF EXISTS admin;
@@ -30,12 +24,12 @@ SET FOREIGN_KEY_CHECKS=1;
 -- 👤 사용자 테이블
 CREATE TABLE users (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  userId VARCHAR(50) UNIQUE NOT NULL,
-  name VARCHAR(100) NOT NULL,
+  userId VARCHAR(50),
+  name VARCHAR(100),
   email VARCHAR(100) UNIQUE NOT NULL,
-  password VARCHAR(255) NOT NULL,
+  password VARCHAR(255),
   phone VARCHAR(20),
-  role ENUM('USER', 'ADMIN') NOT NULL,
+  role ENUM('USER', 'ADMIN') DEFAULT 'USER' NOT NULL,
   coOwner BOOLEAN DEFAULT FALSE,
   coOwnerName VARCHAR(100) DEFAULT NULL,
   coOwnerPhone VARCHAR(20) DEFAULT NULL,
@@ -157,24 +151,14 @@ CREATE TABLE setup_tracks (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 👑 관리자 테이블
-CREATE TABLE admin (
-  id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  user_id BIGINT,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-);
-
 -- 🛠 관리자 승인 테이블
 CREATE TABLE approvals (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  admin_id BIGINT,
   user_id BIGINT,
   approval_type ENUM('예약', '결제', '주문 승인', '반품 승인') NOT NULL,
   status ENUM('승인', '거절') NOT NULL,
   order_id BIGINT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (admin_id) REFERENCES admin(id) ON DELETE SET NULL,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (order_id) REFERENCES store_orders(id) ON DELETE CASCADE
 );
@@ -224,5 +208,3 @@ CREATE TABLE ai_product (
   link VARCHAR(500),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
-SET FOREIGN_KEY_CHECKS=1;
