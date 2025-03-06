@@ -97,6 +97,7 @@ const PartsShop: React.FC = () => {
                         alt={part.name}
                       />
                       <div className={styles.itemInfo}>
+
                         <p className={styles.itemName} title={part.name}>
                           {part.name.length > 14 ? `${part.name.slice(0, 14)}...` : part.name}
                         </p>
