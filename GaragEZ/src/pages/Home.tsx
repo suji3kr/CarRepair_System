@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import styles from "../styles/home.module.css"; // ✅ CSS Modules 사용
 
 const easeInOutCubic = (t: number) => {
@@ -108,7 +109,7 @@ const Home: React.FC = () => {
     <div style={{ width: "100vw" }}>
       {/* ✅ 목차를 화면에 고정 */}
       <div className={styles.navContainer}>
-        {["Cars", "Mechanic", "Consult", "Repair"].map((title, index) => (
+        {["Main", "About Us", "Consult", "PartShop"].map((title, index) => (
           <div 
             key={index} 
             className={`${styles.navItem} ${activeIndex === index ? styles.activeNav : ""}`}
@@ -125,10 +126,19 @@ const Home: React.FC = () => {
       </div>
 
       <div className={styles.snapContainer}>
-        <section className={styles.section}><img src="/images/cars.jpg" alt="Cars" className={hideImage ? styles.hidden : ""} /></section>
-        <section className={styles.section}><img src="/images/mechanic.jpg" alt="Mechanic" className={hideImage ? styles.hidden : ""} /></section>
-        <section className={styles.section}><img src="/images/consult.jpg" alt="Consult" className={hideImage ? styles.hidden : ""} /></section>
-        <section className={styles.section}><img src="/images/repair.jpg" alt="Repair" className={hideImage ? styles.hidden : ""} /></section>
+        {[
+          { img: "/images/cars.jpg", alt: "Cars", link: "/main", text: "차고지 바로가기" },
+          { img: "/images/mechanic.jpg", alt: "Mechanic", link: "/about", text: "차고지 회사소개" },
+          { img: "/images/consult.jpg", alt: "Consult", link: "/contact", text: "견적 · 상담 받기" },
+          { img: "/images/repair.jpg", alt: "Repair", link: "/partshop", text: "부품 장만하러 가기" }
+        ].map((item, index) => (
+          <section key={index} className={styles.section}>
+            <img src={item.img} alt={item.alt} className={hideImage ? styles.hidden : ""} />
+            <div className={styles.buttonContainer}>
+              <Link to={item.link} className={styles.pageButton}>{item.text}</Link>
+            </div>
+          </section>
+        ))}
       </div>
     </div>
   );
