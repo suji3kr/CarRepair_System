@@ -17,9 +17,8 @@ public class JwtTokenProvider {
     private final SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private final long validityInMilliseconds = 3600000; // 1시간
 
-    public String createToken(String email, Role role) {
+    public String createToken(String email) {
         Claims claims = Jwts.claims().setSubject(email);
-        claims.put("role", role.name());
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);

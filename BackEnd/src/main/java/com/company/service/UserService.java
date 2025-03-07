@@ -39,7 +39,7 @@ public class UserService {
             vehicle.setOwner(savedUser);  // 사용자 정보를 차량의 owner_id로 설정
             vehicle.setMake(request.getCarMake());
             vehicle.setModel(request.getCarModel());
-            vehicle.setYear(request.getYear());
+            vehicle.setYear(Integer.parseInt( request.getYear()));
             vehicle.setVin(request.getVin());
             vehicle.setCarNumber(request.getCarNumber());
             vehicleRepository.save(vehicle); // 차량 정보 저장

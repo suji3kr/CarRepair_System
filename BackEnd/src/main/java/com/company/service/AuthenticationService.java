@@ -32,7 +32,7 @@ public class AuthenticationService {
             throw new BadCredentialsException("Invalid email or password");
         }
 
-        String token = jwtTokenProvider.createToken(userDetails.getUsername(), Role.valueOf(userDetails.getAuthorities().iterator().next().getAuthority()));
+        String token = jwtTokenProvider.createToken(userDetails.getUsername());
 
         return new AuthResponse(token, userDetails.getUsername());
     }
@@ -44,11 +44,10 @@ public class AuthenticationService {
                 .orElseGet(() -> {
                     User newUser = new User();
                     newUser.setEmail(email);
-                    newUser.setRole(Role.USER);
                     return userRepository.save(newUser);
                 });
 
-        String token = jwtTokenProvider.createToken(user.getEmail(), user.getRole());
+        String token = jwtTokenProvider.createToken(user.getEmail());
 
         return new AuthResponse(token, user.getEmail());
     }

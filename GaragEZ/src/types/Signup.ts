@@ -10,7 +10,7 @@ export interface FormData {
   carMake: string;
   carModel: string;
   carNumber: string;
-  year: number;
+  year: number | "";
   vin: string;
   //공동소유자
   coOwner: boolean;
