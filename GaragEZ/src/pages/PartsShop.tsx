@@ -4,14 +4,9 @@ import styles from "../styles/PartsShop.module.css";
 import Layout from "../components/Layout";
 import { fetchParts } from "../services/partService";
 import { Skeleton } from "@mui/material";
+import { Part } from "../types/PartsShop";
 
-type Part = {
-  id: number;
-  name: string;
-  category: string;
-  price: number;
-  stock: number;
-};
+
 
 const categories = ["엔진오일", "타이어", "와이퍼", "ETC"];
 

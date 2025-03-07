@@ -1,22 +1,7 @@
 import { useRef, useState } from "react";
 import Layout from "../components/Layout";
 import styles from "../styles/SignUp.module.css"; // CSS Modules 사용
-
-// Spring Boot로 보낼 회원가입 데이터 타입 정의
-interface FormData {
-  userId: string;
-  password: string;
-  name: string;
-  email: string;
-  telecom: string;
-  phone: string;
-  carModel: string;
-  carNumber: string;
-  coOwner: boolean;
-  coOwnerName: string;
-  coOwnerPhone: string;
-  termsAgreed: boolean;
-}
+import { FormData } from "../types/Signup";
 
 const SignUp: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
@@ -24,7 +9,6 @@ const SignUp: React.FC = () => {
     password: "",
     name: "",
     email: "",
-    telecom: "",
     phone: "",
     carModel: "",
     carNumber: "",
