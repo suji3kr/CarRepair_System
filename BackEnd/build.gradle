@@ -34,6 +34,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.2.0'
+	//아래꺼 따로 추가한거
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'com.squareup.okhttp3:okhttp:4.9.1' // HTTP 클라이언트
+	implementation 'com.fasterxml.jackson.core:jackson-databind' // JSON 처리
 
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5', 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 

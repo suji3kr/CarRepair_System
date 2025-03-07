@@ -36,7 +36,8 @@
 </br>
 </br>
 
-![image](https://github.com/user-attachments/assets/40003205-e817-403d-859c-0c24a6dd504a)
+![플로우차트](https://github.com/user-attachments/assets/c643aeb3-0adf-4e38-8fec-8015bd25f44e)
+
 
 * Flowchart
 >권민우 제작

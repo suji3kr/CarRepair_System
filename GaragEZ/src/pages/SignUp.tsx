@@ -1,35 +1,21 @@
 import { useRef, useState } from "react";
 import Layout from "../components/Layout";
 import styles from "../styles/SignUp.module.css"; // CSS Modules 사용
-
-// Spring Boot로 보낼 회원가입 데이터 타입 정의
-interface FormData {
-  "user_id": string;
-  "password": string;
-  "name": string;
-  "email": string;
-  "phone": string;
-  "carModel": string;
-  "carNumber": string;
-  "coOwner": boolean;
-  "coOwnerName": string;
-  "coOwnerPhone": string;
-  "termsAgreed": boolean;
-}
+import { FormData } from "../types/Signup";
 
 const SignUp: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
-    "user_id": "",
-    "password": "",
-    "name": "",
-    "email": "",
-    "phone": "",
-    "carModel": "",
-    "carNumber": "",
-    "coOwner": false,
-    "coOwnerName": "",
-    "coOwnerPhone": "",
-    "termsAgreed": false,
+    user_id: "",
+    password: "",
+    name: "",
+    email: "",
+    phone: "",
+    carModel: "",
+    carNumber: "",
+    coOwner: false,
+    coOwnerName: "",
+    coOwnerPhone: "",
+    termsAgreed: false,
   });
 
   const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
