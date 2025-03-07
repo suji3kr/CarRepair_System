@@ -1,14 +1,9 @@
 package com.company.controller;
 
-import com.company.dto.UserSignupRequest;
 import com.company.dto.login.GoogleLoginRequest;
 import com.company.dto.login.LoginRequest;
-import com.company.entity.car.CarInfo;
-import com.company.entity.user.User;
 import com.company.service.AuthenticationService;
-import com.company.service.CarInfoService;
 import com.company.service.UserService;
-import com.company.service.VehicleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +18,6 @@ public class AuthController {
 
     private final AuthenticationService authenticationService;
     private final UserService userService;
-    private final CarInfoService carInfoService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {

@@ -60,5 +60,6 @@ openapi:
     api-key: "your-api-key"
 
 portone:
+  secret_key: your_secret_key_here
   api:
     url: https://api.portone.io/v2

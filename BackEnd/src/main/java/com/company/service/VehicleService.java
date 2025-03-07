@@ -1,6 +1,5 @@
 package com.company.service;
 
-import com.company.entity.car.CarInfo;
 import com.company.entity.vehicle.Vehicle;
 import com.company.repository.VehicleRepository;
 import lombok.RequiredArgsConstructor;
