@@ -16,29 +16,30 @@ select * from payments;
 
 
 -- 1. 사용자 (users)
-INSERT INTO users (userId, name, email, password, phone, role, coOwner, coOwnerName, coOwnerPhone)
+INSERT INTO users (user_id, name, email, password, phone, role, co_owner, co_owner_name, co_owner_phone)
 VALUES
-  ('alice123', 'Alice Smith', 'alice@example.com', 'password123', '010-1234-5678', 'USER', FALSE, NULL, NULL),
-  ('bob456', 'Bob Johnson', 'bob@example.com', 'password456', '010-2345-6789', 'USER', FALSE, NULL, NULL),
-  ('admin001', 'Charlie Admin', 'charlie@admin.com', 'adminpass', '010-3456-7890', 'ADMIN', FALSE, NULL, NULL),
-  ('johnDoe', 'John Doe', 'johndoe@example.com', 'securePass', '010-1234-5678', 'USER', 
-   TRUE, 'Jane Doe', '010-5678-1234'); 
+  ('alice123', 'Alice Smith', 'alice@example.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-1234-5678', 'USER', FALSE, NULL, NULL),
+  ('bob456', 'Bob Johnson', 'bob@example.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-2345-6789', 'USER', FALSE, NULL, NULL),
+  ('admin001', 'Charlie Admin', 'charlie@admin.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-3456-7890', 'ADMIN', FALSE, NULL, NULL),
+  ('johnDoe', 'John Doe', 'johndoe@example.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-1234-5678', 'USER',
+   TRUE, 'Jane Doe', '010-5678-1234');
+-- 비번은 항상 password123
 
 -- 2. 차량 정보 추가 (owner_id는 위에서 생성한 사용자의 id를 참조)
 INSERT INTO vehicles (owner_id, make, model, year, vin, carNumber)
 VALUES
-  ((SELECT id FROM users WHERE userId = 'alice123'), 'Toyota', 'Corolla', 2015, 'VIN000001', '11가 1234'),
-  ((SELECT id FROM users WHERE userId = 'alice123'), 'Honda', 'Civic', 2018, 'VIN000002', '22나 5678'),
-  ((SELECT id FROM users WHERE userId = 'bob456'), 'Ford', 'Focus', 2017, 'VIN000003', '33다 9012'),
-  ((SELECT id FROM users WHERE userId = 'johnDoe'), 'Hyundai', 'Sonata', 2020, 'VIN123456', '12가 3456');
+  ((SELECT id FROM users WHERE user_id = 'alice123'), 'Toyota', 'Corolla', 2015, 'VIN000001', '11가 1234'),
+  ((SELECT id FROM users WHERE user_id = 'alice123'), 'Honda', 'Civic', 2018, 'VIN000002', '22나 5678'),
+  ((SELECT id FROM users WHERE user_id = 'bob456'), 'Ford', 'Focus', 2017, 'VIN000003', '33다 9012'),
+  ((SELECT id FROM users WHERE user_id = 'johnDoe'), 'Hyundai', 'Sonata', 2020, 'VIN123456', '12가 3456');
 
 -- 3. 사용자 차량 관계 설정 (M:N 관계)
 INSERT INTO user_vehicles (user_id, vehicle_id)
 VALUES
-  ((SELECT id FROM users WHERE userId = 'alice123'), (SELECT id FROM vehicles WHERE vin = 'VIN000001')),
-  ((SELECT id FROM users WHERE userId = 'alice123'), (SELECT id FROM vehicles WHERE vin = 'VIN000002')),
-  ((SELECT id FROM users WHERE userId = 'bob456'), (SELECT id FROM vehicles WHERE vin = 'VIN000003')),
-  ((SELECT id FROM users WHERE userId = 'johnDoe'), (SELECT id FROM vehicles WHERE vin = 'VIN123456'));
+  ((SELECT id FROM users WHERE user_id = 'alice123'), (SELECT id FROM vehicles WHERE vin = 'VIN000001')),
+  ((SELECT id FROM users WHERE user_id = 'alice123'), (SELECT id FROM vehicles WHERE vin = 'VIN000002')),
+  ((SELECT id FROM users WHERE user_id = 'bob456'), (SELECT id FROM vehicles WHERE vin = 'VIN000003')),
+  ((SELECT id FROM users WHERE user_id = 'johnDoe'), (SELECT id FROM vehicles WHERE vin = 'VIN123456'));
 
 -- 3. 부품 (parts)
 INSERT INTO parts (name, category, price, stock)
@@ -100,18 +101,14 @@ VALUES
   ('Track A', 'High-speed performance track'),
   ('Track B', 'Technical and twisty course');
 
--- 11. 관리자 (admin)
--- user_id 참조 (관리자 역할의 사용자, 여기서는 id=3인 Charlie Admin)
-INSERT INTO admin (user_id)
-VALUES
-  (3);
+
 
 -- 12. 승인 (approvals)
 -- admin_id, user_id, order_id 참조
-INSERT INTO approvals (admin_id, user_id, approval_type, status, order_id)
+INSERT INTO approvals (user_id, approval_type, status, order_id)
 VALUES
-  (1, 1, '예약', '승인', 1),
-  (1, 2, '주문 승인', '승인', 2);
+  (1, '예약', '승인', 1),
+  (2, '주문 승인', '승인', 2);
 
 -- 13. 정비 기록 (maintenance_records)
 -- vehicle_id, user_id, appointment_id 참조; service_date는 DATE 형식

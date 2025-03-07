@@ -1,11 +1,12 @@
 package com.company.controller;
 
 import com.company.dto.UserSignupRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import com.company.entity.car.CarInfo;
+import com.company.entity.user.User;
+import com.company.service.UserService;
+import com.company.service.VehicleService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,34 +14,28 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/users")
+@RequiredArgsConstructor
 public class UserController {
 
-    @Autowired  // ✅ Spring이 자동으로 JdbcTemplate을 주입
-    private JdbcTemplate jdbcTemplate;
-    private PasswordEncoder passwordEncoder;
+    private final UserService userService;
+    private final VehicleService vehicleService;
 
     @PostMapping("/signup")
-    public ResponseEntity<String> registerUser(@RequestBody UserSignupRequest request) {
-        try {
-            // 1️⃣ users 테이블에 사용자 정보 저장
-            String userInsertQuery = "INSERT INTO users (userId, name, email, password, phone, role, coOwner, coOwnerName, coOwnerPhone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            jdbcTemplate.update(userInsertQuery, request.getUserId(), request.getName(), request.getEmail(),
-                    passwordEncoder.encode(request.getPassword()), request.getPhone(), "USER",
-                    request.isCoOwner(), request.getCoOwnerName(), request.getCoOwnerPhone());
+    public ResponseEntity<User> register(@RequestBody UserSignupRequest request) {
+        // 차량 정보 저장 (VehicleService를 통해 저장)
+        CarInfo carInfo = new CarInfo();  // CarInfo 객체 생성
+        carInfo.setCarModel(request.getCarModel());
+        carInfo.setCarNumber(request.getCarNumber());
+        carInfo.setCoOwner(request.isCo_owner());
+        carInfo.setCoOwnerName(request.getCo_owner_name());
+        carInfo.setCoOwnerPhone(request.getCo_owner_phone());
 
-            // 2️⃣ vehicles 테이블에 차량 정보 저장
-            String vehicleInsertQuery = "INSERT INTO vehicles (owner_id, make, model, year, vin, carNumber) VALUES ((SELECT id FROM users WHERE userId = ?), ?, ?, ?, ?, ?)";
-            jdbcTemplate.update(vehicleInsertQuery, request.getUserId(), request.getCarMake(), request.getCarModel(),
-                    request.getCarYear(), request.getVin(), request.getCarNumber());
+        // VehicleService를 통해 CarInfo 저장
+        carInfo = (CarInfo) vehicleService.saveVehicle(carInfo); // 수정된 방식으로 인스턴스 메소드 호출
 
-            // 3️⃣ user_vehicles 테이블에 사용자와 차량 관계 저장
-            String userVehicleQuery = "INSERT INTO user_vehicles (user_id, vehicle_id) VALUES ((SELECT id FROM users WHERE userId = ?), (SELECT id FROM vehicles WHERE vin = ?))";
-            jdbcTemplate.update(userVehicleQuery, request.getUserId(), request.getVin());
+        // 사용자 정보와 차량 정보 연결하여 저장
+        User user = userService.registerUser(request); // 기존의 사용자 등록 메소드 호출
 
-            return ResponseEntity.ok("회원가입이 완료되었습니다.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("회원가입 실패: " + e.getMessage());
-        }
+        return ResponseEntity.ok(user); // 저장된 사용자 반환
     }
-
 }

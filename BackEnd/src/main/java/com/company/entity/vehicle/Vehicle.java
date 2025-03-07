@@ -38,4 +38,19 @@ public class Vehicle {
     // 해당 차량에 대한 정비 기록 (양방향 연관관계)
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MaintenanceRecord> maintenanceRecords;
+
+    public void setCarNumber(String carNumber) {
+    }
+
+    public void setVehicle(Vehicle vehicle) {
+    }
+
+    public void setServiceDescription(String serviceDescription) {
+    }
+
+    public void setServiceDate(String serviceDate) {
+    }
+
+    public void setCost(double cost) {
+    }
 }

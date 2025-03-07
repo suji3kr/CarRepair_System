@@ -27,15 +27,15 @@ SET FOREIGN_KEY_CHECKS=1;
 -- 👤 사용자 테이블
 CREATE TABLE users (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  userId VARCHAR(50),
+  user_id VARCHAR(50),
   name VARCHAR(100),
   email VARCHAR(100) UNIQUE NOT NULL,
   password VARCHAR(255),
   phone VARCHAR(20),
   role ENUM('USER', 'ADMIN') DEFAULT 'USER' NOT NULL,
-  coOwner BOOLEAN DEFAULT FALSE,
-  coOwnerName VARCHAR(100) DEFAULT NULL,
-  coOwnerPhone VARCHAR(20) DEFAULT NULL,
+  co_owner BOOLEAN DEFAULT FALSE,
+  co_owner_name VARCHAR(100) DEFAULT NULL,
+  co_owner_phone VARCHAR(20) DEFAULT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -210,8 +210,6 @@ CREATE TABLE ai_product (
   image_url VARCHAR(500),
   link VARCHAR(500),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
 );
 
 CREATE TABLE contact_messages (

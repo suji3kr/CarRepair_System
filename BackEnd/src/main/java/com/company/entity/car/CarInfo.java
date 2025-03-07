@@ -1,30 +1,28 @@
+
+
+
+
+// ***********   CarInfo 클래스는 Vehicle 클래스를 상속받습니다. **********************
 package com.company.entity.car;
 
-import com.company.entity.user.User;
 import com.company.entity.vehicle.Vehicle;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.Entity;
+import lombok.*;
+
 
 @Entity
-@Data
-@EqualsAndHashCode(callSuper = false)
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode(callSuper = true)  // 부모 클래스의 equals, hashCode 호출
+
 public class CarInfo extends Vehicle {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private boolean coOwner;
+    private String coOwnerName;
+    private String coOwnerPhone;
 
-    private String carModel;  // 차종
-    private String carNumber;  // 차량 번호
-    private boolean coOwner;  // 공동 소유주 여부
-    private String coOwnerName;  // 공동 소유주 이름
-    private String coOwnerPhone;  // 공동 소유주 전화번호
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")  // User 테이블의 외래 키
-    private User user;
+    public void setCarModel(String carModel) {
+    }
+    public void setCarNumber(String carNumber) {
+    }
 }

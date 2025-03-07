@@ -15,11 +15,11 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String userId; // 사용자 아이디 (email, username 등)
     private String name;
     private String email;
@@ -37,4 +37,12 @@ public class User {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "car_info_id")
     private CarInfo carInfo;
+
+    // 공동 소유자 관련 정보
+    private boolean coOwner;
+    private String coOwnerName;
+    private String coOwnerPhone;
+
+    // 약관 동의 여부
+    private boolean termsAgreed;
 }

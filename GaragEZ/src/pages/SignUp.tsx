@@ -4,33 +4,31 @@ import styles from "../styles/SignUp.module.css"; // CSS Modules 사용
 
 // Spring Boot로 보낼 회원가입 데이터 타입 정의
 interface FormData {
-  userId: string;
+  user_id: string;
   password: string;
   name: string;
   email: string;
-  telecom: string;
   phone: string;
   carModel: string;
   carNumber: string;
-  coOwner: boolean;
-  coOwnerName: string;
-  coOwnerPhone: string;
+  co_owner: boolean;
+  co_owner_name: string;
+  co_owner_phone: string;
   termsAgreed: boolean;
 }
 
 const SignUp: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
-    userId: "",
+    user_id: "",
     password: "",
     name: "",
     email: "",
-    telecom: "",
     phone: "",
     carModel: "",
     carNumber: "",
-    coOwner: false,
-    coOwnerName: "",
-    coOwnerPhone: "",
+    co_owner: false,
+    co_owner_name: "",
+    co_owner_phone: "",
     termsAgreed: false,
   });
 
