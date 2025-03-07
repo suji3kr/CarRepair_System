@@ -162,3 +162,31 @@
   gap: 15px;
   margin-left: 0;
 }
+
+.authButtons {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.welcomeText {
+  font-size: 16px;
+  color: white;
+}
+
+.cartButton,
+.loginButton,
+.signupButton,
+.logoutButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: white;
+  display: flex;
+  align-items: center;
+}
+
+.logoutButton:hover {
+  color: red;
+}
