@@ -20,12 +20,14 @@ public class VehicleService {
                 .orElseThrow(() -> new RuntimeException("차량 정보를 찾을 수 없습니다. ID: " + vehicleId));
     }
 
+    public Vehicle getVehicleByVIN(String vin){
+        return vehicleRepository.findByVin(vin)
+                .orElseThrow(()->  new RuntimeException("차량 정보를 찾을 수 없습니다. V ID Number: " + vin));
+    }
+
     // 차량 정보 저장 메소드 (CarInfo도 Vehicle을 상속하므로 동일한 방식으로 처리)
     public Vehicle saveVehicle(Vehicle vehicle) {
-        if (vehicle instanceof CarInfo) {
-            // CarInfo에만 해당하는 추가 처리 로직이 있을 경우 처리
-            // 예: carInfo-specific validation, etc.
-        }
+
         return vehicleRepository.save(vehicle);  // VehicleRepository를 통해 저장
     }
 

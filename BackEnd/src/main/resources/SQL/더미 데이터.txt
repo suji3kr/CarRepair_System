@@ -26,7 +26,7 @@ VALUES
 -- 비번은 항상 password123
 
 -- 2. 차량 정보 추가 (owner_id는 위에서 생성한 사용자의 id를 참조)
-INSERT INTO vehicles (owner_id, make, model, year, vin, carNumber)
+INSERT INTO vehicles (owner_id, make, model, year, vin, car_number)
 VALUES
   ((SELECT id FROM users WHERE user_id = 'alice123'), 'Toyota', 'Corolla', 2015, 'VIN000001', '11가 1234'),
   ((SELECT id FROM users WHERE user_id = 'alice123'), 'Honda', 'Civic', 2018, 'VIN000002', '22나 5678'),

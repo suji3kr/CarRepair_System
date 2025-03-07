@@ -33,11 +33,6 @@ public class User {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    // 🚗 차량 정보
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "car_info_id")
-    private CarInfo carInfo;
-
     // 공동 소유자 관련 정보
     private boolean coOwner;
     private String coOwnerName;

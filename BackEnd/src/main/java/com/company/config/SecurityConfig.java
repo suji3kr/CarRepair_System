@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // ✅ JWT 기반 세션 없음
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/auth/**", // ✅ 로그인 & 회원가입 API 허용
+                                "/api/auth/**", "/api/users/**", // ✅ 로그인 & 회원가입 API 허용
                                 "/api-docs/**", "/swagger-ui/**", // ✅ Swagger 허용
                                 "/api/parts/**", // ✅ 부품 관련 API 인증 없이 허용
                                 "/api/store/**" // ✅ 판매점 관련 API 인증 없이 허용

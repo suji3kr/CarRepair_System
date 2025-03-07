@@ -1,0 +1,222 @@
+@startuml
+class com.company.entity.approval.Approval {
+- Long id
+- User user
+- ApprovalType approvalType
+- ApprovalStatus status
+- StoreOrder order
+- LocalDateTime createdAt
+}
+
+enum com.company.entity.approval.ApprovalStatus {
++  승인
++  거절
+}
+
+class com.company.entity.payment.Payment {
+- Long id
+- StoreOrder order
+- BigDecimal amount
+- PaymentMethod paymentMethod
+- PaymentStatus paymentStatus
+- LocalDateTime paymentDate
+}
+
+class com.company.entity.maintenance.MaintenanceRecord {
+- Long id
+- Vehicle vehicle
+- User user
+- Appointment appointment
+- String serviceType
+- String description
+- LocalDate serviceDate
+- double cost
+- LocalDateTime createdAt
+}
+
+enum com.company.entity.PaymentMethod {
++  CARD
++  CASH
++  ONLINE
+}
+
+class com.company.entity.role.RepairStore {
+- Long id
+- Store store
+- Appointment appointment
+- String location
+- String contactInfo
+- LocalDateTime createdAt
+}
+
+class com.company.entity.appontment.Appointment {
+- Long id
+- User user
+- Vehicle vehicle
+- String serviceType
+- AppointmentStatus status
+- LocalDateTime scheduledDate
+- LocalDateTime createdAt
+}
+
+class com.company.entity.store.Store {
+- Long id
+- Part part
+- double price
+- int stock
+- LocalDateTime createdAt
+}
+
+enum com.company.entity.PaymentStatus {
++  PENDING
++  COMPLETED
++  FAILED
+}
+
+enum com.company.entity.order.OrderStatus {
++  PENDING
++  SHIPPED
++  DELIVERED
++  CANCELLED
++  RETURNED
+}
+
+class com.company.entity.track.SetupTrack {
+- Long id
+- String name
+- String description
+- LocalDateTime createdAt
+}
+
+class com.company.entity.review.ContactMessage {
+- Long id
+- String name
+- String carType
+- String model
+- String email
+- String phoneNumber
+- String message
+- String additionalNotes
+- LocalDateTime createdAt
+}
+
+class com.company.entity.order.StoreOrder {
+- Long id
+- User user
+- Part part
+- int quantity
+- double orderPrice
+- double totalPrice
+- OrderStatus status
+- LocalDateTime orderDate
+}
+
+class com.company.entity.ai.AIProduct {
+- Long id
+- String name
+- int price
+- String imageUrl
+- String link
+}
+
+class com.company.entity.part.Part {
+- Long id
+- String name
+- String category
+- double price
+- int stock
+- LocalDateTime createdAt
+}
+
+class com.company.entity.vehicle.Vehicle {
+- Long id
+- User owner
+- String make
+- String model
+- int year
+- String vin
+- LocalDateTime createdAt
+- List<MaintenanceRecord> maintenanceRecords
++ void setCarNumber(String)
++ void setVehicle(Vehicle)
++ void setServiceDescription(String)
++ void setServiceDate(String)
++ void setCost(double)
+}
+
+
+class com.company.entity.part.PartPrice {
+- Long id
+- Part part
+- Store store
+- double price
+- LocalDateTime createdAt
+}
+
+class com.company.entity.review.Review {
+- Long id
+- User user
+- String content
+- LocalDateTime createdAt
+}
+
+class com.company.entity.user.User {
+- Long id
+- String userId
+- String name
+- String email
+- String password
+- String phone
+- Role role
+- LocalDateTime createdAt
+- CarInfo carInfo
+- boolean coOwner
+- String coOwnerName
+- String coOwnerPhone
+- boolean termsAgreed
+}
+
+enum com.company.entity.notification.NotificationStatus {
++  읽음
++  안읽음
+}
+
+class com.company.entity.notification.Notification {
+- Long id
+- User user
+- String message
+- NotificationStatus status
+- LocalDateTime createdAt
+}
+
+enum com.company.entity.role.Role {
++  USER
++  ADMIN
+}
+
+enum com.company.entity.approval.ApprovalType {
++  예약
++  결제
++  주문_승인
++  반품_승인
+}
+
+class com.company.entity.car.CarInfo {
+- boolean coOwner
+- String coOwnerName
+- String coOwnerPhone
++ void setCarModel(String)
++ void setCarNumber(String)
+}
+
+
+enum com.company.entity.AppointmentStatus {
++  예약
++  진행중
++  완료
+}
+
+
+
+com.company.entity.vehicle.Vehicle <|-- com.company.entity.car.CarInfo
+@enduml

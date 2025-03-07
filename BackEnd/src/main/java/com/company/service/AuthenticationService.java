@@ -26,7 +26,7 @@ public class AuthenticationService {
 
     public AuthResponse authenticate(LoginRequest request) {
         // 🔹 UserDetailsService를 활용하여 Spring Security 방식으로 사용자 로드
-        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
+        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUser_id());
 
         if (userDetails == null || !passwordEncoder.matches(request.getPassword(), userDetails.getPassword())) {
             throw new BadCredentialsException("Invalid email or password");

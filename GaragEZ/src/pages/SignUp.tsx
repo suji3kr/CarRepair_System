@@ -4,32 +4,32 @@ import styles from "../styles/SignUp.module.css"; // CSS Modules 사용
 
 // Spring Boot로 보낼 회원가입 데이터 타입 정의
 interface FormData {
-  user_id: string;
-  password: string;
-  name: string;
-  email: string;
-  phone: string;
-  carModel: string;
-  carNumber: string;
-  co_owner: boolean;
-  co_owner_name: string;
-  co_owner_phone: string;
-  termsAgreed: boolean;
+  "user_id": string;
+  "password": string;
+  "name": string;
+  "email": string;
+  "phone": string;
+  "carModel": string;
+  "carNumber": string;
+  "coOwner": boolean;
+  "coOwnerName": string;
+  "coOwnerPhone": string;
+  "termsAgreed": boolean;
 }
 
 const SignUp: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
-    user_id: "",
-    password: "",
-    name: "",
-    email: "",
-    phone: "",
-    carModel: "",
-    carNumber: "",
-    co_owner: false,
-    co_owner_name: "",
-    co_owner_phone: "",
-    termsAgreed: false,
+    "user_id": "",
+    "password": "",
+    "name": "",
+    "email": "",
+    "phone": "",
+    "carModel": "",
+    "carNumber": "",
+    "coOwner": false,
+    "coOwnerName": "",
+    "coOwnerPhone": "",
+    "termsAgreed": false,
   });
 
   const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
@@ -74,7 +74,7 @@ const SignUp: React.FC = () => {
         <form onSubmit={handleSubmit} className={styles.signupForm}>
           <div className={styles.signupFormGroup}>
             <label>아이디</label>
-            <input type="text" name="userId" value={formData.userId} onChange={handleChange} required />
+            <input type="text" name="user_id" value={formData.user_id} onChange={handleChange} required />
           </div>
 
           <div className={styles.signupFormGroup}>
@@ -147,7 +147,7 @@ const SignUp: React.FC = () => {
             <div className={styles.termsContainer} ref={termsRef} onScroll={handleScroll}>
             
         <h3>이용약관</h3>
-        <p>
+        <p>{`
         제1조 (목적)
 
 이 약관은 차고지㈜가 운영하는 "차고지 인터넷 웹사이트, 차고지
@@ -417,7 +417,7 @@ const SignUp: React.FC = () => {
 1. “사이트”와 이용자간에 발생한 전자상거래 분쟁에 관한 소송은 제소 당시의 이용자의 주소에 의하고, 주소가 없는 경우에는 거소를 관할하는 지방법원의 전속관할로 합니다. 다만, 제소 당시 이용자의 주소 또는 거소가 분명하지 않거나 외국 거주자의 경우에는 민사소송법상의 관할법원에 제기합니다.
 
 2. “사이트”과 이용자간에 제기된 전자상거래 소송에는 한국법을 적용합니다.
-        </p>
+`}</p>
       </div>
 
       {/* 약관 동의 체크박스 */}

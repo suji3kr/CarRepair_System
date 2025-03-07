@@ -31,6 +31,8 @@ public class Vehicle {
     @Column(unique = true)
     private String vin;
 
+    private String carNumber;
+
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -39,18 +41,6 @@ public class Vehicle {
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MaintenanceRecord> maintenanceRecords;
 
-    public void setCarNumber(String carNumber) {
-    }
-
     public void setVehicle(Vehicle vehicle) {
-    }
-
-    public void setServiceDescription(String serviceDescription) {
-    }
-
-    public void setServiceDate(String serviceDate) {
-    }
-
-    public void setCost(double cost) {
     }
 }
