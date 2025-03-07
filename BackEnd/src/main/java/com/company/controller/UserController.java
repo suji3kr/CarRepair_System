@@ -1,14 +1,11 @@
 package com.company.controller;
 
 import com.company.dto.UserSignupRequest;
-import com.company.entity.car.CarInfo;
 import com.company.entity.user.User;
-import com.company.entity.vehicle.Vehicle;
 import com.company.service.UserService;
 import com.company.service.VehicleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

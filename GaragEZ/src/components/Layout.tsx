@@ -2,18 +2,20 @@
 import React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
+import Sidebar from "./Sidebar";
+import styles from "../styles/Layout.module.css"; // ✅ CSS 모듈 적용
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className={styles.layout}>
       <Header />
-      <main className="flex-1 pt-[80px] h-full flex items-center justify-center">
+      <main className={styles.mainContent}> {/* ✅ 스크롤 숨김 설정 */}
         {children}
       </main>
+      <Sidebar />
       <Footer />
     </div>
   );
 };
-
 
 export default Layout;

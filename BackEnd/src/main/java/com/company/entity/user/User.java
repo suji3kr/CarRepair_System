@@ -1,6 +1,5 @@
 package com.company.entity.user;
 
-import com.company.entity.car.CarInfo;
 import com.company.entity.role.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

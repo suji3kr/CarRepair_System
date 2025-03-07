@@ -32,9 +32,7 @@ public class Vehicle {
     private String vin;
 
     private String carNumber;
-
     @CreationTimestamp
-    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     // 해당 차량에 대한 정비 기록 (양방향 연관관계)
