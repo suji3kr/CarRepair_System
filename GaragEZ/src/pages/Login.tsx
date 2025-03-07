@@ -32,7 +32,7 @@ const Login = () => {
 
             const data = await response.json();
             localStorage.setItem("token", data.token); // ✅ JWT 토큰 저장
-            navigate("/"); // ✅ 로그인 성공 시 HOME으로 이동
+            navigate("/home"); // ✅ 로그인 성공 시 HOME으로 이동
         } catch (error) {
             console.error(error);
             alert("로그인 중 오류가 발생했습니다."); // ✅ 에러 처리 추가
@@ -58,7 +58,7 @@ const Login = () => {
 
             const data = await res.json();
             localStorage.setItem("token", data.token); // ✅ JWT 토큰 저장
-            navigate("/"); // ✅ Google 로그인 성공 시 HOME으로 이동
+            navigate("/home"); // ✅ Google 로그인 성공 시 HOME으로 이동
         } catch (error) {
             console.error(error);
             alert("Google 로그인 중 오류가 발생했습니다."); // ✅ 에러 처리 추가
