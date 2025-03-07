@@ -1,26 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaShoppingCart, FaSignInAlt, FaUserPlus, FaSignOutAlt } from "react-icons/fa"; // 로그아웃 아이콘 추가
+import { FaShoppingCart, FaSignInAlt, FaUserPlus, FaSignOutAlt } from "react-icons/fa";
 import styles from "../styles/Header.module.css";
 
 const Header: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userId, setUserId] = useState("");
+  const [userId, setUserId] = useState(""); // ✅ 일반 로그인 사용자 ID
+  const [userEmail, setUserEmail] = useState(""); // ✅ 구글 로그인 사용자 이메일
   const navigate = useNavigate();
 
   // ✅ 로그인 상태 확인
   useEffect(() => {
-    const storedUserId = localStorage.getItem("userId");
-    if (storedUserId) {
+    const storedUserId = localStorage.getItem("userId"); // 일반 로그인 ID
+    const storedEmail = localStorage.getItem("userEmail"); // 구글 로그인 이메일
+
+    if (storedUserId || storedEmail) {
       setIsLoggedIn(true);
-      setUserId(storedUserId);
+      setUserId(storedUserId || ""); // 일반 로그인 ID 저장
+      setUserEmail(storedEmail || ""); // 구글 로그인 이메일 저장
     }
   }, []);
 
-  // ✅ 로그아웃 함수
+  // ✅ 로그아웃 함수 (일반 & 구글 로그인 모두 처리)
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("userId");
+    localStorage.removeItem("token"); // 일반 로그인 토큰 삭제
+    localStorage.removeItem("userId"); // 일반 로그인 ID 삭제
+    localStorage.removeItem("userEmail"); // 구글 로그인 이메일 삭제
     setIsLoggedIn(false);
     navigate("/"); // 홈으로 이동
     window.location.reload(); // 새로고침
@@ -88,11 +93,15 @@ const Header: React.FC = () => {
           </div>
         </div>
 
-        {/* 로그인 상태에 따라 다른 UI 표시 */}
+        {/* ✅ 로그인 상태에 따라 UI 변경 */}
         <div className={styles.authButtons}>
           {isLoggedIn ? (
             <>
-              <span className={styles.welcomeText}>{userId}님 환영합니다</span>
+              {/* ✅ 일반 로그인 & 구글 로그인 둘 다 지원 */}
+              <span className={styles.welcomeText}>
+                {userEmail ? `${userEmail}님 환영합니다` : `${userId}님 환영합니다`}
+              </span>
+
               <Link to="/cart" className={styles.cartButton} title="장바구니">
                 <FaShoppingCart className={styles.cartIcon} />
               </Link>

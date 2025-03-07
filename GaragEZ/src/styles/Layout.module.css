@@ -1,0 +1,21 @@
+/* ✅ Layout.module.css */
+
+/* Layout 전체 스타일 */
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ✅ 스크롤바 숨김 (스크롤 기능 유지) */
+.mainContent {
+  flex: 1;
+  overflow-y: auto; /* 스크롤 가능하도록 설정 */
+  scrollbar-width: none; /* ✅ Firefox에서 스크롤바 숨김 */
+  -ms-overflow-style: none; /* ✅ IE, Edge에서 스크롤바 숨김 */
+}
+
+/* ✅ Chrome, Safari, Edge에서 스크롤바 숨기기 */
+.mainContent::-webkit-scrollbar {
+  display: none;
+}

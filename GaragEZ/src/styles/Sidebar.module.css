@@ -1,0 +1,52 @@
+a{
+    text-decoration: none;
+}
+
+.sidebar {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 60px;
+    background: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .iconWrapper {
+    text-align: center;
+    color: #444;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  .iconWrapper:hover {
+    color: #007bff;
+  }
+  
+  .text {
+    font-size: 12px;
+    margin-top: 2px;
+  }
+  
+
+  /* TOP 버튼 스타일 */
+.topIcon {
+    font-size: 24px;
+    color: #444;
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition: color 0.2s, transform 0.2s;
+  }
+  
+  .topIcon:hover {
+    color: #007bff;
+    transform: scale(1.2);
+  }
+  

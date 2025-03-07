@@ -1,3 +1,4 @@
+// components/PartsShop.tsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/PartsShop.module.css";
@@ -5,8 +6,6 @@ import Layout from "../components/Layout";
 import { fetchParts } from "../services/partService";
 import { Skeleton } from "@mui/material";
 import { Part } from "../types/PartsShop";
-
-
 
 const categories = ["엔진오일", "타이어", "와이퍼", "ETC"];
 
@@ -33,13 +32,10 @@ const PartsShop: React.FC = () => {
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
     setTimeout(() => {
-      const mainContainer = document.querySelector("main");
-      if (mainContainer) {
-        mainContainer.scrollTo({ top: 0, behavior: "smooth" });
-      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }, 100);
   };
-  
+
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
     setCurrentPage(1); // 페이지 초기화
@@ -48,7 +44,6 @@ const PartsShop: React.FC = () => {
     }, 100);
   };
 
-
   const filteredParts = parts.filter((part) => part.category === selectedCategory);
   const totalPages = Math.max(1, Math.ceil(filteredParts.length / 25));
   const displayedItems = filteredParts.slice((currentPage - 1) * 25, currentPage * 25);
@@ -56,17 +51,13 @@ const PartsShop: React.FC = () => {
   return (
     <Layout>
       <div className={styles.container}>
-        <div className={styles.sidebar}>
-  {categories.map((category, index) => (
-    <div key={index} className={styles.category}>
-      <h3
-        onClick={() => handleCategoryChange(category)}
-      >
-        {category}
-      </h3>
-    </div>
-  ))}
-</div>
+        <div className={styles.partMenu}>
+          {categories.map((category, index) => (
+            <div key={index} className={styles.category} onClick={() => handleCategoryChange(category)}>
+              <h3>{category}</h3>
+            </div>
+          ))}
+        </div>
 
         <div className={styles.itemsContainer}>
           <div className={styles.itemsGrid}>
@@ -92,7 +83,6 @@ const PartsShop: React.FC = () => {
                         alt={part.name}
                       />
                       <div className={styles.itemInfo}>
-
                         <p className={styles.itemName} title={part.name}>
                           {part.name.length > 14 ? `${part.name.slice(0, 14)}...` : part.name}
                         </p>
@@ -106,7 +96,6 @@ const PartsShop: React.FC = () => {
                   <p>해당 카테고리에 상품이 없습니다.</p>
                 )}
           </div>
-
 
           {/* 페이지네이션 */}
           <div className={styles.pagination}>
