@@ -1,14 +1,16 @@
 import { useState } from "react";
-import { GoogleCredentialResponse, GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google"; // Google 로그인 추가
-import styles from "../styles/Login.module.css"; // CSS Modules 사용
+import { useNavigate } from "react-router-dom"; // ✅ 페이지 이동을 위한 useNavigate 추가
+import { GoogleCredentialResponse, GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+import styles from "../styles/Login.module.css";
 import Layout from "../components/Layout";
 
-const clientId = "818242899946-o4a9sbi3d9dum52egbn797lhv2fpreq1.apps.googleusercontent.com"; // ✅ Google Cloud Console에서 발급받은 클라이언트 ID
+const clientId = "818242899946-o4a9sbi3d9dum52egbn797lhv2fpreq1.apps.googleusercontent.com"; // ✅ Google Cloud Console 클라이언트 ID
 
 const Login = () => {
     const [userId, setUserId] = useState("");
     const [password, setPassword] = useState("");
     const [rememberMe, setRememberMe] = useState(true);
+    const navigate = useNavigate(); // ✅ 페이지 이동을 위한 useNavigate 사용
 
     // 일반 로그인 요청
     const handleSubmit = async (e: React.FormEvent) => {
@@ -23,16 +25,17 @@ const Login = () => {
                 body: JSON.stringify({ email: userId, password }),
             });
 
-            if (!response.ok) throw new Error("로그인 실패");
+            if (!response.ok) {
+                alert("로그인 실패하였습니다. 다시 로그인하세요."); // ✅ 실패 시 경고창 띄우기
+                return;
+            }
 
             const data = await response.json();
-
-            // ✅ 로그인 성공 후 JWT 토큰을 localStorage에 저장하여 이후 API 요청에서 인증 유지
-            localStorage.setItem("token", data.token);
-
-            console.log("로그인 성공:", data);
+            localStorage.setItem("token", data.token); // ✅ JWT 토큰 저장
+            navigate("/"); // ✅ 로그인 성공 시 HOME으로 이동
         } catch (error) {
             console.error(error);
+            alert("로그인 중 오류가 발생했습니다."); // ✅ 에러 처리 추가
         }
     };
 
@@ -44,30 +47,31 @@ const Login = () => {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ tokenId: response.credential }), // ✅ response.credential 사용
-                credentials: "include",  // ✅ CORS 요청에서 쿠키 포함
+                body: JSON.stringify({ tokenId: response.credential }),
+                credentials: "include",
             });
 
-            if (!res.ok) throw new Error("Google 로그인 실패");
+            if (!res.ok) {
+                alert("Google 로그인 실패하였습니다. 다시 로그인하세요."); // ✅ Google 로그인 실패 시 경고창 띄우기
+                return;
+            }
 
             const data = await res.json();
-
-            // ✅ Google 로그인 성공 후 JWT 토큰을 localStorage에 저장하여 인증 유지
-            localStorage.setItem("token", data.token);
-
-            console.log("Google 로그인 성공:", data);
+            localStorage.setItem("token", data.token); // ✅ JWT 토큰 저장
+            navigate("/"); // ✅ Google 로그인 성공 시 HOME으로 이동
         } catch (error) {
             console.error(error);
+            alert("Google 로그인 중 오류가 발생했습니다."); // ✅ 에러 처리 추가
         }
     };
 
     // Google 로그인 실패 시 호출
     const handleGoogleFailure = () => {
-        console.error("Google 로그인 실패");
+        alert("Google 로그인 실패하였습니다. 다시 로그인하세요."); // ✅ Google 로그인 실패 시 경고창 띄우기
     };
 
     return (
-        <GoogleOAuthProvider clientId={clientId}> {/* ✅ JSX 내부에서 감싸도록 수정 */}
+        <GoogleOAuthProvider clientId={clientId}> 
             <Layout>
                 <div className={styles.wrapLogin}>
                     <div className={styles.loginMain}>
@@ -110,13 +114,13 @@ const Login = () => {
                                         <input type="submit" value="로그인" />
                                     </li>
 
-                                    {/* Google 로그인 버튼 추가 */}
+                                    {/* Google 로그인 버튼 */}
                                     <li className={styles.googleLogin}>
                                         <div className={styles.googleLoginWrapper}>
                                             <GoogleLogin
                                                 onSuccess={handleGoogleSuccess}
                                                 onError={handleGoogleFailure}
-                                                width="100%" // 버튼 크기 자동 조정
+                                                width="100%"
                                             />
                                         </div>
                                     </li>

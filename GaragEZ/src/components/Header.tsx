@@ -1,9 +1,31 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { FaShoppingCart, FaSignInAlt, FaUserPlus } from "react-icons/fa"; // 로그인 아이콘
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { FaShoppingCart, FaSignInAlt, FaUserPlus, FaSignOutAlt } from "react-icons/fa"; // 로그아웃 아이콘 추가
 import styles from "../styles/Header.module.css";
 
 const Header: React.FC = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState("");
+  const navigate = useNavigate();
+
+  // ✅ 로그인 상태 확인
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("userId");
+    if (storedUserId) {
+      setIsLoggedIn(true);
+      setUserId(storedUserId);
+    }
+  }, []);
+
+  // ✅ 로그아웃 함수
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    setIsLoggedIn(false);
+    navigate("/"); // 홈으로 이동
+    window.location.reload(); // 새로고침
+  };
+
   return (
     <header className={styles.header}>
       <nav className={styles.nav}>
@@ -66,18 +88,31 @@ const Header: React.FC = () => {
           </div>
         </div>
 
-        {/* 로그인 버튼 */}
+        {/* 로그인 상태에 따라 다른 UI 표시 */}
         <div className={styles.authButtons}>
-
-        <Link to="/login" className={styles.loginButton} title="로그인">
-          <FaSignInAlt className={styles.loginIcon} />
-        </Link>
-        <Link to="/signup" className={styles.signupButton} title="회원가입">
-          <FaUserPlus className={styles.signupIcon} />
-        </Link>
-        <Link to="/cart" className={styles.cartButton} title="장바구니">
-          <FaShoppingCart className={styles.cartIcon} /> 
-        </Link>
+          {isLoggedIn ? (
+            <>
+              <span className={styles.welcomeText}>{userId}님 환영합니다</span>
+              <Link to="/cart" className={styles.cartButton} title="장바구니">
+                <FaShoppingCart className={styles.cartIcon} />
+              </Link>
+              <button onClick={handleLogout} className={styles.logoutButton} title="로그아웃">
+                <FaSignOutAlt className={styles.logoutIcon} />
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className={styles.loginButton} title="로그인">
+                <FaSignInAlt className={styles.loginIcon} />
+              </Link>
+              <Link to="/signup" className={styles.signupButton} title="회원가입">
+                <FaUserPlus className={styles.signupIcon} />
+              </Link>
+              <Link to="/cart" className={styles.cartButton} title="장바구니">
+                <FaShoppingCart className={styles.cartIcon} />
+              </Link>
+            </>
+          )}
         </div>
       </nav>
     </header>
