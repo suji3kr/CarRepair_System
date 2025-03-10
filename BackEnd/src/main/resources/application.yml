@@ -38,7 +38,7 @@ spring:
 
 logging:
   level:
-    root: DEBUG
+#    root: DEBUG
     org:
       thymeleaf: DEBUG
       hibernate:
