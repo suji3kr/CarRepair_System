@@ -4,13 +4,13 @@ import { Part } from "../types/part";  // Part 타입 임포트
 const API_BASE_URL = "http://localhost:8094/api/parts";
 
 // ✅ 모든 부품 가져오기
-export const fetchParts = async () => {
+export const fetchParts = async (): Promise<Part[]> => {
   try {
     const response = await axios.get(API_BASE_URL);
     return response.data;
   } catch (error) {
     console.error("❌ [fetchParts] API 요청 오류:", error);
-    return [];
+    return [];  // 에러 발생 시 빈 배열 반환
   }
 };
 

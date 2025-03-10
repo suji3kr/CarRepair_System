@@ -22,10 +22,11 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserService userService; // 🔹 UserService를 주입받습니다.
+    private final CustomUserDetailsService customUserDetailsService;
 
     public AuthResponse authenticate(LoginRequest request) {
         // 🔹 UserService를 활용하여 Spring Security 방식으로 사용자 로드
-        UserDetails userDetails = userService.loadUserByUsername(request.getUser_id()); // UserService 사용
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(request.getUser_id()); // UserService 사용
 
         if (userDetails == null || !passwordEncoder.matches(request.getPassword(), userDetails.getPassword())) {
             throw new BadCredentialsException("Invalid email or password");

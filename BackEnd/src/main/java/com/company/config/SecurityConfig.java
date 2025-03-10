@@ -9,7 +9,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -43,14 +42,14 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable) // ✅ CSRF 보호 비활성화
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // ✅ JWT 기반 세션 없음
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/api/auth/**", "/api/users/**","api/signup/**", // ✅ 로그인 & 회원가입 API 허용
-                                "/api-docs/**", "/swagger-ui/**", // ✅ Swagger 허용
-                                "/api/payment/**",
-//                                "/api/parts/**", // ✅ 부품 관련 API 인증 없이 허용
-                                "/api/store/**" // ✅ 판매점 관련 API 인증 없이 허용
-                        ).permitAll()
-                        .anyRequest().authenticated()
+                                .requestMatchers(
+                                        "/api/auth/**", "/api/users/**","api/signup/**", // ✅ 로그인 & 회원가입 API 허용
+                                        "/api-docs/**", "/swagger-ui/**", // ✅ Swagger 허용
+                                        "/api/payment/**",
+                                        "/api/parts/**", // ✅ 부품 관련 API 인증 없이 허용
+                                        "/api/store/**" // ✅ 판매점 관련 API 인증 없이 허용
+                                ).permitAll()
+                                .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(new JwtTokenFilter(jwtTokenProvider, userDetailsService),

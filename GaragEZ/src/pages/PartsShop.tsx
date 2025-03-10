@@ -5,13 +5,13 @@ import styles from "../styles/PartsShop.module.css";
 import Layout from "../components/Layout";
 import { fetchParts } from "../services/partService";
 import { Skeleton } from "@mui/material";
-import { Part } from "../types/PartsShop";
+import { Part } from "../types/part";
 
-const categories = ["Engine", "Brakes", "Ignition", "CPU"];
+const categories = ["엔진오일", "타이어", "와이퍼", "기타"];
 
 const PartsShop: React.FC = () => {
   const navigate = useNavigate();
-  const [selectedCategory, setSelectedCategory] = useState<string>("Engine");
+  const [selectedCategory, setSelectedCategory] = useState<string>("엔진오일");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [parts, setParts] = useState<Part[]>([]);
@@ -27,15 +27,16 @@ const PartsShop: React.FC = () => {
         console.error("Error fetching parts:", error);
         setIsLoading(false);
       });
-  }, []);
+    }, [selectedCategory]);  // selectedCategory가 변경될 때마다 다시 호출
 
   const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
-    setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }, 100);
+    if (newPage !== currentPage) {
+      setCurrentPage(newPage);
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }, 100);
+    }
   };
-
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
     setCurrentPage(1); // 페이지 초기화
@@ -79,9 +80,10 @@ const PartsShop: React.FC = () => {
                       onClick={() => navigate(`/part/${part.id}`)}
                     >
                       <img
-                        src={`https://picsum.photos/120/120?random=${part.id}`}
+                        src={`/images/${part.imageUrl}`}
                         alt={part.name}
                       />
+
                       <div className={styles.itemInfo}>
                         <p className={styles.itemName} title={part.name}>
                           {part.name.length > 14 ? `${part.name.slice(0, 14)}...` : part.name}

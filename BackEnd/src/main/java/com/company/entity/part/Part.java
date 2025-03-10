@@ -16,6 +16,7 @@ public class Part {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
     private String category;
     private double price;
@@ -24,4 +25,6 @@ public class Part {
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    private String imageUrl;  // 부품 이미지 URL (선택적 필드 추가)
 }

@@ -2,6 +2,7 @@ package com.company.controller;
 
 import com.company.entity.part.Part;
 import com.company.repository.PartRepository;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,10 +20,12 @@ public class PartController {
         this.partRepository = partRepository;
     }
 
-    // 🔹 1. 모든 부품 조회
+    // 🔹 1. 모든 부품 조회 (페이지네이션 추가)
     @GetMapping
-    public ResponseEntity<List<Part>> getAllParts() {
-        List<Part> parts = partRepository.findAll();
+    public ResponseEntity<List<Part>> getAllParts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        List<Part> parts = partRepository.findAll(PageRequest.of(page, size)).getContent();
         return ResponseEntity.ok(parts);
     }
 

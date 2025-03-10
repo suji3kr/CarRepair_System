@@ -20,19 +20,11 @@ import java.util.ArrayList;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserService implements UserDetailsService {
+public class UserService {
 
     private final UserRepository userRepository;
     private final VehicleRepository vehicleRepository;
     private final PasswordEncoder passwordEncoder;
-
-    // 사용자 정보를 로드하는 메소드
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), new ArrayList<>());
-    }
 
     // 사용자 등록 메소드
     @Transactional

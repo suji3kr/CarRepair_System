@@ -6,3 +6,4 @@ export interface Part {
   stock: number;  // 부품 재고
   imageUrl?: string;  // 부품 이미지 URL (선택적)
 }
+

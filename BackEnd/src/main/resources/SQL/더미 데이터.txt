@@ -12,7 +12,7 @@ select * from approvals;
 select * from maintenance_records;
 select * from reviews;
 select * from payments;
-
+-- --------------- 부품 더미 데이터 하단에 추가 해서 합함 --
 
 
 -- 1. 사용자 (users)
@@ -41,13 +41,65 @@ VALUES
   ((SELECT id FROM users WHERE user_id = 'bob456'), (SELECT id FROM vehicles WHERE vin = 'VIN000003')),
   ((SELECT id FROM users WHERE user_id = 'johnDoe'), (SELECT id FROM vehicles WHERE vin = 'VIN123456'));
 
--- 3. 부품 (parts)
-INSERT INTO parts (name, category, price, stock)
-VALUES
-  ('Oil Filter', 'Engine', 15.50, 100),
-  ('Brake Pad', 'Brakes', 45.00, 50),
-  ('Air Filter', 'Engine', 20.00, 80),
-  ('Spark Plug', 'Ignition', 10.00, 200);
+-- 부품 테이블에 엔진오일 데이터 삽입 (이미지 URL 추가)
+INSERT INTO parts (name, category, price, stock, created_at, image_url) VALUES
+-- 🚗 엔진오일 (30개)
+('모빌1 5W30 합성엔진오일', '엔진오일', 45000, 100, NOW(), '모빌1_5W30_합성엔진오일.jpg'),
+('쉘 힐릭스 울트라 5W40', '엔진오일', 55000, 80, NOW(), '쉘_힐릭스_울트라_5W40.jpg'),
+('캐스트롤 EDGE 0W20', '엔진오일', 60000, 90, NOW(), '캐스트롤_EDGE_0W20.jpg'),
+('SK ZIC X7 5W30', '엔진오일', 48000, 120, NOW(), 'SK_ZIC_X7_5W30.jpg'),
+('불스원 G-Tech 0W20', '엔진오일', 53000, 70, NOW(), '불스원_G-Tech_0W20.jpg'),
+('모빌 슈퍼 3000 X1 5W40', '엔진오일', 47000, 85, NOW(), '모빌_슈퍼_3000_X1_5W40.jpg'),
+('암스오일 시그니처 시리즈 0W30', '엔진오일', 69000, 60, NOW(), '암스오일_시그니처_시리즈_0W30.jpg'),
+('리퀴몰리 TOP TEC 4200 5W30', '엔진오일', 72000, 50, NOW(), '리퀴몰리_TOP_TEC_4200_5W30.jpg'),
+('STP 엔진오일 5W30', '엔진오일', 38000, 110, NOW(), 'STP_엔진오일_5W30.jpg'),
+('쉘 HX8 5W40', '엔진오일', 49000, 95, NOW(), '쉘_HX8_5W40.jpg'),
+('가솔린 프로텍트 5W30', '엔진오일', 52000, 75, NOW(), '가솔린_프로텍트_5W30.jpg'),
+('캐스트롤 MAGNATEC 10W40', '엔진오일', 46000, 65, NOW(), '캐스트롤_MAGNATEC_10W40.jpg'),
+('토탈쿼츠 9000 5W40', '엔진오일', 58000, 55, NOW(), '토탈쿼츠_9000_5W40.jpg'),
+('ZIC TOP 0W20', '엔진오일', 57000, 45, NOW(), 'ZIC_TOP_0W20.jpg'),
+('불스원 7MAX 5W30', '엔진오일', 39000, 85, NOW(), '불스원_7MAX_5W30.jpg'),
+('모튤 8100 X-Clean 5W40', '엔진오일', 75000, 50, NOW(), '모튤_8100_XClean_5W40.jpg'),
+('파워룩스 하이브리드 5W30', '엔진오일', 62000, 60, NOW(), '파워룩스_하이브리드_5W30.jpg'),
+('모빌1 ESP 0W30', '엔진오일', 71000, 45, NOW(), '모빌1_ESP_0W30.jpg'),
+('쉘ADVANCE 4T Ultra 10W40', '엔진오일', 54000, 85, NOW(), '쉘_ADVANCE_4T_Ultra_10W40.jpg'),
+('ZIC Racing 5W40', '엔진오일', 68000, 55, NOW(), 'ZIC_Racing_5W40.jpg');
+
+
+-- 🚘 타이어 (30개)
+INSERT INTO parts (name, category, price, stock, created_at, imageUrl) VALUES
+('한국타이어 벤투스 S1 노블2 225/45R17', '타이어', 150000, 30, NOW(), 'https://example.com/images/hankook_ventus_s1_noble2.jpg'),
+('미쉐린 프라이머시 4 205/55R16', '타이어', 170000, 25, NOW(), 'https://example.com/images/michelin_primacy_4.jpg'),
+('금호타이어 마제스티9 235/45R18', '타이어', 160000, 40, NOW(), 'https://example.com/images/kumho_majesty9.jpg'),
+('넥센타이어 엔페라 AU7 225/55R17', '타이어', 140000, 35, NOW(), 'https://example.com/images/nexen_ensa_au7.jpg'),
+('콘티넨탈 울트라콘택트 UC6 225/45R17', '타이어', 180000, 20, NOW(), 'https://example.com/images/continental_ultracontact_uc6.jpg'),
+('브리지스톤 투란자 T005 205/60R16', '타이어', 175000, 22, NOW(), 'https://example.com/images/bridgestone_turanza_t005.jpg'),
+
+-- 🛞 와이퍼 (30개)
+('보쉬 에어로트윈 와이퍼 24인치', '와이퍼', 25000, 200, NOW(), 'https://example.com/images/bosch_aerotwin_24.jpg'),
+('불스원 레인OK 하이브리드 와이퍼 22인치', '와이퍼', 18000, 150, NOW(), 'https://example.com/images/bullsone_rainok_hybrid_22.jpg'),
+('피아 와이퍼 블레이드 26인치', '와이퍼', 22000, 180, NOW(), 'https://example.com/images/pia_wiper_blade_26.jpg'),
+('불스원 초고성능 와이퍼 21인치', '와이퍼', 19000, 130, NOW(), 'https://example.com/images/bullsone_highperformance_21.jpg'),
+('3M 실리콘 와이퍼 23인치', '와이퍼', 24000, 110, NOW(), 'https://example.com/images/3m_silicone_wiper_23.jpg'),
+('보쉬 클리어 어드밴티지 20인치', '와이퍼', 20000, 160, NOW(), 'https://example.com/images/bosch_clear_advantage_20.jpg'),
+
+-- ⚙️ 기타 (기타 자동차 부품) (30개)
+('BOSCH 자동차 배터리 80Ah', '기타', 180000, 50, NOW(), 'https://example.com/images/bosch_car_battery_80ah.jpg'),
+('3M 차량용 공기청정기', '기타', 120000, 70, NOW(), 'https://example.com/images/3m_air_purifier.jpg'),
+('불스원 냉각수 첨가제', '기타', 30000, 100, NOW(), 'https://example.com/images/bullsone_coolant_additive.jpg'),
+('파나소닉 차량용 블랙박스', '기타', 250000, 40, NOW(), 'https://example.com/images/panasonic_car_dvr.jpg'),
+('불스원 연료첨가제 불스파워', '기타', 35000, 85, NOW(), 'https://example.com/images/bullsone_fuel_additive.jpg'),
+('브리지스톤 타이어 공기압 측정기', '기타', 75000, 60, NOW(), 'https://example.com/images/bridgestone_air_pressure_gauge.jpg'),
+('보쉬 차량용 LED 전구', '기타', 55000, 90, NOW(), 'https://example.com/images/bosch_car_led_bulb.jpg'),
+('카렉스 차량용 방향제', '기타', 22000, 150, NOW(), 'https://example.com/images/cares_car_air_freshener.jpg'),
+('3M 차창 틴팅 필름', '기타', 175000, 55, NOW(), 'https://example.com/images/3m_window_tinting_film.jpg'),
+('불스원 실내크리너', '기타', 28000, 110, NOW(), 'https://example.com/images/bullsone_interior_cleaner.jpg'),
+('STP 엔진 코팅제', '기타', 45000, 80, NOW(), 'https://example.com/images/stp_engine_coating.jpg'),
+('불스원 에어컨 필터', '기타', 40000, 120, NOW(), 'https://example.com/images/bullsone_ac_filter.jpg'),
+('오토프로 카매트', '기타', 70000, 95, NOW(), 'https://example.com/images/autopro_car_mat.jpg'),
+('차량용 스마트폰 거치대', '기타', 35000, 140, NOW(), 'https://example.com/images/car_phone_holder.jpg'),
+('불스원 유막제거제', '기타', 32000, 130, NOW(), 'https://example.com/images/bullsone_oil_remover.jpg');
+
 
 -- 4. 부품 판매점 (store)
 -- part_id는 위의 parts 테이블의 id를 참조
@@ -137,4 +189,4 @@ VALUES
   (3, 200.00, 'ONLINE', 'FAILED');
 
 
-  select * from reviews;
+

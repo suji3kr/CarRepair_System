@@ -1,6 +1,5 @@
 package com.company.security;
 
-import com.company.entity.role.Role;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,8 +13,12 @@ import java.util.Date;
 @Component // Bean 등록
 public class JwtTokenProvider {
 
-    private final SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private final SecretKey secretKey;
     private final long validityInMilliseconds = 3600000; // 1시간
+
+    public JwtTokenProvider() {
+        this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    }
 
     public String createToken(String email) {
         Claims claims = Jwts.claims().setSubject(email);
