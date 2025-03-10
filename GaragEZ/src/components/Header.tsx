@@ -56,7 +56,7 @@ const Header: React.FC = () => {
                 <div className={styles.category}>
                   <h3>회사소개</h3>
                   <ul>
-                    <li><Link to="/menu1/history">회사 연혁</Link></li>
+                    <li><Link to="/menu1/CompanyHistory">회사 연혁</Link></li>
                     <li><Link to="/menu1/team">팀 소개</Link></li>
                   </ul>
                 </div>
@@ -64,7 +64,7 @@ const Header: React.FC = () => {
                   <h3>견적·상담</h3>
                   <ul>
                     <li><Link to="/menu2/estimate">견적 요청</Link></li>
-                    <li><Link to="/menu2/contact">문의하기</Link></li>
+                    <li><Link to="/contact">문의하기</Link></li>
                   </ul>
                 </div>
                 <div className={styles.category}>
@@ -77,15 +77,15 @@ const Header: React.FC = () => {
                 <div className={styles.category}>
                   <h3>이벤트</h3>
                   <ul>
-                    <li><Link to="/menu4/ongoing">진행 중 이벤트</Link></li>
-                    <li><Link to="/menu4/past">지난 이벤트</Link></li>
+                    <li><Link to="/event">진행 중 이벤트</Link></li>
+                    <li><Link to="/PastEvents">지난 이벤트</Link></li>
                   </ul>
                 </div>
                 <div className={styles.category}>
                   <h3>가까운 가게</h3>
                   <ul>
-                    <li><Link to="/menu5/map">지도 검색</Link></li>
-                    <li><Link to="/menu5/list">목록 보기</Link></li>
+                    <li><Link to="/map">지도 검색</Link></li>
+                    <li><Link to="/StoreList">목록 보기</Link></li>
                   </ul>
                 </div>
               </div>

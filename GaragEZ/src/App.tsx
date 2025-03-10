@@ -16,6 +16,10 @@ import Event from "./pages/Event";
 import Map from "./pages/Map";
 import PartDetail from "./pages/PartDetail";
 import Cart from "./pages/Cart";
+import CompanyHistory from "./menu1/CompanyHistory";
+import StoreList from "./pages/StoreList";
+import Team from "./menu1/Team";
+import PastEvents from "./pages/PastEvents";
 
 
 
@@ -65,6 +69,11 @@ const LayoutWrapper: React.FC = () => {
         <Route path="/Map" element={<Map />} />
         <Route path="/part/:id" element={<PartDetail />} /> {/* 상세 페이지 추가 */}
         <Route path="/cart" element={<Cart />} />
+        <Route path="/menu1/team" element={<Team />} />
+        <Route path="/menu1/CompanyHistory" element={<CompanyHistory />} />
+        <Route path="/StoreList" element={<StoreList />} />
+        <Route path="/PastEvents" element={<PastEvents />} />
+
 
       </Routes>
     </Layout>

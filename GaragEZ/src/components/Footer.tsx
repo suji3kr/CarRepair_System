@@ -53,7 +53,7 @@ const Footer = () => {
             <div className={styles.footerColumn}>
               <h3>회사소개</h3>
               <ul>
-                <li><Link to="/menu1/history">회사 연혁</Link></li>
+                <li><Link to="/menu1/CompanyHistory">회사 연혁</Link></li>
                 <li><Link to="/menu1/team">팀 소개</Link></li>
               </ul>
             </div>
