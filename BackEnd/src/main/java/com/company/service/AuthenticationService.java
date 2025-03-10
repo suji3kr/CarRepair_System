@@ -10,7 +10,6 @@ import com.company.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -22,11 +21,11 @@ public class AuthenticationService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
-    private final UserDetailsService userDetailsService; // 🔹 추가하여 Security와 통합
+    private final UserService userService; // 🔹 UserService를 주입받습니다.
 
     public AuthResponse authenticate(LoginRequest request) {
-        // 🔹 UserDetailsService를 활용하여 Spring Security 방식으로 사용자 로드
-        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUser_id());
+        // 🔹 UserService를 활용하여 Spring Security 방식으로 사용자 로드
+        UserDetails userDetails = userService.loadUserByUsername(request.getUser_id()); // UserService 사용
 
         if (userDetails == null || !passwordEncoder.matches(request.getPassword(), userDetails.getPassword())) {
             throw new BadCredentialsException("Invalid email or password");
@@ -44,6 +43,7 @@ public class AuthenticationService {
                 .orElseGet(() -> {
                     User newUser = new User();
                     newUser.setEmail(email);
+                    newUser.setRole(Role.USER);
                     return userRepository.save(newUser);
                 });
 

@@ -4,6 +4,9 @@ import lombok.Data;
 
 @Data
 public class LoginRequest {
-    private String user_id;  // ID 대신 email을 사용
+    private String user_id;
     private String password;
+
+    // Getter, Setter
 }
+

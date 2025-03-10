@@ -8,21 +8,36 @@ import com.company.repository.UserRepository;
 import com.company.repository.VehicleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final VehicleRepository vehicleRepository;
     private final PasswordEncoder passwordEncoder;
 
+    // 사용자 정보를 로드하는 메소드
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), new ArrayList<>());
+    }
+
+    // 사용자 등록 메소드
     @Transactional
     public User registerUser(UserSignupRequest request) {
+
         // 사용자 정보 저장
         User user = new User();
         user.setUserId(request.getUser_id());
@@ -34,17 +49,19 @@ public class UserService {
 
         User savedUser = userRepository.save(user); // 저장 후 사용자 정보 반환
 
+        // 차량 정보가 있는 경우 차량 저장
         if (request.getCarModel() != null) {
             Vehicle vehicle = new Vehicle();
             vehicle.setOwner(savedUser);  // 사용자 정보를 차량의 owner_id로 설정
             vehicle.setMake(request.getCarMake());
             vehicle.setModel(request.getCarModel());
-            vehicle.setYear(Integer.parseInt( request.getYear()));
+            vehicle.setYear(Integer.parseInt(request.getYear()));
             vehicle.setVin(request.getVin());
             vehicle.setCarNumber(request.getCarNumber());
             vehicleRepository.save(vehicle); // 차량 정보 저장
         }
-        savedUser.setPassword("");
+
+        savedUser.setPassword("");  // 비밀번호는 반환하지 않음
         return savedUser;  // 저장된 사용자 객체 반환
     }
 }

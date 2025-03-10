@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Part } from "../types/part";  // Part 타입 임포트
 
 const API_BASE_URL = "http://localhost:8094/api/parts";
 
@@ -24,8 +25,8 @@ export const fetchPartById = async (id: number) => {
   }
 };
 
-// ✅ 부품 추가 (Create)
-export const createPart = async (part: { name: string; category: string; price: number; stock: number }) => {
+// 부품 추가 (Create)
+export const createPart = async (part: Part) => {
   try {
     const response = await axios.post(API_BASE_URL, part);
     return response.data;
