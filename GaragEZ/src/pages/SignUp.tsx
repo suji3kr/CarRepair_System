@@ -4,29 +4,33 @@ import styles from "../styles/SignUp.module.css"; // CSS Modules 사용
 import { FormData } from "../types/Signup";
 import agreement from '../text/agreement.txt?raw';
 import axios from "axios"; // axios 추가
+import { useNavigate } from "react-router-dom";
 
 const API_URL = "http://localhost:8094/api/users/signup"; // Spring Boot API 엔드포인트 (필요에 따라 수정)
 
-const SignUp: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>({
-    user_id: "",
-    password: "",
-    name: "",
-    email: "",
-    phone: "",
-    carMake: "",
-    carModel: "",
-    carNumber: "",
-    year: "",
-    vin: "",
-    coOwner: false,
-    coOwnerName: "",
-    coOwnerPhone: "",
-    termsAgreed: false,
-  });
+// ✅ 초기 폼 상태 정의
+const initialFormData: FormData = {
+  userId: "",
+  password: "",
+  name: "",
+  email: "",
+  phone: "",
+  carMake: "",
+  carModel: "",
+  carNumber: "",
+  year: "",
+  vin: "",
+  coOwner: false,
+  coOwnerName: "",
+  coOwnerPhone: "",
+  termsAgreed: false,
+};
 
+const SignUp: React.FC = () => {
+  const [formData, setFormData] = useState<FormData>(initialFormData);
   const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
   const termsRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate(); // ✅ 페이지 이동을 위한 navigate 함수
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
@@ -36,6 +40,11 @@ const SignUp: React.FC = () => {
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
+  };
+
+  // ✅ "다시 작성" 버튼 클릭 시 폼을 초기 상태로 리셋
+  const handleReset = () => {
+    setFormData(initialFormData);
   };
 
   // 스크롤 이벤트 감지
@@ -77,11 +86,17 @@ const SignUp: React.FC = () => {
   
     try {
       await signUp(formData);
-      console.log("회원가입 정보:", formData);
       alert("회원가입이 완료되었습니다!");
-      // window.location.href = "/login"; // 리다이렉션 추가 가능
-    } catch (error) {
-      alert("회원가입 중 오류가 발생했습니다: " + (error.response?.data?.message || "서버 오류"));
+      navigate("/login"); // ✅ 회원가입 후 로그인 페이지로 이동
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data?.message || "서버 오류가 발생했습니다.";
+        alert(`회원가입 중 오류가 발생했습니다: ${errorMessage}`);
+      } else if (error instanceof Error) {
+        alert(`회원가입 중 오류가 발생했습니다: ${error.message}`);
+      } else {
+        alert("알 수 없는 오류가 발생했습니다.");
+      }
     }
   };
 
@@ -94,7 +109,7 @@ const SignUp: React.FC = () => {
         <form onSubmit={handleSubmit} className={styles.signupForm}>
           <div className={styles.signupFormGroup}>
             <label>아이디</label>
-            <input type="text" name="user_id" value={formData.user_id} onChange={handleChange} required />
+            <input type="text" name="userId" value={formData.userId} onChange={handleChange} required />
           </div>
 
           <div className={styles.signupFormGroup}>
@@ -199,7 +214,9 @@ const SignUp: React.FC = () => {
 
           <div className={styles.signupFormActions}>
             <button type="submit" className={styles.signupButton}>회원가입</button>
-            <button type="reset" className={styles.signupButton} onClick={() => setFormData({ ...formData, termsAgreed: false })}>다시 작성</button>
+            <button type="reset" className={styles.signupButton} onClick={handleReset}>
+                다시 작성
+            </button>
           </div>
         </form>
       </div>
