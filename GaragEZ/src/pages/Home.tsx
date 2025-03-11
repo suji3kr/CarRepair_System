@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../styles/home.module.css"; // ✅ CSS Modules 사용
+import Header from "../components/Header";
 
 const easeInOutCubic = (t: number) => {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
@@ -107,6 +108,7 @@ const Home: React.FC = () => {
 
   return (
     <div style={{ width: "100vw" }}>
+      <Header /> 
       {/* ✅ 목차를 화면에 고정 */}
       <div className={styles.navContainer}>
         {["Main", "About Us", "Consult", "PartShop"].map((title, index) => (
