@@ -67,7 +67,7 @@ INSERT INTO parts (name, category, price, stock, created_at, image_url) VALUES
 
 
 -- 🚘 타이어 (30개)
-INSERT INTO parts (name, category, price, stock, created_at, imageUrl) VALUES
+INSERT INTO parts (name, category, price, stock, created_at, image_url) VALUES
 ('한국타이어 벤투스 S1 노블2 225/45R17', '타이어', 150000, 30, NOW(), 'https://example.com/images/hankook_ventus_s1_noble2.jpg'),
 ('미쉐린 프라이머시 4 205/55R16', '타이어', 170000, 25, NOW(), 'https://example.com/images/michelin_primacy_4.jpg'),
 ('금호타이어 마제스티9 235/45R18', '타이어', 160000, 40, NOW(), 'https://example.com/images/kumho_majesty9.jpg'),
