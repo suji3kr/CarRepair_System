@@ -1,7 +1,7 @@
 // Spring Boot로 보낼 회원가입 데이터 타입 정의
 export interface FormData {
   // 사용자
-  user_id: string;
+  userId: string;
   password: string;
   name: string;
   email: string;
