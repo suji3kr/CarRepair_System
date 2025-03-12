@@ -24,15 +24,26 @@ VALUES
   ('johnDoe', 'John Doe', 'johndoe@example.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-1234-5678', 'USER');
 -- 비번은 항상 password123
 
--- 2. 차량 정보 추가 (owner_id는 위에서 생성한 사용자의 id를 참조)
-INSERT INTO vehicles (owner_id, car_make, car_model, year, vin, car_number, co_owner, co_owner_name, co_owner_phone)
+-- 2. 차량 정보 추가 (car_id 포함)
+INSERT INTO vehicles (owner_id, car_id, car_make, car_model, year, vin, car_number)
 VALUES
-  ((SELECT id FROM users WHERE user_id = 'alice123'), 'Toyota', 'Corolla', 2015, 'VIN000001', '11가 1234', FALSE, NULL, NULL),
-  ((SELECT id FROM users WHERE user_id = 'alice123'), 'Honda', 'Civic', 2018, 'VIN000002', '22나 5678', FALSE, NULL, NULL),
-  ((SELECT id FROM users WHERE user_id = 'bob456'), 'Ford', 'Focus', 2017, 'VIN000003', '33다 9012', FALSE, NULL, NULL),
-  ((SELECT id FROM users WHERE user_id = 'johnDoe'), 'Hyundai', 'Sonata', 2020, 'VIN123456', '12가 3456', TRUE, 'Jane Doe', '010-5678-1234');
+  ((SELECT id FROM users WHERE user_id = 'alice123'),
+   (SELECT id FROM car WHERE car_make = 'Toyota' AND car_model = 'Corolla'),
+   'Toyota', 'Corolla', 2015, 'VIN000001', '11가 1234'),
 
--- 3. 사용자 차량 관계 설정 (M:N 관계)
+  ((SELECT id FROM users WHERE user_id = 'alice123'),
+   (SELECT id FROM car WHERE car_make = 'Honda' AND car_model = 'Civic'),
+   'Honda', 'Civic', 2018, 'VIN000002', '22나 5678'),
+
+  ((SELECT id FROM users WHERE user_id = 'bob456'),
+   (SELECT id FROM car WHERE car_make = 'Ford' AND car_model = 'Focus'),
+   'Ford', 'Focus', 2017, 'VIN000003', '33다 9012'),
+
+  ((SELECT id FROM users WHERE user_id = 'johnDoe'),
+   (SELECT id FROM car WHERE car_make = 'Hyundai' AND car_model = 'Sonata'),
+   'Hyundai', 'Sonata', 2020, 'VIN123456', '12가 3456');
+
+-- 3.  사용자 차량 관계 설정 (M:N 관계)
 INSERT INTO user_vehicles (user_id, vehicle_id)
 VALUES
   ((SELECT id FROM users WHERE user_id = 'alice123'), (SELECT id FROM vehicles WHERE vin = 'VIN000001')),
@@ -112,7 +123,7 @@ VALUES
 
 -- 6. 정비 예약 (appointments)
 -- user_id와 vehicle_id 참조; scheduled_date는 TIMESTAMP 형식
-INSERT INTO appointments (user_id, vehicle_id, service_type, status, scheduled_date)
+INSERT INTO appointments (user_id, vehicle_id, service_type, status, appointments_date)
 VALUES
   (1, 1, 'Oil Change', '예약', '2025-03-01 10:00:00'),
   (2, 3, 'Brake Inspection', '예약', '2025-03-02 14:00:00');
@@ -180,14 +191,6 @@ VALUES
   (2, 75.50, 'CASH', 'PENDING'),
   (3, 200.00, 'ONLINE', 'FAILED');
 
-
-
-create table car (
-  id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  car_model VARCHAR(100) NOT NULL,
-  car_make VARCHAR(100),
-  image_url VARCHAR(255)  -- 부품 이미지 URL을 저장하는 필드 추가
-);
 
 INSERT INTO car (car_model, image_url, car_make) VALUES
 ('아반떼', 'avante.jpg', '현대'),
@@ -263,3 +266,6 @@ INSERT INTO car (car_model, image_url, car_make) VALUES
 ('토레스_바이퓨얼_택시', '토레스_바이퓨얼_택시.jpg', '쌍용'),
 ('토레스_밴', '토레스_밴.jpg', '쌍용'),
 ('티볼리', '티볼리.jpg', '쌍용');
+
+
+

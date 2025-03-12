@@ -38,11 +38,20 @@ CREATE TABLE users (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- car 이미지 make제조사, model별 리스트
+create table car (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  car_model VARCHAR(100) NOT NULL,
+  car_make VARCHAR(100),
+  image_url VARCHAR(255)  -- 부품 이미지 URL을 저장하는 필드 추가
+);
 
--- 🚘 차량 테이블
+
+-- 🚘 차량 테이블 (개선 버전)
 CREATE TABLE vehicles (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
   owner_id BIGINT,
+  car_id BIGINT,  -- car 테이블과의 관계 추가
   car_make VARCHAR(100) NOT NULL,
   car_model VARCHAR(100) NOT NULL,
   year INT NOT NULL,
@@ -52,13 +61,18 @@ CREATE TABLE vehicles (
   co_owner BOOLEAN DEFAULT FALSE,
   co_owner_name VARCHAR(100) DEFAULT NULL,
   co_owner_phone VARCHAR(20) DEFAULT NULL,
-  FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
+  FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (car_id) REFERENCES car(id) ON DELETE SET NULL
 );
+
 
 
 -- 회원이 차량을 여러 대 소유할 수 있도록 user_vehicles 테이블을 만들어 1:N 관계를 형성합니다.
 -- 한 사용자가 여러 대의 차량을 등록할 수 있도록 다대다(M:N) 관계 해결
 -- 차량이 삭제되면 자동으로 해당 사용자의 user_vehicles 데이터도 삭제됨.
+
+--  유저의 고유 차량
+
 CREATE TABLE user_vehicles (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     user_id BIGINT NOT NULL,
@@ -111,7 +125,7 @@ CREATE TABLE appointments (
   vehicle_id BIGINT,
   service_type VARCHAR(100) NOT NULL,
   status ENUM('예약', '진행중', '완료') NOT NULL,
-  appointmentDate TIMESTAMP NOT NULL,  -예약 날짜
+  appointments_date TIMESTAMP NOT NULL,  -- 예약 날짜
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (vehicle_id) REFERENCES vehicles(id) ON DELETE CASCADE

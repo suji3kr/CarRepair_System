@@ -41,7 +41,7 @@ const Sidebar: React.FC = () => {
       </a>
 
       {/* 챗봇 */}
-      <a href="/chatbot" className={styles.iconWrapper}>
+      <a href="/chat-bot" className={styles.iconWrapper}>
         💬
         <p className={styles.text}>챗봇</p>
       </a>
