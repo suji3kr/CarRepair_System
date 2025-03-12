@@ -182,9 +182,6 @@ VALUES
   (3, 200.00, 'ONLINE', 'FAILED');
 
 
-
-drop table car;
-
 create table car (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(100) NOT NULL,

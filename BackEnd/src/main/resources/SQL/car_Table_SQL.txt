@@ -1,4 +1,4 @@
--- 🚗 차량 정비 시스템 데이터베이스 삭제 및 재생성
+-- 🚗 차량 정비 시스템 데이터 베이스 삭제 및 재생성
 SET FOREIGN_KEY_CHECKS=0;
 
 DROP TABLE IF EXISTS part_prices;
@@ -20,6 +20,7 @@ DROP TABLE IF EXISTS payments;
 DROP TABLE IF EXISTS ai_product;
 DROP TABLE IF EXISTS user_vehicles;
 DROP TABLE IF EXISTS contact_messages;
+DROP TABLE IF EXISTS car;
 
 
 SET FOREIGN_KEY_CHECKS=1;
@@ -66,7 +67,7 @@ CREATE TABLE user_vehicles (
     FOREIGN KEY (vehicle_id) REFERENCES vehicles(id) ON DELETE CASCADE
 );
 
-
+-- 🏪 부품 판매점(파트샵) 테이블
 CREATE TABLE parts (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(100) NOT NULL,
