@@ -26,6 +26,7 @@ public class UserService {
     // ✅ 일반 회원가입 메서드
     @Transactional
     public User registerUser(UserSignupRequest request) {
+
         // 🚨 중복된 userId 검사 (이미 존재하면 예외 발생)
         if (userRepository.existsByUserId(request.getUserId())) {
             throw new IllegalArgumentException("이미 존재하는 사용자 ID입니다.");
@@ -49,6 +50,16 @@ public class UserService {
 
         // ✅ 차량 정보가 있는 경우 차량 저장
         if (request.getCarModel() != null && request.getVin() != null) {
+            Vehicle vehicle = new Vehicle();
+            vehicle.setOwner(savedUser);  // 사용자 정보를 차량의 owner_id로 설정
+            vehicle.setCarMake(request.getCarMake());
+            vehicle.setCarModel(request.getCarModel());
+
+            // 🚨 year 변환 시 NumberFormatException 방지 (DTO에서 Integer로 변경)
+            vehicle.setYear(request.getYear());
+
+            vehicle.setVin(request.getVin());
+            vehicle.setCarNumber(request.getCarNumber());
             saveVehicleInfo(savedUser, request);
         }
 
@@ -89,8 +100,8 @@ public class UserService {
     private void saveVehicleInfo(User user, UserSignupRequest request) {
         Vehicle vehicle = new Vehicle();
         vehicle.setOwner(user);
-        vehicle.setMake(request.getCarMake());
-        vehicle.setModel(request.getCarModel());
+        vehicle.setCarMake(request.getCarMake());
+        vehicle.setCarModel(request.getCarModel());
         vehicle.setYear(request.getYear());
         vehicle.setVin(request.getVin());
         vehicle.setCarNumber(request.getCarNumber());
@@ -109,8 +120,8 @@ public class UserService {
     private void saveDefaultVehicle(User user) {
         Vehicle vehicle = new Vehicle();
         vehicle.setOwner(user);
-        vehicle.setMake("Unknown"); // 기본 차량 정보 설정
-        vehicle.setModel("Unknown");
+        vehicle.setCarMake("Unknown"); // 기본 차량 정보 설정
+        vehicle.setCarModel("Unknown");
         vehicle.setYear(0);
         vehicle.setVin("N/A");
         vehicle.setCarNumber("N/A");
