@@ -32,6 +32,7 @@ public class Vehicle {
     private String vin;
 
     private String carNumber;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 
@@ -39,6 +40,12 @@ public class Vehicle {
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MaintenanceRecord> maintenanceRecords;
 
+    // 공동 소유자 관련 정보
+    private boolean coOwner = false;
+    private String coOwnerName;
+    private String coOwnerPhone;
+
+    // 차량과 관련된 추가 메소드들을 정의할 수 있음
     public void setVehicle(Vehicle vehicle) {
     }
 }

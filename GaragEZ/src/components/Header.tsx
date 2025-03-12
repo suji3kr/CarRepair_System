@@ -50,7 +50,10 @@ const Header: React.FC = () => {
     setUserId(null);
     setUserEmail(null);
 
-    navigate("/"); // 홈으로 이동
+    // 로그아웃 알림 메시지
+    alert("로그아웃되었습니다. 다음에 또 방문해주세요!");
+    
+    navigate("/home"); // 홈으로 이동
     window.location.reload(); // 새로고침 (선택적)
   };
 

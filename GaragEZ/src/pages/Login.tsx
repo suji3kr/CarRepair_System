@@ -100,8 +100,23 @@ const Login = () => {
             const data: JwtResponse = await res.json();
             localStorage.setItem("token", data.token);
 
+            const userProfile = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+                headers: {
+                    Authorization: `Bearer ${response.credential}`,
+                },
+            });
+
+            if (!userProfile.ok) {
+                alert("사용자 프로필을 가져오는 데 실패했습니다.");
+                return;
+            }
+
+            const profileData = await userProfile.json();
+            const userEmail = profileData.email;
+
             // ✅ Google 로그인 성공 처리
-            handleLoginSuccess("GoogleUser", response.credential);
+            handleLoginSuccess("GoogleUser", userEmail);
+            
         } catch (error: unknown) {
             if (error instanceof Error) {
                 alert("Google 로그인 중 오류가 발생했습니다: " + error.message);
