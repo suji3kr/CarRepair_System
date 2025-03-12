@@ -1,21 +1,28 @@
-/* ✅ Layout.module.css */
+/* components/Layout.module.css */
 
-/* Layout 전체 스타일 */
+/* 전체 레이아웃 컨테이너 */
 .layout {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
 
-/* ✅ 스크롤바 숨김 (스크롤 기능 유지) */
+/* 헤더와 푸터 사이의 메인 영역을 Flex로 구성 */
+.contentWrapper {
+  display: flex;
+  flex: 1; /* 헤더/푸터를 제외한 영역 전체 차지 */
+}
+
+/* 메인 콘텐츠 영역 */
 .mainContent {
   flex: 1;
-  overflow-y: auto; /* 스크롤 가능하도록 설정 */
-  scrollbar-width: none; /* ✅ Firefox에서 스크롤바 숨김 */
-  -ms-overflow-style: none; /* ✅ IE, Edge에서 스크롤바 숨김 */
+  padding: 1rem;
 }
 
-/* ✅ Chrome, Safari, Edge에서 스크롤바 숨기기 */
-.mainContent::-webkit-scrollbar {
-  display: none;
+/* 사이드바 영역: LiveChat */
+.liveChatSidebar {
+  width: 320px;         /* 사이드바 고정 폭 */
+  border-left: 1px solid #ddd;
+  background-color: #f9f9f9;
+  padding: 1rem;
 }
