@@ -47,6 +47,8 @@ public class SecurityConfig {
                                         "/api-docs/**", "/swagger-ui/**", // ✅ Swagger 허용
                                         "/api/payment/**",
                                         "/api/parts/**", // ✅ 부품 관련 API 인증 없이 허용
+                                        "/api/cars/**",
+                                        "/images/**",
                                         "/api/store/**" // ✅ 판매점 관련 API 인증 없이 허용
                                 ).permitAll()
                                 .anyRequest().authenticated()

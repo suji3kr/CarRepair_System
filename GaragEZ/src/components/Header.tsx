@@ -1,34 +1,57 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaShoppingCart, FaSignInAlt, FaUserPlus, FaSignOutAlt } from "react-icons/fa";
+import { FaShoppingCart, FaUserPlus, FaSignOutAlt, FaUser } from "react-icons/fa";
 import styles from "../styles/Header.module.css";
 
 const Header: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userId, setUserId] = useState(""); // ✅ 일반 로그인 사용자 ID
-  const [userEmail, setUserEmail] = useState(""); // ✅ 구글 로그인 사용자 이메일
+  const [userId, setUserId] = useState<string | null>(null); // ✅ 일반 로그인 사용자 ID
+  const [userEmail, setUserEmail] = useState<string | null>(null); // ✅ 구글 로그인 사용자 이메일
   const navigate = useNavigate();
 
-  // ✅ 로그인 상태 확인
+  // ✅ 로그인 상태 확인 (localStorage 값 변경 시 즉시 반영)
   useEffect(() => {
-    const storedUserId = localStorage.getItem("userId"); // 일반 로그인 ID
-    const storedEmail = localStorage.getItem("userEmail"); // 구글 로그인 이메일
-
-    if (storedUserId || storedEmail) {
-      setIsLoggedIn(true);
-      setUserId(storedUserId || ""); // 일반 로그인 ID 저장
-      setUserEmail(storedEmail || ""); // 구글 로그인 이메일 저장
-    }
+    const checkLoginStatus = () => {
+      const storedUserId = localStorage.getItem("userId");
+      const storedEmail = localStorage.getItem("userEmail");
+  
+      if (storedUserId || storedEmail) {
+        setIsLoggedIn(true);
+        setUserId(storedUserId);
+        setUserEmail(storedEmail);
+      } else {
+        setIsLoggedIn(false);
+        setUserId(null);
+        setUserEmail(null);
+      }
+    };
+  
+    checkLoginStatus(); // 최초 실행
+  
+    // ✅ 다른 탭에서 localStorage 변경 감지
+    const storageListener = () => {
+      checkLoginStatus();
+    };
+  
+    window.addEventListener("storage", storageListener);
+  
+    return () => {
+      window.removeEventListener("storage", storageListener);
+    };
   }, []);
 
-  // ✅ 로그아웃 함수 (일반 & 구글 로그인 모두 처리)
+  // ✅ 로그아웃 함수
   const handleLogout = () => {
-    localStorage.removeItem("token"); // 일반 로그인 토큰 삭제
-    localStorage.removeItem("userId"); // 일반 로그인 ID 삭제
-    localStorage.removeItem("userEmail"); // 구글 로그인 이메일 삭제
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userEmail");
+
     setIsLoggedIn(false);
+    setUserId(null);
+    setUserEmail(null);
+
     navigate("/"); // 홈으로 이동
-    window.location.reload(); // 새로고침
+    window.location.reload(); // 새로고침 (선택적)
   };
 
   return (
@@ -39,6 +62,7 @@ const Header: React.FC = () => {
             <img src="/images/gez-logo(w).png" alt="GarageEZ Logo" />
           </Link>
         </div>
+
 
         <div className={styles.menuWrapper}>
           <ul className={styles.menu}>
@@ -65,6 +89,7 @@ const Header: React.FC = () => {
                   <ul>
                     <li><Link to="/menu2/estimate">견적 요청</Link></li>
                     <li><Link to="/contact">문의하기</Link></li>
+                    <li><Link to="/Cars">차량별 문의</Link></li>
                   </ul>
                 </div>
                 <div className={styles.category}>
@@ -93,11 +118,11 @@ const Header: React.FC = () => {
           </div>
         </div>
 
+
         {/* ✅ 로그인 상태에 따라 UI 변경 */}
         <div className={styles.authButtons}>
           {isLoggedIn ? (
             <>
-              {/* ✅ 일반 로그인 & 구글 로그인 둘 다 지원 */}
               <span className={styles.welcomeText}>
                 {userEmail ? `${userEmail}님 환영합니다` : `${userId}님 환영합니다`}
               </span>
@@ -112,13 +137,10 @@ const Header: React.FC = () => {
           ) : (
             <>
               <Link to="/login" className={styles.loginButton} title="로그인">
-                <FaSignInAlt className={styles.loginIcon} />
+                <FaUser className={styles.loginIcon} />
               </Link>
               <Link to="/signup" className={styles.signupButton} title="회원가입">
                 <FaUserPlus className={styles.signupIcon} />
-              </Link>
-              <Link to="/cart" className={styles.cartButton} title="장바구니">
-                <FaShoppingCart className={styles.cartIcon} />
               </Link>
             </>
           )}

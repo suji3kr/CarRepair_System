@@ -22,7 +22,11 @@ import CompanyHistory from "./menu1/CompanyHistory";
 import StoreList from "./pages/StoreList";
 import Team from "./menu1/Team";
 import PastEvents from "./pages/PastEvents";
+<<<<<<< HEAD
 import LiveChat from "./components/LiveChat"; // 실시간 라이브챗 컴포넌트
+=======
+import Cars from "./pages/Cars";
+>>>>>>> 129f8272dda37779efb0978641d43badaabbe794
 
 // Layout: Header, Footer, 메인 콘텐츠, 그리고 Landing 페이지에서만 LiveChat 표시
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -95,4 +99,37 @@ const App: React.FC = () => {
   );
 };
 
+<<<<<<< HEAD
+=======
+// ✅ 모든 페이지를 `Layout`과 함께 렌더링하는 컴포넌트
+const LayoutWrapper: React.FC = () => {
+  return (
+    <Layout>
+      <Routes>
+        <Route path="/main" element={<MainPage />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<ContactForm />} />
+        <Route path="/chat-bot" element={<ChatBot />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/event" element={<Event />} />
+        <Route path="/partshop" element={<PartsShop />} />
+        <Route path="/Map" element={<Map />} />
+        <Route path="/part/:id" element={<PartDetail />} /> {/* 상세 페이지 추가 */}
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/menu1/team" element={<Team />} />
+        <Route path="/menu1/CompanyHistory" element={<CompanyHistory />} />
+        <Route path="/StoreList" element={<StoreList />} />
+        <Route path="/PastEvents" element={<PastEvents />} />
+        <Route path="/Cars" element={<Cars />} />
+        
+
+
+      </Routes>
+    </Layout>
+  );
+};
+
+>>>>>>> 129f8272dda37779efb0978641d43badaabbe794
 export default App;

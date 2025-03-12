@@ -20,12 +20,10 @@ public class PartController {
         this.partRepository = partRepository;
     }
 
-    // 🔹 1. 모든 부품 조회 (페이지네이션 추가)
+    // 🔹 1. 모든 부품 조회
     @GetMapping
-    public ResponseEntity<List<Part>> getAllParts(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        List<Part> parts = partRepository.findAll(PageRequest.of(page, size)).getContent();
+    public ResponseEntity<List<Part>> getAllParts() {
+        List<Part> parts = partRepository.findAll();
         return ResponseEntity.ok(parts);
     }
 
