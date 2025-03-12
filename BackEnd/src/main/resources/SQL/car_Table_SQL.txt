@@ -33,12 +33,10 @@ CREATE TABLE users (
   password VARCHAR(255),
   phone VARCHAR(20),
   role ENUM('USER', 'ADMIN') DEFAULT 'USER' NOT NULL,
-  co_owner BOOLEAN DEFAULT FALSE,
-  co_owner_name VARCHAR(100) DEFAULT NULL,
-  co_owner_phone VARCHAR(20) DEFAULT NULL,
   terms_agreed BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
 
 -- 🚘 차량 테이블
 CREATE TABLE vehicles (
@@ -50,6 +48,9 @@ CREATE TABLE vehicles (
   vin VARCHAR(50) UNIQUE NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   car_number VARCHAR(20) UNIQUE NOT NULL,
+  co_owner BOOLEAN DEFAULT FALSE,
+  co_owner_name VARCHAR(100) DEFAULT NULL,
+  co_owner_phone VARCHAR(20) DEFAULT NULL,
   FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
