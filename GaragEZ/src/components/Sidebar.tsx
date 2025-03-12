@@ -54,8 +54,8 @@ const Sidebar: React.FC = () => {
         ⬆️
       </div>
 
-      {/* 로그아웃 버튼 */}
-      <button className={styles.logoutButton} onClick={handleLogout}>
+       {/* 로그아웃 버튼 */}
+       <button className={styles.logoutButton} onClick={handleLogout}>
         🚪
         <p className={styles.text}>로그아웃</p>
       </button>

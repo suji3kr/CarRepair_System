@@ -43,7 +43,7 @@ VALUES
    (SELECT id FROM car WHERE car_make = 'Hyundai' AND car_model = 'Sonata'),
    'Hyundai', 'Sonata', 2020, 'VIN123456', '12가 3456');
 
--- 3.  사용자 차량 관계 설정 (M:N 관계)
+-- 3. 사용자 차량 관계 설정 (M:N 관계)
 INSERT INTO user_vehicles (user_id, vehicle_id)
 VALUES
   ((SELECT id FROM users WHERE user_id = 'alice123'), (SELECT id FROM vehicles WHERE vin = 'VIN000001')),
@@ -132,8 +132,11 @@ VALUES
 -- store_id와 appointment_id 참조
 INSERT INTO repair_store (store_id, appointment_id, location, contact_info)
 VALUES
-  (1, 1, '123 Main St, City A', '010-1111-2222'),
-  (2, 2, '456 Side St, City B', '010-3333-4444');
+    (1, NULL, '경기도 수원시', '031-1234-5678'),  -- 차고지 스타필드점
+    (2, NULL, '경기도 용인시', '031-8765-4321'),  -- 차고지 용인중앙지점
+    (3, NULL, '서울특별시 강남구', '02-555-6789'),  -- 차고지 서울점
+    (4, NULL, '부산광역시 해운대구', '054-555-6789'), -- 차고지 부산점
+    (5, NULL, '제주특별자치도 서귀포시', '064-555-6789'); -- 차고지 제주점
 
 -- 8. 알림 (notifications)
 INSERT INTO notifications (user_id, message, status)
@@ -267,5 +270,20 @@ INSERT INTO car (car_model, image_url, car_make) VALUES
 ('토레스_밴', '토레스_밴.jpg', '쌍용'),
 ('티볼리', '티볼리.jpg', '쌍용');
 
+-- 각 가게별 리뷰 삽입 (평점 추가)
+INSERT INTO store_reviews (store_name, content, rating, created_at)
+VALUES
+  ('차고지 스타필드점', '친절한 서비스와 신속한 정비, 아주 만족합니다.', 5.0, NOW()),
+  ('차고지 스타필드점', '정비 후 차량 상태가 매우 좋아졌어요.', 4.5, NOW()),
 
+  ('차고지 용인중앙지점', '위치도 편리하고 직원들도 친절합니다.', 5.0, NOW()),
+  ('차고지 용인중앙지점', '가격 대비 서비스가 우수해요.', 4.0, NOW()),
 
+  ('차고지 서울점', '최신 장비를 사용하여 믿음직합니다.', 5.0, NOW()),
+  ('차고지 서울점', '예약 시스템이 편리하고 빠르게 처리됩니다.', 4.0, NOW()),
+
+  ('차고지 부산점', '정비 시간이 짧아 좋았어요.', 4.0, NOW()),
+  ('차고지 부산점', '가격도 합리적이고 서비스가 훌륭합니다.', 5.0, NOW()),
+
+  ('차고지 제주점', '차고지 제주점 덕분에 제주도에서도 안심하고 정비받았습니다.', 5.0, NOW()),
+  ('차고지 제주점', '전문적인 기술력에 감동했습니다.', 5.0, NOW());

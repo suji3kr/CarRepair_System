@@ -21,6 +21,7 @@ DROP TABLE IF EXISTS ai_product;
 DROP TABLE IF EXISTS user_vehicles;
 DROP TABLE IF EXISTS contact_messages;
 DROP TABLE IF EXISTS car;
+DROP TABLE IF EXISTS store_reviews;
 
 
 SET FOREIGN_KEY_CHECKS=1;
@@ -242,6 +243,21 @@ CREATE TABLE contact_messages (
     message TEXT NOT NULL,                     -- 문의 내용
     additional_notes TEXT,                     -- 추가 기재사항 (옵션)
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- 작성일시
+);
+
+create table car (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(100) NOT NULL,
+  category VARCHAR(100),
+  image_url VARCHAR(255)  -- 부품 이미지 URL을 저장하는 필드 추가
+);
+
+CREATE TABLE store_reviews (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    store_name VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    rating DECIMAL(3,1) NOT NULL,  -- 0.0 ~ 5.0 (0.5 단위 가능)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 

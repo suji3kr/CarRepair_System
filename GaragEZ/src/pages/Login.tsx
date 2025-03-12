@@ -100,7 +100,6 @@ const Login = () => {
             const data: JwtResponse = await res.json();
             localStorage.setItem("token", data.token);
 
-            // ✅ Google 로그인 후 이메일 정보 가져오기
             const userProfile = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
                 headers: {
                     Authorization: `Bearer ${response.credential}`,
@@ -117,6 +116,7 @@ const Login = () => {
 
             // ✅ Google 로그인 성공 처리
             handleLoginSuccess("GoogleUser", userEmail);
+            
         } catch (error: unknown) {
             if (error instanceof Error) {
                 alert("Google 로그인 중 오류가 발생했습니다: " + error.message);
