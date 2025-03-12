@@ -22,7 +22,7 @@ const ChatBot: React.FC = () => {
       const botMessage: ChatMessage = { sender: "bot", content: response.data.answer };
       setMessages((prev) => [...prev, botMessage]);
 
-      // 만약 챗봇이 최저가 상품 정보를 포함한다면
+      // 챗봇이 최저가 상품 정보를 포함하면 표시
       if (response.data.products) {
         setProducts(response.data.products);
       }
@@ -43,14 +43,31 @@ const ChatBot: React.FC = () => {
     <div className={styles.chatbot} style={{ zIndex: 1000 }}>
       <div className={styles.messages}>
         {messages.map((msg, idx) => (
-          <div key={idx} className={`${styles.message} ${styles[msg.sender]}`}>
-            {msg.content}
+          <div key={idx} className={`${styles.messageWrapper} ${styles[msg.sender]}`}>
+            {msg.sender === "user" ? (
+              <div className={styles.userMessage}>
+                <img src="/user-profile.png" alt="사용자" className={styles.profileImage} />
+                <div className={styles.messageBox}>
+                  <span className={styles.userLabel}>질문</span>
+                  <p>{msg.content}</p>
+                </div>
+              </div>
+            ) : (
+              <div className={styles.botMessage}>
+                <img src="/bot-profile.png" alt="챗봇" className={styles.profileImage} />
+                <div className={styles.messageBox}>
+                  <span className={styles.botLabel}>답변</span>
+                  <p>{msg.content}</p>
+                </div>
+              </div>
+            )}
           </div>
         ))}
 
+        {/* 🛍️ 최저가 상품 리스트 표시 */}
         {products && (
           <div className={styles.productList}>
-            <h3>🚗 엔진오일 최저가 TOP 5</h3>
+            <h3>🛒 최저가 상품 추천</h3>
             {products.map((product) => (
               <div key={product.id} className={styles.productItem}>
                 <img src={product.imageUrl} alt={product.name} />
@@ -66,6 +83,7 @@ const ChatBot: React.FC = () => {
         )}
       </div>
 
+      {/* 📝 입력 영역 */}
       <div className={styles.inputArea}>
         <input
           type="text"
@@ -73,6 +91,7 @@ const ChatBot: React.FC = () => {
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={(e) => e.key === "Enter" && sendMessage()}
           placeholder="질문을 입력하세요"
+          aria-label="채팅 입력"
         />
         <button onClick={sendMessage}>전송</button>
       </div>

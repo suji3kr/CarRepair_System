@@ -141,10 +141,10 @@ const SignUp: React.FC = () => {
               required
             >
               <option value="" disabled>브랜드를 선택하세요</option>
-              <option value="Toyota">Toyota</option>
-              <option value="Honda">Honda</option>
-              <option value="Ford">Ford</option>
-              <option value="Hyundai">Hyundai</option>
+              <option value="쌍용">쌍용</option>
+              <option value="쉐보레">쉐보레</option>
+              <option value="기아">기아</option>
+              <option value="현대">현대</option>
             </select>
             <input type="text" name="carModel" value={formData.carModel} onChange={handleChange} placeholder="차 모델" required />
             <input type="text" name="carNumber" value={formData.carNumber} onChange={handleChange} placeholder="차량 번호" required />

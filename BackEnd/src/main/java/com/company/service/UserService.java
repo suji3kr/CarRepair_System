@@ -52,8 +52,8 @@ public class UserService {
         if (request.getCarModel() != null && request.getVin() != null) {
             Vehicle vehicle = new Vehicle();
             vehicle.setOwner(savedUser);  // 사용자 정보를 차량의 owner_id로 설정
-            vehicle.setMake(request.getCarMake());
-            vehicle.setModel(request.getCarModel());
+            vehicle.setCarMake(request.getCarMake());
+            vehicle.setCarModel(request.getCarModel());
 
             // 🚨 year 변환 시 NumberFormatException 방지 (DTO에서 Integer로 변경)
             vehicle.setYear(request.getYear());
