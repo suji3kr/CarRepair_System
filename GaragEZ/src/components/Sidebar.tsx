@@ -1,6 +1,25 @@
+import { useNavigate } from "react-router-dom";
 import styles from "../styles/Sidebar.module.css";
 
 const Sidebar: React.FC = () => {
+  const navigate = useNavigate(); // navigate 훅 사용
+
+  const handleLogout = () => {
+    // localStorage에서 정보 삭제
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userEmail");
+
+    // 로그아웃 알림 메시지
+    alert("로그아웃되었습니다. 다음에 또 방문해주세요!");
+
+    // 홈으로 이동
+    navigate("/home"); 
+
+    // 새로고침 (선택적)
+    window.location.reload();
+  };
+
   return (
     <div className={styles.sidebar}>
       {/* 견적 문의 */}
@@ -34,6 +53,12 @@ const Sidebar: React.FC = () => {
       >
         ⬆️
       </div>
+
+      {/* 로그아웃 버튼 */}
+      <button className={styles.logoutButton} onClick={handleLogout}>
+        🚪
+        <p className={styles.text}>로그아웃</p>
+      </button>
     </div>
   );
 };
