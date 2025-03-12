@@ -25,33 +25,49 @@
   margin-bottom: 10px;
 }
 
-.userMessage, .botMessage {
+.userMessage,
+.botMessage {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  position: relative;
+}
+
+.userMessage .messageBox  {
+  margin-right: 25px;
+}
+
+.botMessage .messageBox  {
+  margin-left: 7px;
 }
 
 .messageBox {
   background: #f0f0f0;
   padding: 10px;
   border-radius: 10px;
-  max-width: 80%;
+  width: 180px;
+  height: 80px;
 }
 
 .user {
-  text-align: right;
-  background: #d1e7fd;
+  align-items: flex-end; /* 사용자 메시지를 오른쪽으로 정렬 */
 }
 
 .bot {
-  text-align: left;
-  background: #e8e8e8;
+  align-items: flex-start; /* 챗봇 메시지를 왼쪽으로 정렬 */
 }
 
-.userLabel {
-  font-size: 12px;
-  font-weight: bold;
-  color: #007bff;
-  margin-bottom: 5px;
+.userIcon {
+  position: absolute;
+  right: 5px;
+  bottom: 0;
+}
+
+.userMessage .messageBox {
+  background: #d1e7fd;
+}
+
+.botMessage .messageBox {
+  background: #e8e8e8;
 }
 
 .botLabel {
@@ -61,8 +77,13 @@
   margin-bottom: 5px;
 }
 
+.userLabel {
+  font-size: 12px;
+  font-weight: bold;
+  color: #0f58ac;
+  margin-bottom: 5px;
+}
 .userMessage .messageBox::before {
-  content: "📌 ";
   font-weight: bold;
 }
 
@@ -96,7 +117,7 @@
   margin-right: 10px;
 }
 
-.input-area {
+.inputArea {
   position: relative;
   bottom: 0;
   width: 100%;
@@ -105,7 +126,7 @@
   border-top: 1px solid #ccc;
 }
 
-input {
+.input {
   flex: 1;
   padding: 8px;
   border: 1px solid #ddd;
@@ -113,7 +134,7 @@ input {
   width: calc(100% - 60px);
 }
 
-button {
+.button {
   padding: 8px 12px;
   background: #007bff;
   color: white;
@@ -122,6 +143,6 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+.button:hover {
   background: #0056b3;
 }
