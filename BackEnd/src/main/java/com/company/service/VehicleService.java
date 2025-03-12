@@ -1,5 +1,6 @@
 package com.company.service;
 
+import com.company.entity.user.User;
 import com.company.entity.vehicle.Vehicle;
 import com.company.repository.VehicleRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,10 @@ public class VehicleService {
     public Vehicle getVehicleByVIN(String vin){
         return vehicleRepository.findByVin(vin)
                 .orElseThrow(()->  new RuntimeException("차량 정보를 찾을 수 없습니다. V ID Number: " + vin));
+    }
+
+    public List<Vehicle> getVehicleByOwner(User owner){
+        return vehicleRepository.findByOwner(owner);
     }
 
     // 차량 정보 저장 메소드

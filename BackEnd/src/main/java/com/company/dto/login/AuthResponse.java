@@ -7,5 +7,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class AuthResponse {
     private String token;
-    private String userId; // email → userId로 변경
+    private String userId;
+    private boolean isNewUser; // ✅ 추가 정보 필요 여부
 }

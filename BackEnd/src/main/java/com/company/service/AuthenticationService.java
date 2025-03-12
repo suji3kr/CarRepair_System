@@ -36,8 +36,10 @@ public class AuthenticationService {
             throw new BadCredentialsException("Invalid userId or password");
         }
 
-        return generateJwtForUser(userDetails.getUsername());
+        // ✅ 기존 회원이므로 isNewUser = false 로 설정
+        return generateJwtForUser(userDetails.getUsername(), false);
     }
+
 
     /**
      * Google 로그인 (email → userId 변환 후 처리)
@@ -45,27 +47,33 @@ public class AuthenticationService {
     public AuthResponse googleAuthenticate(GoogleLoginRequest request) {
         String email = verifyGoogleToken(request.getTokenId());
 
-        // 이메일을 기반으로 userId를 찾음
         Optional<User> userOptional = userRepository.findByEmail(email);
 
-        User user = userOptional.orElseGet(() -> {
-            // 새로운 유저 생성 (회원가입)
-            User newUser = new User();
-            newUser.setEmail(email);
-            newUser.setUserId(generateUserIdFromEmail(email)); // userId 생성 로직 추가
-            newUser.setRole(Role.USER);
-            return userRepository.save(newUser);
-        });
+        boolean isNewUser = false; // 기본적으로 기존 회원으로 설정
 
-        return generateJwtForUser(user.getUserId()); // userId로 JWT 발급
+        User user;
+        if (userOptional.isPresent()) {
+            user = userOptional.get();
+        } else {
+            // 새로운 유저 생성 (회원가입)
+            user = new User();
+            user.setEmail(email);
+            user.setUserId(generateUserIdFromEmail(email));
+            user.setRole(Role.USER);
+
+            userRepository.save(user);
+            isNewUser = true; // 신규 회원으로 표시
+        }
+
+        return new AuthResponse(jwtTokenProvider.createToken(user.getUserId()), user.getUserId(), isNewUser);
     }
 
     /**
      * 🔹 JWT 발급 로직 (공통)
      */
-    private AuthResponse generateJwtForUser(String userId) {
+    private AuthResponse generateJwtForUser(String userId, boolean isNewUser) {
         String token = jwtTokenProvider.createToken(userId);
-        return new AuthResponse(token, userId);
+        return new AuthResponse(token, userId, isNewUser);
     }
 
     /**

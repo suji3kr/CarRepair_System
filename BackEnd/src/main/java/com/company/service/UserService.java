@@ -23,12 +23,11 @@ public class UserService {
     private final VehicleRepository vehicleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    // ✅ 사용자 등록 메소드 (로그인 가능하도록 수정)
+    // ✅ 일반 회원가입 메서드
     @Transactional
     public User registerUser(UserSignupRequest request) {
-
         // 🚨 중복된 userId 검사 (이미 존재하면 예외 발생)
-        if (userRepository.existsByUserId(request.getUserId())) { // 필드명 수정
+        if (userRepository.existsByUserId(request.getUserId())) {
             throw new IllegalArgumentException("이미 존재하는 사용자 ID입니다.");
         }
 
@@ -45,33 +44,84 @@ public class UserService {
         // ✅ 기본 역할 USER 설정
         user.setRole(Role.USER);
 
-        log.info(user.toString());
-        User savedUser = userRepository.save(user); // 저장 후 사용자 정보 반환
+        log.info("[회원가입] 새 계정 등록: " + user.toString());
+        User savedUser = userRepository.save(user);
 
         // ✅ 차량 정보가 있는 경우 차량 저장
         if (request.getCarModel() != null && request.getVin() != null) {
-            Vehicle vehicle = new Vehicle();
-            vehicle.setOwner(savedUser);  // 사용자 정보를 차량의 owner_id로 설정
-            vehicle.setMake(request.getCarMake());
-            vehicle.setModel(request.getCarModel());
-
-            // 🚨 year 변환 시 NumberFormatException 방지 (DTO에서 Integer로 변경)
-            vehicle.setYear(request.getYear());
-
-            vehicle.setVin(request.getVin());
-            vehicle.setCarNumber(request.getCarNumber());
-
-            // 🚗 공동 소유자 정보가 있으면 차량에 설정
-            if (request.isCoOwner()) {
-                vehicle.setCoOwner(true);  // 공동 소유자 여부를 true로 설정
-                vehicle.setCoOwnerName(request.getCoOwnerName());  // 공동 소유자 이름 설정
-                vehicle.setCoOwnerPhone(request.getCoOwnerPhone()); // 공동 소유자 전화번호 설정
-            }
-
-            vehicleRepository.save(vehicle); // 차량 정보 저장
+            saveVehicleInfo(savedUser, request);
         }
 
         return savedUser;
     }
-}
 
+    // ✅ Google 로그인 후 자동 회원가입 메서드 (차량 정보 포함)
+    @Transactional
+    public User googleRegisterUser(String email, String name) {
+        // 🚨 중복된 이메일 검사 (이미 존재하면 기존 계정 반환)
+        Optional<User> existingUser = userRepository.findByEmail(email);
+        if (existingUser.isPresent()) {
+            return existingUser.get(); // 기존 회원 반환
+        }
+
+        // ✅ Google 계정은 비밀번호를 사용하지 않으므로 null로 설정 (비밀번호 없이 로그인 가능)
+        String userId = email.split("@")[0];
+
+        // 🚨 사용자 정보 저장
+        User user = new User();
+        user.setUserId(userId); // 이메일 앞부분을 userId로 사용
+        user.setName(name);
+        user.setEmail(email);
+        user.setPhone("N/A"); // 기본 값 설정 (Google 로그인 시 전화번호 없음)
+        user.setPassword(null); // Google 계정은 비밀번호 사용 안 함
+        user.setRole(Role.USER);
+
+        log.info("[Google 회원가입] 새 계정 등록: " + user.toString());
+        User savedUser = userRepository.save(user);
+
+        // 🚗 Google 로그인 회원도 차량 정보를 등록할 수 있도록 추가
+        saveDefaultVehicle(savedUser);
+
+        return savedUser;
+    }
+
+    // ✅ 차량 정보 저장 로직을 별도로 분리 (일반 회원가입과 Google 회원가입에서 사용 가능)
+    private void saveVehicleInfo(User user, UserSignupRequest request) {
+        Vehicle vehicle = new Vehicle();
+        vehicle.setOwner(user);
+        vehicle.setMake(request.getCarMake());
+        vehicle.setModel(request.getCarModel());
+        vehicle.setYear(request.getYear());
+        vehicle.setVin(request.getVin());
+        vehicle.setCarNumber(request.getCarNumber());
+
+        // 🚗 공동 소유자 정보가 있으면 설정
+        if (request.isCoOwner()) {
+            vehicle.setCoOwner(true);
+            vehicle.setCoOwnerName(request.getCoOwnerName());
+            vehicle.setCoOwnerPhone(request.getCoOwnerPhone());
+        }
+
+        vehicleRepository.save(vehicle);
+    }
+
+    // ✅ Google 로그인 시 기본 차량 정보를 추가하는 메서드
+    private void saveDefaultVehicle(User user) {
+        Vehicle vehicle = new Vehicle();
+        vehicle.setOwner(user);
+        vehicle.setMake("Unknown"); // 기본 차량 정보 설정
+        vehicle.setModel("Unknown");
+        vehicle.setYear(0);
+        vehicle.setVin("N/A");
+        vehicle.setCarNumber("N/A");
+        vehicle.setCoOwner(false);
+
+        vehicleRepository.save(vehicle);
+    }
+
+    // ✅ userId 기반 사용자 조회
+    public User getUserByUserId(String userId) {
+        Optional<User> userOptional = userRepository.findByUserId(userId);
+        return userOptional.orElse(null);
+    }
+}

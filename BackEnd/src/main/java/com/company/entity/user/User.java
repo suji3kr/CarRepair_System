@@ -46,4 +46,6 @@ public class User {
     // 약관 동의 여부
     @Column(name = "terms_agreed", nullable = false)
     private boolean termsAgreed = false;
+
+
 }
