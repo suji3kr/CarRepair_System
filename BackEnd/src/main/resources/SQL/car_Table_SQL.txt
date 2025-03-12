@@ -118,7 +118,6 @@ CREATE TABLE appointments (
   FOREIGN KEY (vehicle_id) REFERENCES vehicles(id) ON DELETE CASCADE
 );
 
-
 -- 🛠 정비소 정보 테이블
 CREATE TABLE repair_store (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -130,7 +129,6 @@ CREATE TABLE repair_store (
   FOREIGN KEY (store_id) REFERENCES store(id) ON DELETE SET NULL,
   FOREIGN KEY (appointment_id) REFERENCES appointments(id) ON DELETE CASCADE
 );
-
 
 -- 📢 알림 테이블
 CREATE TABLE notifications (
@@ -231,6 +229,13 @@ CREATE TABLE contact_messages (
     message TEXT NOT NULL,                     -- 문의 내용
     additional_notes TEXT,                     -- 추가 기재사항 (옵션)
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- 작성일시
+);
+
+create table car (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(100) NOT NULL,
+  category VARCHAR(100),
+  image_url VARCHAR(255)  -- 부품 이미지 URL을 저장하는 필드 추가
 );
 
 CREATE TABLE store_reviews (
