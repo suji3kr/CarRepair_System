@@ -12,6 +12,9 @@ select * from approvals;
 select * from maintenance_records;
 select * from reviews;
 select * from payments;
+select * from car;
+select * from store_reviews;
+
 -- --------------- 부품 더미 데이터 하단에 추가 해서 합함 --
 
 
@@ -101,7 +104,8 @@ VALUES
   (1, 16.00, 90),
   (2, 46.00, 45),
   (3, 21.00, 70),
-  (4, 11.00, 190);
+  (4, 11.00, 190),
+  (5, 10.00, 50);
 
 -- 5. 부품 주문 (store_orders)
 -- user_id와 part_id는 각각 users, parts 테이블을 참조
@@ -122,8 +126,11 @@ VALUES
 -- store_id와 appointment_id 참조
 INSERT INTO repair_store (store_id, appointment_id, location, contact_info)
 VALUES
-  (1, 1, '123 Main St, City A', '010-1111-2222'),
-  (2, 2, '456 Side St, City B', '010-3333-4444');
+  (1, NULL, '경기도 수원시', '031-1234-5678'),  -- 차고지 스타필드점
+  (2, NULL, '경기도 용인시', '031-8765-4321'),  -- 차고지 용인중앙지점
+  (3, NULL, '서울특별시 강남구', '02-555-6789'),  -- 차고지 서울점
+  (4, NULL, '부산광역시 해운대구', '054-555-6789'), -- 차고지 부산점
+  (5, NULL, '제주특별자치도 서귀포시', '064-555-6789'); -- 차고지 제주점
 
 -- 8. 알림 (notifications)
 INSERT INTO notifications (user_id, message, status)
@@ -183,21 +190,7 @@ VALUES
 
 
 
-
-
--- >> table car 오늘 해야할 것
--- category -> carMake   /   name  ->  carModel
--- 리액트에서 연결 수정하고 디비 수정하기
-
-
-create table car (
-  id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  name VARCHAR(100) NOT NULL,
-  category VARCHAR(100),
-  image_url VARCHAR(255)  -- 부품 이미지 URL을 저장하는 필드 추가
-);
-
-INSERT INTO car (name, image_url, category) VALUES
+INSERT INTO car (name, image_Url, category) VALUES
 ('아반떼', 'avante.jpg', '현대'),
 ('아반떼 하이브리드', 'avante_Hybrid.jpg', '현대'),
 ('아반떼 N', 'avante_N.jpg', '현대'),
@@ -224,7 +217,7 @@ INSERT INTO car (name, image_url, category) VALUES
 ('베뉴', 'venue.jpg', '현대');
 
 
-INSERT INTO car (name, image_url, category) VALUES
+INSERT INTO car (name, image_Url, category) VALUES
 ('EV3', 'EV3_1.jpg', '기아'),
 ('EV6', 'EV6_1.jpg', '기아'),
 ('EV6_GT', 'EV6_GT_1.jpg', '기아'),
@@ -253,7 +246,7 @@ INSERT INTO car (name, image_Url, category) VALUES
 
 
 
-INSERT INTO car (name, image_url, category) VALUES
+INSERT INTO car (name, image_Url, category) VALUES
 ('렉스턴_뉴_아레나', '렉스턴_뉴_아레나.jpg', '쌍용'),
 ('렉스턴_스포츠', '렉스턴_스포츠.jpg', '쌍용'),
 ('렉스턴_스포츠_칸', '렉스턴_스포츠_칸.jpg', '쌍용'),
@@ -271,88 +264,20 @@ INSERT INTO car (name, image_url, category) VALUES
 ('토레스_밴', '토레스_밴.jpg', '쌍용'),
 ('티볼리', '티볼리.jpg', '쌍용');
 
+-- 각 가게별 리뷰 삽입 (평점 추가)
+INSERT INTO store_reviews (store_name, content, rating, created_at)
+VALUES
+  ('차고지 스타필드점', '친절한 서비스와 신속한 정비, 아주 만족합니다.', 5.0, NOW()),
+  ('차고지 스타필드점', '정비 후 차량 상태가 매우 좋아졌어요.', 4.5, NOW()),
 
--- -------------------------------------------------------------------------------------
+  ('차고지 용인중앙지점', '위치도 편리하고 직원들도 친절합니다.', 5.0, NOW()),
+  ('차고지 용인중앙지점', '가격 대비 서비스가 우수해요.', 4.0, NOW()),
 
+  ('차고지 서울점', '최신 장비를 사용하여 믿음직합니다.', 5.0, NOW()),
+  ('차고지 서울점', '예약 시스템이 편리하고 빠르게 처리됩니다.', 4.0, NOW()),
 
-create table car (
-  id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  carModel VARCHAR(100) NOT NULL,
-  carMake VARCHAR(100),
-  image_url VARCHAR(255)  -- 부품 이미지 URL을 저장하는 필드 추가
-);
+  ('차고지 부산점', '정비 시간이 짧아 좋았어요.', 4.0, NOW()),
+  ('차고지 부산점', '가격도 합리적이고 서비스가 훌륭합니다.', 5.0, NOW()),
 
-INSERT INTO car (carModel, image_url, carMake) VALUES
-('아반떼', 'avante.jpg', '현대'),
-('아반떼 하이브리드', 'avante_Hybrid.jpg', '현대'),
-('아반떼 N', 'avante_N.jpg', '현대'),
-('캐스퍼 전기', 'casper_electric.jpg', '현대'),
-('캐스퍼', 'casper.jpg', '현대'),
-('그랜져 하이브리드', 'grandeur_Hybrid.jpg', '현대'),
-('그랜져', 'grandeur.jpg', '현대'),
-('아이오닉 5', 'ioniq_5.jpg', '현대'),
-('아이오닉 6', 'ioniq_6.jpg', '현대'),
-('아이오닉 9', 'ioniq_9.jpg', '현대'),
-('코나 전기', 'kona_Electric.jpg', '현대'),
-('코나 하이브리드', 'kona_Hybrid.jpg', '현대'),
-('코나', 'kona.jpg', '현대'),
-('넥소', 'nexo.jpg', '현대'),
-('팰리세이드', 'palisade.jpg', '현대'),
-('포터 2', 'porter_2.jpg', '현대'),
-('산타페 하이브리드', 'santafe_Hybrid.jpg', '현대'),
-('산타페', 'santafe.jpg', '현대'),
-('ST1', 'ST1.jpg', '현대'),
-('스타리아', 'staria.jpg', '현대'),
-('스타리아 하이브리드', 'staria_Hybrid.jpg', '현대'),
-('투산 하이브리드', 'tucsan_Hybrid.jpg', '현대'),
-('투산', 'tucsan.jpg', '현대'),
-('베뉴', 'venue.jpg', '현대');
-
-
-INSERT INTO car (carModel, image_url, carMake) VALUES
-('EV3', 'EV3_1.jpg', '기아'),
-('EV6', 'EV6_1.jpg', '기아'),
-('EV6_GT', 'EV6_GT_1.jpg', '기아'),
-('EV9_1', 'EV9_1.jpg', '기아'),
-('EV9_GT', 'EV9_GT_1.jpg', '기아'),
-('K5', 'K5_1.jpg', '기아'),
-('K8', 'K8_1.jpg', '기아'),
-('K9', 'K9_1.jpg', '기아'),
-('모닝', 'morning_1.jpg', '기아'),
-('니로', 'niro_1.jpg', '기아'),
-('니로 전기차', 'niro_EV_1.jpg', '기아'),
-('레이', 'ray_1.jpg', '기아'),
-('레이 전기차', 'ray_EV_1.jpg', '기아'),
-('쏘렌토', 'sorento.jpg', '기아'),
-('스포티지', 'sportage.jpg', '기아'),
-('타스만', 'tasman.jpg', '기아'),
-('봉고3_파워게이트', 'bongo3_powergate.jpg', '기아'),
-('카니발 하이리무진', 'carnival_hign.jpg', '기아');
-
-
-INSERT INTO car (carModel, image_Url, carMake) VALUES
-('콜로라도', 'colorado.jpg', '쉐보레'),
-('타호', 'taho.jpg', '쉐보레'),
-('트레버스', 'travers.jpg', '쉐보레'),
-('트레일블레이저', 'trailblazer.jpg', '쉐보레'),
-('트렉스크로스오버', 'trexcrossover.jpg', '쉐보레');
-
-
-
-INSERT INTO car (carModel, image_url, carMake) VALUES
-('렉스턴_뉴_아레나', '렉스턴_뉴_아레나.jpg', '쌍용'),
-('렉스턴_스포츠', '렉스턴_스포츠.jpg', '쌍용'),
-('렉스턴_스포츠_칸', '렉스턴_스포츠_칸.jpg', '쌍용'),
-('렉스턴_써밋', '렉스턴_써밋.jpg', '쌍용'),
-('무쏘EV', '무쏘EV.jpg', '쌍용'),
-('액티언', '액티언.jpg', '쌍용'),
-('코란도', '코란도.jpg', '쌍용'),
-('코란도_EV', '코란도_EV.jpg', '쌍용'),
-('코란도_EV_택시', '코란도_EV_택시.jpg', '쌍용'),
-('토레스', '토레스.jpg', '쌍용'),
-('토레스_EVX', '토레스_EVX.jpg', '쌍용'),
-('토레스_EVX_밴', '토레스_EVX_밴.jpg', '쌍용'),
-('토레스_EVX_택시', '토레스_EVX_택시.jpg', '쌍용'),
-('토레스_바이퓨얼_택시', '토레스_바이퓨얼_택시.jpg', '쌍용'),
-('토레스_밴', '토레스_밴.jpg', '쌍용'),
-('티볼리', '티볼리.jpg', '쌍용');
+  ('차고지 제주점', '차고지 제주점 덕분에 제주도에서도 안심하고 정비받았습니다.', 5.0, NOW()),
+  ('차고지 제주점', '전문적인 기술력에 감동했습니다.', 5.0, NOW());

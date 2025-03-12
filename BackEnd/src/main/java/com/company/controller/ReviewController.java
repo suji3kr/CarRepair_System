@@ -1,47 +1,46 @@
-// src/main/java/com/company/controller/ReviewController.java
 package com.company.controller;
 
 import com.company.entity.review.Review;
 import com.company.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/reviews")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000") // 필요에 따라 React 앱의 URL로 변경
 public class ReviewController {
 
     @Autowired
     private ReviewService reviewService;
 
-    @PostMapping
-    public ResponseEntity<Review> createReview(@RequestBody Review review) {
-        return ResponseEntity.ok(reviewService.createReview(review));
-    }
-
+    // 전체 리뷰 조회
     @GetMapping
-    public ResponseEntity<List<Review>> getAllReviews() {
-        return ResponseEntity.ok(reviewService.getAllReviews());
+    public List<Review> getAllReviews() {
+        return reviewService.getAllReviews();
     }
 
+    // 특정 리뷰 조회
     @GetMapping("/{id}")
-    public ResponseEntity<Review> getReviewById(@PathVariable Long id) {
-        return reviewService.getReviewById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public Review getReviewById(@PathVariable Long id) {
+        return reviewService.getReviewById(id).orElse(null);
     }
 
+    // 리뷰 생성
+    @PostMapping
+    public Review createReview(@RequestBody Review review) {
+        return reviewService.createReview(review);
+    }
+
+    // 리뷰 업데이트
     @PutMapping("/{id}")
-    public ResponseEntity<Review> updateReview(@PathVariable Long id, @RequestBody Review review) {
-        Review updated = reviewService.updateReview(id, review);
-        return updated != null ? ResponseEntity.ok(updated) : ResponseEntity.notFound().build();
+    public Review updateReview(@PathVariable Long id, @RequestBody Review review) {
+        return reviewService.updateReview(id, review);
     }
 
+    // 리뷰 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteReview(@PathVariable Long id) {
+    public void deleteReview(@PathVariable Long id) {
         reviewService.deleteReview(id);
-        return ResponseEntity.noContent().build();
     }
 }

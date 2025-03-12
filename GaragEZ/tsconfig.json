@@ -1,17 +1,12 @@
 {
   "compilerOptions": {
-    "jsx": "react",
-    "allowJs": true,
-    // ✅ Node.js 내장 모듈 타입 정보 로드
-    "types": ["node"],
-    // (선택) 라이브러리 .d.ts 검사 스킵
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "jsx": "react", // JSX 구문을 React 방식으로 해석할 수 있음.
+    "allowJs": true // 자바스크립트 파일(.js)도 컴파일 대상으로 포함
+    // 다른 설정들을 필요에 따라 추가 필요
   },
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
+    { "path": "./tsconfig.node.json" } 
   ]
 }

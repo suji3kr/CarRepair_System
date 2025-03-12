@@ -24,47 +24,29 @@ repositories {
 }
 
 dependencies {
-	// Spring Boot Starter
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	// ✅ WebSocket & STOMP 지원
-	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
-	// Data JPA & Data REST
+	implementation 'org.springframework.boot:spring-boot-starter-validation' // ✅ Hibernate Validator 추가
+
+	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
-
-	// Spring Security
+	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.8.4'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-
-	// Validation (Hibernate Validator 등)
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-
-	// JSON Web Token
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5',
-			'io.jsonwebtoken:jjwt-jackson:0.11.5'
-
-	// OpenFeign (Spring Cloud)
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.2.0'
+	//아래꺼 따로 추가한거
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'com.squareup.okhttp3:okhttp:4.9.1' // HTTP 클라이언트
+	implementation 'com.fasterxml.jackson.core:jackson-databind' // JSON 처리
 
-	// HTTP 클라이언트 (OkHttp)
-	implementation 'com.squareup.okhttp3:okhttp:4.9.1'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5', 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
-	// Jackson (JSON 처리)
-	implementation 'com.fasterxml.jackson.core:jackson-databind'
-
-	// DB
-	runtimeOnly 'com.mysql:mysql-connector-j' // MySQL
-	testRuntimeOnly 'com.h2database:h2'       // H2 (테스트용)
-
-	// Lombok
+	testRuntimeOnly 'com.h2database:h2'
+	runtimeOnly 'com.mysql:mysql-connector-j'
 	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-
-	// DevTools
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-
-	// Test
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -72,8 +54,11 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+tasks.named('test') {
 	reports {
-		html.required.set(true)   // HTML 보고서 생성
-		junitXml.required.set(true) // XML 보고서 생성
+		html.required.set(true)  // HTML 보고서 생성 활성화
+		junitXml.required.set(true) // XML 보고서도 활성화
 	}
 }

@@ -1,14 +1,11 @@
 // src/pages/Landing.tsx
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // 추가된 코드
 import styles from "../styles/Landing.module.css";
 import CardrivingVideo from "../images/Cardriving.mp4";
 
-// ✅ 라이브챗 컴포넌트 임포트
-import LiveChat from "../components/LiveChat";
-
 const Landing: React.FC = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // 추가된 코드
   const [loading, setLoading] = useState(true);
   const [showOverlay, setShowOverlay] = useState(false);
 
@@ -23,7 +20,7 @@ const Landing: React.FC = () => {
   }, []);
 
   const goHome = () => {
-    navigate("/home");
+    navigate("/home"); // 버튼 클릭 시 '/home'으로 이동
   };
 
   return (
@@ -51,9 +48,6 @@ const Landing: React.FC = () => {
           </button>
         </div>
       </div>
-
-      {/* ✅ Landing 페이지에만 라이브챗 표시 */}
-      <LiveChat />
     </div>
   );
 };
