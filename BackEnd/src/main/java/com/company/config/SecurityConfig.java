@@ -58,7 +58,9 @@ public class SecurityConfig {
                                 // ✅ 판매점 관련 API
                                 "/api/store/**",
                                 // ✅ 가게별 리뷰 API 허용
-                                "/api/storereviews/**"
+                                "/api/storereviews/**",
+                                //chat
+                                "/api/chat/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

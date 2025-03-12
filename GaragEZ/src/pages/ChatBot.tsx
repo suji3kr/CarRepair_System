@@ -17,7 +17,7 @@ const ChatBot: React.FC = () => {
 
     try {
       const requestData: ChatRequest = { message: input };
-      const response = await axios.post<ChatResponse>("/api/chat/message", requestData);
+      const response = await axios.post<ChatResponse>("http://localhost:8094/api/chat/message", requestData);
 
       const botMessage: ChatMessage = { sender: "bot", content: response.data.answer };
       setMessages((prev) => [...prev, botMessage]);

@@ -1,7 +1,7 @@
 package com.company.controller;
 
 import com.company.dto.chat.ChatRequest;
-import com.company.dto.ChatResponse;
+import com.company.dto.chat.ChatResponse;
 import com.company.service.ChatService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
