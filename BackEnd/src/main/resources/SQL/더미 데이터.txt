@@ -188,6 +188,7 @@ VALUES
 -- >> table car 오늘 해야할 것
 -- category -> carMake   /   name  ->  carModel
 -- 리액트에서 연결 수정하고 디비 수정하기
+drop table if exists car;
 
 
 create table car (

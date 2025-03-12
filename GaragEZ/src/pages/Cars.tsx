@@ -1,21 +1,19 @@
-// components/Cars.tsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "../styles/PartsShop.module.css";
+import styles from "../styles/Car.module.css";
 import Layout from "../components/Layout";
 import { Skeleton } from "@mui/material";
 
-// Car 인터페이스 정의 (DB 테이블과 일치)
+// Car 인터페이스 정의 (백엔드와 일치)
 interface Car {
   id: number;
-  name: string;
-  image_url: string; // DB의 imageurl 필드
-  category: string;
+  carModel: string;
+  image_url: string;
+  carMake: string;
 }
 
-// API 호출 함수 (포트 번호 8094로 변경)
-const fetchCars = async (category: string): Promise<Car[]> => {
-  const response = await fetch(`http://localhost:8094/api/cars?category=${category}`, {
+const fetchCars = async (carMake: string): Promise<Car[]> => {
+  const response = await fetch(`http://localhost:8094/api/cars?car_make=${carMake}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -24,10 +22,10 @@ const fetchCars = async (category: string): Promise<Car[]> => {
   if (!response.ok) {
     throw new Error(`Failed to fetch cars: ${response.status} ${response.statusText}`);
   }
-  return response.json();
+  const data = await response.json();
+  return Array.isArray(data) ? data : data.cars || [];
 };
 
-// 카테고리 목록
 const categories = ["현대", "기아", "쉐보레", "쌍용"];
 
 const Cars: React.FC = () => {
@@ -73,8 +71,17 @@ const Cars: React.FC = () => {
     }, 100);
   };
 
+  const handleCarClick = (car: Car) => {
+    navigate("/contact", {
+      state: {
+        carMake: car.carMake,
+        carId: car.id.toString(),
+      },
+    });
+  };
+
   const totalPages = Math.max(1, Math.ceil(cars.length / 10));
-  const displayedItems = cars.slice((currentPage - 1) * 10, currentPage * 10);
+  const displayedItems = Array.isArray(cars) ? cars.slice((currentPage - 1) * 10, currentPage * 10) : [];
 
   return (
     <Layout>
@@ -110,16 +117,16 @@ const Cars: React.FC = () => {
                 <div
                   key={car.id}
                   className={styles.itemCard}
-                  onClick={() => navigate(`/car/${car.id}`)}
+                  onClick={() => handleCarClick(car)} // 차량 클릭 시 폼으로 이동
                 >
                   <img
-                    src={`/images/${car.image_url}`} // 포트 번호 8094로 변경
-                    alt={car.name}
+                    src={`/images/${car.image_url}`}
+                    alt={car.carModel}
                     onError={(e) => (e.currentTarget.src = "/images/default.jpg")}
                   />
                   <div className={styles.itemInfo}>
-                    <p className={styles.itemName} title={car.name}>
-                      {car.name.length > 14 ? `${car.name.slice(0, 14)}...` : car.name}
+                    <p className={styles.itemName} title={car.carModel}>
+                      {car.carModel.length > 14 ? `${car.carModel.slice(0, 14)}...` : car.carModel}
                     </p>
                   </div>
                 </div>
