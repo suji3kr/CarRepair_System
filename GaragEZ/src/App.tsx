@@ -23,6 +23,7 @@ import PastEvents from "./pages/PastEvents";
 import Cars from "./pages/Cars";
 import Profile from "./pages/Profile";
 import StoreReviewPage from "./pages/StoreReviewPage";
+import ScrollToTop from "./components/scrollToTop";
 
 
 
@@ -59,6 +60,7 @@ const App: React.FC = () => {
 const LayoutWrapper: React.FC = () => {
   return (
     <Layout>
+      <ScrollToTop />
       <Routes>
         <Route path="/main" element={<MainPage />} />
         <Route path="/home" element={<Home />} />

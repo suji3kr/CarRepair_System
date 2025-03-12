@@ -53,7 +53,7 @@
 /* ✅ 아이템 그리드: 5열 그리드 레이아웃 */
 .itemsGrid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
   justify-content: center;
 }
@@ -65,7 +65,7 @@
   border: 1px solid #ddd;
   text-align: center;
   border-radius: 8px;
-  width: 300px;
+  width: 320px;
   height: 250px;
   transition: transform 0.2s ease-in-out;
   cursor: pointer; /* ✅ 커서 변경 */
@@ -80,7 +80,7 @@
 /* ✅ 아이템 이미지 스타일 */
 .itemCard img {
   margin-top: 20px;
-  width: 250px;
+  width: 300px;
   height: 150px;
   position: relative;
 }
