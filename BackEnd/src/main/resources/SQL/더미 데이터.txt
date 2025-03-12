@@ -12,25 +12,29 @@ select * from approvals;
 select * from maintenance_records;
 select * from reviews;
 select * from payments;
+select * from car;
+select * from store_reviews;
+
 -- --------------- 부품 더미 데이터 하단에 추가 해서 합함 --
 
 
 -- 1. 사용자 (users)
-INSERT INTO users (user_id, name, email, password, phone, role)
+INSERT INTO users (user_id, name, email, password, phone, role, co_owner, co_owner_name, co_owner_phone)
 VALUES
-  ('alice123', 'Alice Smith', 'alice@example.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-1234-5678', 'USER'),
-  ('bob456', 'Bob Johnson', 'bob@example.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-2345-6789', 'USER'),
-  ('admin001', 'Charlie Admin', 'charlie@admin.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-3456-7890', 'ADMIN'),
-  ('johnDoe', 'John Doe', 'johndoe@example.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-1234-5678', 'USER');
+  ('alice123', 'Alice Smith', 'alice@example.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-1234-5678', 'USER', FALSE, NULL, NULL),
+  ('bob456', 'Bob Johnson', 'bob@example.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-2345-6789', 'USER', FALSE, NULL, NULL),
+  ('admin001', 'Charlie Admin', 'charlie@admin.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-3456-7890', 'ADMIN', FALSE, NULL, NULL),
+  ('johnDoe', 'John Doe', 'johndoe@example.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-1234-5678', 'USER',
+   TRUE, 'Jane Doe', '010-5678-1234');
 -- 비번은 항상 password123
 
 -- 2. 차량 정보 추가 (owner_id는 위에서 생성한 사용자의 id를 참조)
-INSERT INTO vehicles (owner_id, car_make, car_model, year, vin, car_number, co_owner, co_owner_name, co_owner_phone)
+INSERT INTO vehicles (owner_id, make, model, year, vin, car_number)
 VALUES
-  ((SELECT id FROM users WHERE user_id = 'alice123'), 'Toyota', 'Corolla', 2015, 'VIN000001', '11가 1234', FALSE, NULL, NULL),
-  ((SELECT id FROM users WHERE user_id = 'alice123'), 'Honda', 'Civic', 2018, 'VIN000002', '22나 5678', FALSE, NULL, NULL),
-  ((SELECT id FROM users WHERE user_id = 'bob456'), 'Ford', 'Focus', 2017, 'VIN000003', '33다 9012', FALSE, NULL, NULL),
-  ((SELECT id FROM users WHERE user_id = 'johnDoe'), 'Hyundai', 'Sonata', 2020, 'VIN123456', '12가 3456', TRUE, 'Jane Doe', '010-5678-1234');
+  ((SELECT id FROM users WHERE user_id = 'alice123'), 'Toyota', 'Corolla', 2015, 'VIN000001', '11가 1234'),
+  ((SELECT id FROM users WHERE user_id = 'alice123'), 'Honda', 'Civic', 2018, 'VIN000002', '22나 5678'),
+  ((SELECT id FROM users WHERE user_id = 'bob456'), 'Ford', 'Focus', 2017, 'VIN000003', '33다 9012'),
+  ((SELECT id FROM users WHERE user_id = 'johnDoe'), 'Hyundai', 'Sonata', 2020, 'VIN123456', '12가 3456');
 
 -- 3. 사용자 차량 관계 설정 (M:N 관계)
 INSERT INTO user_vehicles (user_id, vehicle_id)
@@ -100,7 +104,8 @@ VALUES
   (1, 16.00, 90),
   (2, 46.00, 45),
   (3, 21.00, 70),
-  (4, 11.00, 190);
+  (4, 11.00, 190),
+  (5, 10.00, 50);
 
 -- 5. 부품 주문 (store_orders)
 -- user_id와 part_id는 각각 users, parts 테이블을 참조
@@ -121,8 +126,11 @@ VALUES
 -- store_id와 appointment_id 참조
 INSERT INTO repair_store (store_id, appointment_id, location, contact_info)
 VALUES
-  (1, 1, '123 Main St, City A', '010-1111-2222'),
-  (2, 2, '456 Side St, City B', '010-3333-4444');
+  (1, NULL, '경기도 수원시', '031-1234-5678'),  -- 차고지 스타필드점
+  (2, NULL, '경기도 용인시', '031-8765-4321'),  -- 차고지 용인중앙지점
+  (3, NULL, '서울특별시 강남구', '02-555-6789'),  -- 차고지 서울점
+  (4, NULL, '부산광역시 해운대구', '054-555-6789'), -- 차고지 부산점
+  (5, NULL, '제주특별자치도 서귀포시', '064-555-6789'); -- 차고지 제주점
 
 -- 8. 알림 (notifications)
 INSERT INTO notifications (user_id, message, status)
@@ -182,14 +190,7 @@ VALUES
 
 
 
-create table car (
-  id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  car_model VARCHAR(100) NOT NULL,
-  car_make VARCHAR(100),
-  image_url VARCHAR(255)  -- 부품 이미지 URL을 저장하는 필드 추가
-);
-
-INSERT INTO car (car_model, image_url, car_make) VALUES
+INSERT INTO car (name, image_Url, category) VALUES
 ('아반떼', 'avante.jpg', '현대'),
 ('아반떼 하이브리드', 'avante_Hybrid.jpg', '현대'),
 ('아반떼 N', 'avante_N.jpg', '현대'),
@@ -216,7 +217,7 @@ INSERT INTO car (car_model, image_url, car_make) VALUES
 ('베뉴', 'venue.jpg', '현대');
 
 
-INSERT INTO car (car_model, image_url, car_make) VALUES
+INSERT INTO car (name, image_Url, category) VALUES
 ('EV3', 'EV3_1.jpg', '기아'),
 ('EV6', 'EV6_1.jpg', '기아'),
 ('EV6_GT', 'EV6_GT_1.jpg', '기아'),
@@ -236,8 +237,7 @@ INSERT INTO car (car_model, image_url, car_make) VALUES
 ('봉고3_파워게이트', 'bongo3_powergate.jpg', '기아'),
 ('카니발 하이리무진', 'carnival_hign.jpg', '기아');
 
-
-INSERT INTO car (car_model, image_url, car_make) VALUES
+INSERT INTO car (name, image_Url, category) VALUES
 ('콜로라도', 'colorado.jpg', '쉐보레'),
 ('타호', 'taho.jpg', '쉐보레'),
 ('트레버스', 'travers.jpg', '쉐보레'),
@@ -246,7 +246,7 @@ INSERT INTO car (car_model, image_url, car_make) VALUES
 
 
 
-INSERT INTO car (car_model, image_url, car_make) VALUES
+INSERT INTO car (name, image_Url, category) VALUES
 ('렉스턴_뉴_아레나', '렉스턴_뉴_아레나.jpg', '쌍용'),
 ('렉스턴_스포츠', '렉스턴_스포츠.jpg', '쌍용'),
 ('렉스턴_스포츠_칸', '렉스턴_스포츠_칸.jpg', '쌍용'),
@@ -263,3 +263,21 @@ INSERT INTO car (car_model, image_url, car_make) VALUES
 ('토레스_바이퓨얼_택시', '토레스_바이퓨얼_택시.jpg', '쌍용'),
 ('토레스_밴', '토레스_밴.jpg', '쌍용'),
 ('티볼리', '티볼리.jpg', '쌍용');
+
+-- 각 가게별 리뷰 삽입 (평점 추가)
+INSERT INTO store_reviews (store_name, content, rating, created_at)
+VALUES
+  ('차고지 스타필드점', '친절한 서비스와 신속한 정비, 아주 만족합니다.', 5.0, NOW()),
+  ('차고지 스타필드점', '정비 후 차량 상태가 매우 좋아졌어요.', 4.5, NOW()),
+
+  ('차고지 용인중앙지점', '위치도 편리하고 직원들도 친절합니다.', 5.0, NOW()),
+  ('차고지 용인중앙지점', '가격 대비 서비스가 우수해요.', 4.0, NOW()),
+
+  ('차고지 서울점', '최신 장비를 사용하여 믿음직합니다.', 5.0, NOW()),
+  ('차고지 서울점', '예약 시스템이 편리하고 빠르게 처리됩니다.', 4.0, NOW()),
+
+  ('차고지 부산점', '정비 시간이 짧아 좋았어요.', 4.0, NOW()),
+  ('차고지 부산점', '가격도 합리적이고 서비스가 훌륭합니다.', 5.0, NOW()),
+
+  ('차고지 제주점', '차고지 제주점 덕분에 제주도에서도 안심하고 정비받았습니다.', 5.0, NOW()),
+  ('차고지 제주점', '전문적인 기술력에 감동했습니다.', 5.0, NOW());

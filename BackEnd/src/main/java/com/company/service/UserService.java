@@ -60,18 +60,9 @@ public class UserService {
 
             vehicle.setVin(request.getVin());
             vehicle.setCarNumber(request.getCarNumber());
-
-            // 🚗 공동 소유자 정보가 있으면 차량에 설정
-            if (request.isCoOwner()) {
-                vehicle.setCoOwner(true);  // 공동 소유자 여부를 true로 설정
-                vehicle.setCoOwnerName(request.getCoOwnerName());  // 공동 소유자 이름 설정
-                vehicle.setCoOwnerPhone(request.getCoOwnerPhone()); // 공동 소유자 전화번호 설정
-            }
-
             vehicleRepository.save(vehicle); // 차량 정보 저장
         }
 
         return savedUser;
     }
 }
-

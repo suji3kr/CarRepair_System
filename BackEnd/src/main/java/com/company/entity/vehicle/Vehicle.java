@@ -32,7 +32,6 @@ public class Vehicle {
     private String vin;
 
     private String carNumber;
-
     @CreationTimestamp
     private LocalDateTime createdAt;
 
@@ -40,14 +39,6 @@ public class Vehicle {
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MaintenanceRecord> maintenanceRecords;
 
-    // 공동 소유자 정보 (차량에 관련된 필드 추가)
-    private boolean coOwner = false;
-    private String coOwnerName;  // 공동 소유자 이름
-    private String coOwnerPhone; // 공동 소유자 전화번호
-
-    // 차량과 관련된 추가 메소드들을 정의할 수 있음
     public void setVehicle(Vehicle vehicle) {
-        // 필요한 로직 추가
     }
 }
-

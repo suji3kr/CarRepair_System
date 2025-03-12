@@ -43,6 +43,16 @@ public class User {
     @Column(name = "created_at", updatable = false) // 🚀 자동 생성 + 수정 불가
     private LocalDateTime createdAt;
 
+    // 공동 소유자 관련 정보
+    @Column(nullable = false)
+    private boolean coOwner = false;
+
+    @Column(name = "co_owner_name", nullable = true)
+    private String coOwnerName;
+
+    @Column(name = "co_owner_phone", nullable = true)
+    private String coOwnerPhone;
+
     // 약관 동의 여부
     @Column(name = "terms_agreed", nullable = false)
     private boolean termsAgreed = false;
