@@ -20,6 +20,7 @@ import CompanyHistory from "./menu1/CompanyHistory";
 import StoreList from "./pages/StoreList";
 import Team from "./menu1/Team";
 import PastEvents from "./pages/PastEvents";
+import Cars from "./pages/Cars";
 
 
 
@@ -73,6 +74,8 @@ const LayoutWrapper: React.FC = () => {
         <Route path="/menu1/CompanyHistory" element={<CompanyHistory />} />
         <Route path="/StoreList" element={<StoreList />} />
         <Route path="/PastEvents" element={<PastEvents />} />
+        <Route path="/Cars" element={<Cars />} />
+        
 
 
       </Routes>

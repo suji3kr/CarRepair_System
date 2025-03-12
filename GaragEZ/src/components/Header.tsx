@@ -89,6 +89,7 @@ const Header: React.FC = () => {
                   <ul>
                     <li><Link to="/menu2/estimate">견적 요청</Link></li>
                     <li><Link to="/contact">문의하기</Link></li>
+                    <li><Link to="/Cars">차량별 문의</Link></li>
                   </ul>
                 </div>
                 <div className={styles.category}>

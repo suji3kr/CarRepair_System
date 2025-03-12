@@ -11,6 +11,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,37 +38,35 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // ✅ CORS 설정
-                .csrf(csrf -> csrf.disable()) // ✅ CSRF 보호 비활성화 (JWT 사용 시 필수)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // ✅ 세션 없이 JWT 인증
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // ✅ CORS 직접 설정
+                .csrf(AbstractHttpConfigurer::disable) // ✅ CSRF 보호 비활성화
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // ✅ JWT 기반 세션 없음
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/api/auth/**", "api/users", "api/users/signup",  // ✅ 로그인, 회원가입 API 인증 없이 허용
-                                "/api-docs/**", "/swagger-ui/**",  // ✅ Swagger 허용
-                                "/api/payment/**",
-                                "/api/parts/**",
-                                "/api/store/**"
-                        ).permitAll()
-                        .anyRequest().authenticated() // ✅ 그 외 요청은 인증 필요
+                                .requestMatchers(
+                                        "/api/auth/**", "/api/users/**","api/signup/**", // ✅ 로그인 & 회원가입 API 허용
+                                        "/api-docs/**", "/swagger-ui/**", // ✅ Swagger 허용
+                                        "/api/payment/**",
+                                        "/api/parts/**", // ✅ 부품 관련 API 인증 없이 허용
+                                        "/api/cars/**",
+                                        "/images/**",
+                                        "/api/store/**" // ✅ 판매점 관련 API 인증 없이 허용
+                                ).permitAll()
+                                .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class); // ✅ JWT 필터 등록
+                .addFilterBefore(new JwtTokenFilter(jwtTokenProvider, userDetailsService),
+                        UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
     @Bean
-    public JwtTokenFilter jwtTokenFilter() {
-        return new JwtTokenFilter(jwtTokenProvider, userDetailsService);
-    }
-
-    @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000")); // ✅ 프론트엔드 주소
+        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
-        configuration.setAllowCredentials(true); // ✅ 인증 정보 포함 허용
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
