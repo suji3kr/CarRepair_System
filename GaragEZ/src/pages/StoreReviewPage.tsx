@@ -92,6 +92,7 @@ const StoreReviewPage: React.FC = () => {
           <p>등록된 리뷰가 없습니다.</p>
         ) : (
           Object.entries(groupedReviews).map(([storeName, storeReviews]) => {
+            // 평균 평점 계산 (소숫점까지)
             const averageRating =
               storeReviews.reduce((sum, r) => sum + r.rating, 0) /
               storeReviews.length;

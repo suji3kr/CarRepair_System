@@ -1,10 +1,9 @@
-// src/main/java/com/company/entity/review/StoreReview.java
 package com.company.entity.review;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import java.math.BigDecimal;
+
 import java.time.LocalDateTime;
 
 @Data
@@ -18,20 +17,20 @@ public class StoreReview {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 가게 이름
+    // 가게명
     @Column(name = "store_name", nullable = false)
     private String storeName;
 
     // 리뷰 내용
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false)
     private String content;
 
-    // 평점 (소수점 한자리, 0.0 ~ 5.0)
-    @Column(nullable = false, precision = 3, scale = 1)
-    private BigDecimal rating;
+    // 평점 (0.5 단위까지)
+    @Column(nullable = false)
+    private Double rating;
 
-    // 작성일시
+    // 작성일시 (자동 기록)
     @CreationTimestamp
-    @Column(name = "created_at", updatable = false)
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 }
