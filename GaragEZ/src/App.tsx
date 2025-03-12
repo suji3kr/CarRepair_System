@@ -21,6 +21,7 @@ import StoreList from "./pages/StoreList";
 import Team from "./menu1/Team";
 import PastEvents from "./pages/PastEvents";
 import Cars from "./pages/Cars";
+import Profile from "./pages/Profile";
 import StoreReviewPage from "./pages/StoreReviewPage";
 
 
@@ -76,8 +77,9 @@ const LayoutWrapper: React.FC = () => {
         <Route path="/StoreList" element={<StoreList />} />
         <Route path="/PastEvents" element={<PastEvents />} />
         <Route path="/Cars" element={<Cars />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/storereview" element={<StoreReviewPage />} />
-        
+
 
 
       </Routes>

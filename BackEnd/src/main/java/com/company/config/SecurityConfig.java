@@ -20,6 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
 
 import java.util.List;
 
@@ -65,9 +66,12 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(
-                        new JwtTokenFilter(jwtTokenProvider, userDetailsService),
-                        UsernamePasswordAuthenticationFilter.class
+                .addFilterBefore(new JwtTokenFilter(jwtTokenProvider, userDetailsService),
+                        UsernamePasswordAuthenticationFilter.class)
+                .headers(headers -> headers
+                        .addHeaderWriter(new StaticHeadersWriter("Cross-Origin-Opener-Policy", "same-origin-allow-popups")) // ✅ COOP 해결
+                        .addHeaderWriter(new StaticHeadersWriter("Cross-Origin-Embedder-Policy", "require-corp")) // ✅ COEP 정책 추가
+                        .addHeaderWriter(new StaticHeadersWriter("Cross-Origin-Resource-Policy", "cross-origin")) // ✅ CORS 리소스 정책 추가
                 );
 
         return http.build();
@@ -79,7 +83,8 @@ public class SecurityConfig {
         // 프론트엔드 주소 허용
         configuration.setAllowedOrigins(List.of("http://localhost:3000"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
+        configuration.setExposedHeaders(List.of("Authorization")); // ✅ JWT 토큰을 클라이언트에서 받을 수 있도록 설정
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

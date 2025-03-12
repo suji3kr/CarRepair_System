@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaShoppingCart, FaUserPlus, FaSignOutAlt, FaUser } from "react-icons/fa";
+import { FaShoppingCart, FaUserPlus, FaSignOutAlt, FaUser, FaUserCircle } from "react-icons/fa";
 import styles from "../styles/Header.module.css";
 
 const Header: React.FC = () => {
@@ -57,6 +57,9 @@ const Header: React.FC = () => {
     window.location.reload(); // 새로고침 (선택적)
   };
 
+  // ✅ Google 로그인한 경우 이메일 앞부분만 표시
+  const displayName = userEmail ? userEmail.split("@")[0] : userId;
+
   return (
     <header className={styles.header}>
       <nav className={styles.nav}>
@@ -65,7 +68,6 @@ const Header: React.FC = () => {
             <img src="/images/gez-logo(w).png" alt="GarageEZ Logo" />
           </Link>
         </div>
-
 
         <div className={styles.menuWrapper}>
           <ul className={styles.menu}>
@@ -121,18 +123,22 @@ const Header: React.FC = () => {
           </div>
         </div>
 
-
         {/* ✅ 로그인 상태에 따라 UI 변경 */}
         <div className={styles.authButtons}>
           {isLoggedIn ? (
             <>
               <span className={styles.welcomeText}>
-                {userEmail ? `${userEmail}님 환영합니다` : `${userId}님 환영합니다`}
+                {displayName}님 환영합니다
               </span>
 
               <Link to="/cart" className={styles.cartButton} title="장바구니">
                 <FaShoppingCart className={styles.cartIcon} />
               </Link>
+
+              <Link to="/profile" className={styles.profileButton} title="내 정보">
+                <FaUserCircle className={styles.profileIcon} />
+              </Link>
+
               <button onClick={handleLogout} className={styles.logoutButton} title="로그아웃">
                 <FaSignOutAlt className={styles.logoutIcon} />
               </button>

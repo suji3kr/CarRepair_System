@@ -1,35 +1,44 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; 
 import { GoogleCredentialResponse, GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import styles from "../styles/Login.module.css";
 import Layout from "../components/Layout";
-
-// 타입을 별도의 파일에서 import
-import { LoginRequest, GoogleLoginRequest, JwtResponse } from "../types/auth"; // 타입 임포트
+import { LoginRequest, GoogleLoginRequest, JwtResponse } from "../types/auth";
 
 const clientId = "818242899946-o4a9sbi3d9dum52egbn797lhv2fpreq1.apps.googleusercontent.com"; 
 
 const Login = () => {
-    const [userId, setUserId] = useState(""); // email 대신 userId 유지
+    const [userId, setUserId] = useState("");
     const [password, setPassword] = useState("");
-    const [rememberMe, setRememberMe] = useState(true);
-    const navigate = useNavigate(); 
+    const [rememberMe, setRememberMe] = useState(false); // 기본값 false로 변경
+    const navigate = useNavigate();
 
-    // ✅ 로그인 성공 후 UI 즉시 반영하는 함수
+    // ✅ 페이지 로드 시 저장된 아이디 불러오기
+    useEffect(() => {
+        const savedUserId = localStorage.getItem("savedUserId");
+        if (savedUserId) {
+            setUserId(savedUserId);
+            setRememberMe(true);
+        }
+    }, []);
+
     const handleLoginSuccess = (userId: string, userEmail?: string) => {
         localStorage.setItem("userId", userId);
         if (userEmail) {
             localStorage.setItem("userEmail", userEmail);
         }
-
+        // ✅ rememberMe가 체크되어 있으면 아이디 저장
+        if (rememberMe) {
+            localStorage.setItem("savedUserId", userId);
+        } else {
+            localStorage.removeItem("savedUserId");
+        }
         alert(`환영합니다, ${userId}님!`);
         navigate("/home");
     };
 
-    // ✅ 일반 로그인 요청
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
         if (!userId) {
             alert("아이디를 입력해주세요.");
             return;
@@ -49,7 +58,7 @@ const Login = () => {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(loginRequest),
-                credentials: "include", // CORS 문제 해결을 위해 추가
+                credentials: "include",
             });
 
             if (!response.ok) {
@@ -60,8 +69,6 @@ const Login = () => {
 
             const data: JwtResponse = await response.json();
             localStorage.setItem("token", data.token);
-
-            // ✅ 로그인 성공 처리
             handleLoginSuccess(userId);
         } catch (error: unknown) {
             if (error instanceof Error) {
@@ -72,18 +79,43 @@ const Login = () => {
         }
     };
 
-    // ✅ Google 로그인 성공 처리
+    const parseJwt = (token: string) => {
+        try {
+            const base64Url = token.split(".")[1];
+            const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+            const jsonPayload = decodeURIComponent(
+                atob(base64)
+                    .split("")
+                    .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+                    .join("")
+            );
+            return JSON.parse(jsonPayload);
+        } catch (error) {
+            console.error("JWT 디코딩 실패:", error);
+            return null;
+        }
+    };
+
     const handleGoogleSuccess = async (response: GoogleCredentialResponse) => {
         if (!response.credential) {
             alert("Google 로그인 응답이 올바르지 않습니다.");
             return;
         }
 
-        const googleLoginRequest: GoogleLoginRequest = {
-            tokenId: response.credential, 
-        };
+        const decoded = parseJwt(response.credential);
+        if (!decoded) {
+            alert("Google 로그인 정보를 디코딩하는 데 실패했습니다.");
+            return;
+        }
+
+        const userEmail = decoded.email;
+        const userName = decoded.name || "GoogleUser";
 
         try {
+            const googleLoginRequest: GoogleLoginRequest = {
+                tokenId: response.credential,
+            };
+
             const res = await fetch("http://localhost:8094/api/auth/google-login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -93,35 +125,34 @@ const Login = () => {
 
             if (!res.ok) {
                 const errorText = await res.text();
+                // ✅ 추가 정보가 필요한 경우 signup 페이지로 이동
+                if (res.status === 400 && errorText.includes("additional info required")) {
+                    navigate("/signup", {
+                        state: {
+                            googleData: {
+                                email: userEmail,
+                                name: userName,
+                                tokenId: response.credential
+                            }
+                        }
+                    });
+                    return;
+                }
                 alert("Google 로그인 실패: " + errorText);
                 return;
             }
 
+            // JwtResponse - newUser, userId도 받도록 수정
             const data: JwtResponse = await res.json();
             localStorage.setItem("token", data.token);
-
-            const userProfile = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
-                headers: {
-                    Authorization: `Bearer ${response.credential}`,
-                },
-            });
-
-            if (!userProfile.ok) {
-                alert("사용자 프로필을 가져오는 데 실패했습니다.");
-                return;
-            }
-
-            const profileData = await userProfile.json();
-            const userEmail = profileData.email;
-
-            // ✅ Google 로그인 성공 처리
-            handleLoginSuccess("GoogleUser", userEmail);
-            
+            // 신규 유저 회원가입으로
+            handleLoginSuccess(userName, userEmail);
         } catch (error: unknown) {
+            console.error("Google 로그인 오류:", error);
             if (error instanceof Error) {
-                alert("Google 로그인 중 오류가 발생했습니다: " + error.message);
+                alert(`Google 로그인 중 오류가 발생했습니다: ${error.message}`);
             } else {
-                alert("알 수 없는 오류가 발생했습니다.");
+                alert(`Google 로그인 중 알 수 없는 오류가 발생했습니다: ${JSON.stringify(error)}`);
             }
         }
     };
@@ -131,7 +162,7 @@ const Login = () => {
     };
 
     return (
-        <GoogleOAuthProvider clientId={clientId}> 
+        <GoogleOAuthProvider clientId={clientId}>
             <Layout>
                 <div className={styles.wrapLogin}>
                     <div className={styles.loginMain}>
@@ -146,8 +177,8 @@ const Login = () => {
                                         <input
                                             type="text"
                                             placeholder="아이디를 입력해주세요."
-                                            value={userId} 
-                                            onChange={(e) => setUserId(e.target.value)} 
+                                            value={userId}
+                                            onChange={(e) => setUserId(e.target.value)}
                                             autoFocus
                                         />
                                     </li>
@@ -173,17 +204,16 @@ const Login = () => {
                                     <li>
                                         <input type="submit" value="로그인" />
                                     </li>
-
                                     <li className={styles.googleLogin}>
                                         <div className={styles.googleLoginWrapper}>
                                             <GoogleLogin
                                                 onSuccess={handleGoogleSuccess}
                                                 onError={handleGoogleFailure}
-                                                width="100%"
+                                                useOneTap
+                                                auto_select={false}
                                             />
                                         </div>
                                     </li>
-
                                     <p className={styles.signup}>
                                         아직 회원이 아니신가요? <a href="/signup">회원가입하러가기</a>
                                     </p>
@@ -193,7 +223,7 @@ const Login = () => {
                     </div>
                 </div>
             </Layout>
-        </GoogleOAuthProvider> 
+        </GoogleOAuthProvider>
     );
 };
 

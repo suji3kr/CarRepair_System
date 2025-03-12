@@ -1,14 +1,13 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Layout from "../components/Layout";
-import styles from "../styles/SignUp.module.css"; // CSS Modules 사용
+import styles from "../styles/SignUp.module.css"; 
 import { FormData } from "../types/Signup";
 import agreement from '../text/agreement.txt?raw';
-import axios from "axios"; // axios 추가
-import { useNavigate } from "react-router-dom";
+import axios from "axios"; 
 
-const API_URL = "http://localhost:8094/api/users/signup"; // Spring Boot API 엔드포인트 (필요에 따라 수정)
+const API_URL = "http://localhost:8094/api/users/signup"; 
 
-// ✅ 초기 폼 상태 정의
 const initialFormData: FormData = {
   userId: "",
   password: "",
@@ -27,10 +26,26 @@ const initialFormData: FormData = {
 };
 
 const SignUp: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>(initialFormData);
-  const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
   const termsRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate(); // ✅ 페이지 이동을 위한 navigate 함수
+  const [formData, setFormData] = useState<FormData>(initialFormData);
+  const [isGoogleSignup, setIsGoogleSignup] = useState(false);
+  const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
+
+  // ✅ Google 로그인 정보가 있을 경우 초기 상태 설정
+  useEffect(() => {
+    if (location.state?.email) {
+      setFormData((prev) => ({
+        ...prev,
+        email: location.state.email,
+        name: location.state.name || "",
+        userId: location.state.email.split("@")[0], // 이메일 앞부분을 userId로 설정
+        password: "", // Google 로그인 시 비밀번호 입력 비활성화
+      }));
+      setIsGoogleSignup(true);
+    }
+  }, [location.state]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
@@ -42,12 +57,10 @@ const SignUp: React.FC = () => {
     }));
   };
 
-  // ✅ "다시 작성" 버튼 클릭 시 폼을 초기 상태로 리셋
   const handleReset = () => {
     setFormData(initialFormData);
   };
 
-  // 스크롤 이벤트 감지
   const handleScroll = () => {
     if (termsRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = termsRef.current;
@@ -57,15 +70,12 @@ const SignUp: React.FC = () => {
     }
   };
 
-  // Spring Boot API로 회원가입 데이터 전송
   const signUp = async (data: FormData) => {
     try {
       const response = await axios.post(API_URL, data, {
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
       });
-      console.log("회원가입 성공:", response.data); // 응답 확인
+      console.log("회원가입 성공:", response.data);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -76,24 +86,22 @@ const SignUp: React.FC = () => {
       throw error;
     }
   };
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.termsAgreed) {
       alert("약관에 동의해야 합니다.");
       return;
     }
-  
+
     try {
       await signUp(formData);
       alert("회원가입이 완료되었습니다!");
-      navigate("/login"); // ✅ 회원가입 후 로그인 페이지로 이동
-    } catch (error: unknown) {
+      navigate("/login"); 
+    } catch (error) {
       if (axios.isAxiosError(error)) {
         const errorMessage = error.response?.data?.message || "서버 오류가 발생했습니다.";
         alert(`회원가입 중 오류가 발생했습니다: ${errorMessage}`);
-      } else if (error instanceof Error) {
-        alert(`회원가입 중 오류가 발생했습니다: ${error.message}`);
       } else {
         alert("알 수 없는 오류가 발생했습니다.");
       }
@@ -112,10 +120,12 @@ const SignUp: React.FC = () => {
             <input type="text" name="userId" value={formData.userId} onChange={handleChange} required />
           </div>
 
-          <div className={styles.signupFormGroup}>
-            <label>비밀번호</label>
-            <input type="password" name="password" value={formData.password} onChange={handleChange} required />
-          </div>
+          {!isGoogleSignup && (
+            <div className={styles.signupFormGroup}>
+              <label>비밀번호</label>
+              <input type="password" name="password" value={formData.password} onChange={handleChange} required />
+            </div>
+          )}
 
           <div className={styles.signupFormGroup}>
             <label>이름</label>
@@ -124,7 +134,7 @@ const SignUp: React.FC = () => {
 
           <div className={styles.signupFormGroup}>
             <label>이메일</label>
-            <input type="email" name="email" value={formData.email} onChange={handleChange} required />
+            <input type="email" name="email" value={formData.email} onChange={handleChange} required disabled={isGoogleSignup} />
           </div>
 
           <div className={styles.signupFormGroup}>
@@ -134,12 +144,7 @@ const SignUp: React.FC = () => {
 
           <div className={styles.signupFormGroup}>
             <label>차량정보</label>
-            <select 
-              name="carMake" // carMake로 수정 (carModel과 중복 방지)
-              value={formData.carMake} 
-              onChange={handleChange} 
-              required
-            >
+            <select name="carMake" value={formData.carMake} onChange={handleChange} required>
               <option value="" disabled>브랜드를 선택하세요</option>
               <option value="쌍용">쌍용</option>
               <option value="쉐보레">쉐보레</option>
@@ -154,69 +159,33 @@ const SignUp: React.FC = () => {
 
           <div className={styles.signupTerms}>
             <label>
-              <input
-                type="checkbox"
-                name="coOwner"
-                checked={formData.coOwner}
-                onChange={handleChange}
-              />
+              <input type="checkbox" name="coOwner" checked={formData.coOwner} onChange={handleChange} />
               공동 소유주 여부
             </label>
 
-            {/* 공동 소유주 입력 칸 */}
             {formData.coOwner && (
               <div className={styles.coOwnerFields}>
-                <label>
-                  <br />
-                  공동 소유주 이름:
-                  <input
-                    type="text"
-                    name="coOwnerName"
-                    value={formData.coOwnerName}
-                    onChange={handleChange}
-                    placeholder="이름을 입력하세요"
-                  />
-                </label>
-                <label>
-                  공동 소유주 전화번호:
-                  <input
-                    type="text"
-                    name="coOwnerPhone"
-                    value={formData.coOwnerPhone}
-                    onChange={handleChange}
-                    placeholder="전화번호를 입력하세요"
-                  />
-                </label>
+                <label>공동 소유주 이름:</label>
+                <input type="text" name="coOwnerName" value={formData.coOwnerName} onChange={handleChange} />
+                <label>공동 소유주 전화번호:</label>
+                <input type="text" name="coOwnerPhone" value={formData.coOwnerPhone} onChange={handleChange} />
               </div>
             )}
-            <br />
-            <br />
-            <div className={styles.termsContainer} ref={termsRef} onScroll={handleScroll}>
-              <h3>이용약관</h3>
-              <p>
-                <pre>{agreement}</pre>
-              </p>
-            </div>
-
-            {/* 약관 동의 체크박스 */}
-            <label className={styles.termsLabel}>
-              <input
-                type="checkbox"
-                name="termsAgreed"
-                checked={formData.termsAgreed}
-                onChange={handleChange}
-                disabled={!isScrolledToBottom} // 스크롤이 끝까지 내려가야 활성화
-                required
-              />
-              약관에 동의합니다.
-            </label>
           </div>
+
+          <div className={styles.termsContainer} ref={termsRef} onScroll={handleScroll}>
+            <h3>이용약관</h3>
+            <p><pre>{agreement}</pre></p>
+          </div>
+
+          <label className={styles.termsLabel}>
+            <input type="checkbox" name="termsAgreed" checked={formData.termsAgreed} onChange={handleChange} disabled={!isScrolledToBottom} required />
+            약관에 동의합니다.
+          </label>
 
           <div className={styles.signupFormActions}>
             <button type="submit" className={styles.signupButton}>회원가입</button>
-            <button type="reset" className={styles.signupButton} onClick={handleReset}>
-                다시 작성
-            </button>
+            <button type="reset" className={styles.signupButton} onClick={handleReset}>다시 작성</button>
           </div>
         </form>
       </div>
