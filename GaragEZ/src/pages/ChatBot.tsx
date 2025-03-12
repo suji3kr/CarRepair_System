@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import styles from "../styles/Chatbot.module.css";
 import { ChatMessage, Product, ChatRequest, ChatResponse } from "../types/chat"; // ✅ 타입 import
+import { RiChatSmile2Line, RiChatSmileAiLine } from "react-icons/ri";
 
 const ChatBot: React.FC = () => {
   const [input, setInput] = useState<string>("");
@@ -46,6 +47,7 @@ const ChatBot: React.FC = () => {
           <div key={idx} className={`${styles.messageWrapper} ${styles[msg.sender]}`}>
             {msg.sender === "user" ? (
               <div className={styles.userMessage}>
+                <RiChatSmile2Line className={styles.botIcon} /> {/* 아이콘 추가 */}
                 <img src="/user-profile.png" alt="사용자" className={styles.profileImage} />
                 <div className={styles.messageBox}>
                   <span className={styles.userLabel}>질문</span>
@@ -54,7 +56,8 @@ const ChatBot: React.FC = () => {
               </div>
             ) : (
               <div className={styles.botMessage}>
-                <img src="/bot-profile.png" alt="챗봇" className={styles.profileImage} />
+                <RiChatSmile2Line className={styles.botIcon} /> {/* 아이콘 추가 */}
+                <img src="/bot-avatar.png" alt="챗봇" className={styles.profileImage} />
                 <div className={styles.messageBox}>
                   <span className={styles.botLabel}>답변</span>
                   <p>{msg.content}</p>
