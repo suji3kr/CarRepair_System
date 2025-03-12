@@ -13,7 +13,7 @@ public class CarService {
     @Autowired
     private CarRepository carRepository;
 
-    public List<Car> getCarsByCategory(String category) {
-        return carRepository.findByCategory(category);
+    public List<Car> getCarsByCarMake(String car_Make) {
+        return carRepository.findByCarMake(car_Make);
     }
 }

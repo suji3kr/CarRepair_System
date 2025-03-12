@@ -44,13 +44,24 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // ✅ JWT 기반 세션 없음
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/auth/**", "/api/users/**", "/api/signup/**", // ✅ 로그인 & 회원가입 API 허용
-                                "/api-docs/**", "/swagger-ui/**", // ✅ Swagger 허용
+                                "/api/auth/**",
+                                "/api/users/**",
+                                "api/signup/**",
+                                // ✅ Swagger 허용
+                                "/api-docs/**",
+                                "/swagger-ui/**",
+                                // ✅ 결제 및 부품, 차량 관련
                                 "/api/payment/**",
-                                "/api/parts/**", // ✅ 부품 관련 API 인증 없이 허용
+                                "/api/parts/**",
                                 "/api/cars/**",
+                                // ✅ 이미지 등 정적 리소스
                                 "/images/**",
-                                "/api/store/**" // ✅ 판매점 관련 API 인증 없이 허용
+                                // ✅ 판매점 관련 API
+                                "/api/store/**",
+                                // ✅ 가게별 리뷰 API 허용
+                                "/api/storereviews/**",
+                                //chat
+                                "/api/chat/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -69,13 +80,15 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://127.0.0.1:3000")); // ✅ OAuth 로그인 도메인 추가
+        // 프론트엔드 주소 허용
+        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
         configuration.setExposedHeaders(List.of("Authorization")); // ✅ JWT 토큰을 클라이언트에서 받을 수 있도록 설정
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        // 모든 경로에 대해 CORS 설정 적용
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }

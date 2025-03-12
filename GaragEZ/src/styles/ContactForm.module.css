@@ -93,3 +93,12 @@
     width: 100%;
   }
 }
+.carSelectionGroup {
+  display: flex;
+  gap: 20px; /* 이 값을 조정하여 간격을 조절 */
+  margin-bottom: 16px;
+}
+
+.carSelectionGroup > div {
+  flex: 1; /* 입력창 너비를 균등하게 설정 */
+}

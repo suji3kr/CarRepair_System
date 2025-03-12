@@ -41,7 +41,7 @@ const Sidebar: React.FC = () => {
       </a>
 
       {/* 챗봇 */}
-      <a href="/chatbot" className={styles.iconWrapper}>
+      <a href="/chat-bot" className={styles.iconWrapper}>
         💬
         <p className={styles.text}>챗봇</p>
       </a>
@@ -54,8 +54,8 @@ const Sidebar: React.FC = () => {
         ⬆️
       </div>
 
-      {/* 로그아웃 버튼 */}
-      <button className={styles.logoutButton} onClick={handleLogout}>
+       {/* 로그아웃 버튼 */}
+       <button className={styles.logoutButton} onClick={handleLogout}>
         🚪
         <p className={styles.text}>로그아웃</p>
       </button>

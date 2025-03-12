@@ -65,7 +65,7 @@
   border: 1px solid #ddd;
   text-align: center;
   border-radius: 8px;
-  width: 250px;
+  width: 300px;
   height: 250px;
   transition: transform 0.2s ease-in-out;
   cursor: pointer; /* ✅ 커서 변경 */
@@ -80,8 +80,9 @@
 /* ✅ 아이템 이미지 스타일 */
 .itemCard img {
   margin-top: 20px;
-  width: 150px;
+  width: 250px;
   height: 150px;
+  position: relative;
 }
 
 /* ✅ 아이템 정보 스타일 */

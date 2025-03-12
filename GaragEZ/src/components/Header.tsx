@@ -52,7 +52,7 @@ const Header: React.FC = () => {
 
     // 로그아웃 알림 메시지
     alert("로그아웃되었습니다. 다음에 또 방문해주세요!");
-
+    
     navigate("/home"); // 홈으로 이동
     window.location.reload(); // 새로고침 (선택적)
   };
@@ -92,8 +92,7 @@ const Header: React.FC = () => {
                 <div className={styles.category}>
                   <h3>견적·상담</h3>
                   <ul>
-                    <li><Link to="/menu2/estimate">견적 요청</Link></li>
-                    <li><Link to="/contact">문의하기</Link></li>
+                    <li><Link to="/contact">견적 요청</Link></li>
                     <li><Link to="/Cars">차량별 문의</Link></li>
                   </ul>
                 </div>
@@ -116,6 +115,7 @@ const Header: React.FC = () => {
                   <ul>
                     <li><Link to="/map">지도 검색</Link></li>
                     <li><Link to="/StoreList">목록 보기</Link></li>
+                    <li><Link to="/StoreReview">가게별 리뷰</Link></li>
                   </ul>
                 </div>
               </div>

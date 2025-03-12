@@ -1,22 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
-import styles from "../styles/Chatbot.module.css"; // ✅ CSS 모듈 import
-
-interface ChatMessage {
-  sender: "user" | "bot";
-  content: string;
-}
-
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-  link: string;
-}
+import styles from "../styles/Chatbot.module.css";
+import { ChatMessage, Product, ChatRequest, ChatResponse } from "../types/chat"; // ✅ 타입 import
 
 const ChatBot: React.FC = () => {
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState<string>("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [products, setProducts] = useState<Product[] | null>(null);
 
@@ -28,28 +16,26 @@ const ChatBot: React.FC = () => {
     setInput("");
 
     try {
-      const response = await axios.post("/api/chat/message", { message: input });
-      const botMessage: ChatMessage = { sender: "bot", content: response.data.answer };
+      const requestData: ChatRequest = { message: input };
+      const response = await axios.post<ChatResponse>("http://localhost:8094/api/chat/message", requestData);
 
+      const botMessage: ChatMessage = { sender: "bot", content: response.data.answer };
       setMessages((prev) => [...prev, botMessage]);
 
-      if (response.data.answer.includes("엔진오일 최저가 검색하시겠습니까?")) {
-        setMessages((prev) => [
-          ...prev,
-          { sender: "bot", content: "🔍 엔진오일 최저가 검색하시겠습니까?" },
-        ]);
+      // 만약 챗봇이 최저가 상품 정보를 포함한다면
+      if (response.data.products) {
+        setProducts(response.data.products);
+      }
+
+      // 상담 종료 플래그가 있으면 채팅 초기화
+      if (response.data.endChat) {
+        setTimeout(() => {
+          setMessages([]);
+          setProducts(null);
+        }, 1000);
       }
     } catch (error) {
       console.error("채팅 오류:", error);
-    }
-  };
-
-  const fetchCheapestProducts = async () => {
-    try {
-      const response = await axios.get("/api/products/cheapest");
-      setProducts(response.data);
-    } catch (error) {
-      console.error("최저가 검색 오류:", error);
     }
   };
 
@@ -61,12 +47,6 @@ const ChatBot: React.FC = () => {
             {msg.content}
           </div>
         ))}
-
-        {messages.some((msg) => msg.content.includes("🔍 엔진오일 최저가 검색하시겠습니까?")) && (
-          <button className={styles.searchButton} onClick={fetchCheapestProducts}>
-            ✅ 엔진오일 최저가 검색
-          </button>
-        )}
 
         {products && (
           <div className={styles.productList}>
