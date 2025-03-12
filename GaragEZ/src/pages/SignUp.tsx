@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Layout from "../components/Layout";
-import styles from "../styles/SignUp.module.css"; 
+import styles from "../styles/SignUp.module.css";
 import { FormData } from "../types/Signup";
-import agreement from '../text/agreement.txt?raw';
-import axios from "axios"; 
+import agreement from "../text/agreement.txt?raw";
+import axios from "axios";
+import { Select, MenuItem, FormControl, InputLabel } from "@mui/material"; // MUI 컴포넌트 추가
 
-const API_URL = "http://localhost:8094/api/users/signup"; 
+const API_URL = "http://localhost:8094/api/users/signup";
+const CARS_API_URL = "http://localhost:8094/api/cars?car_make="; // 차량 모델 API
 
 const initialFormData: FormData = {
   userId: "",
@@ -32,8 +34,9 @@ const SignUp: React.FC = () => {
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [isGoogleSignup, setIsGoogleSignup] = useState(false);
   const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
+  const [cars, setCars] = useState<any[]>([]); // 차량 모델 목록 상태
 
-  // ✅ Google 로그인 정보가 있을 경우 초기 상태 설정
+  // Google 로그인 정보가 있을 경우 초기 상태 설정
   useEffect(() => {
     if (location.state?.email) {
       setFormData((prev) => ({
@@ -46,6 +49,30 @@ const SignUp: React.FC = () => {
       setIsGoogleSignup(true);
     }
   }, [location.state]);
+
+  // 차량 브랜드 변경 시 모델 목록 로드
+  useEffect(() => {
+    if (formData.carMake) {
+      const loadCars = async () => {
+        try {
+          const response = await axios.get(`${CARS_API_URL}${formData.carMake}`, {
+            headers: { "Content-Type": "application/json" },
+          });
+          if (response.data && Array.isArray(response.data)) {
+            setCars(response.data);
+          } else {
+            setCars([]);
+          }
+        } catch (error) {
+          console.error("차량 모델 로드 실패:", error);
+          setCars([]);
+        }
+      };
+      loadCars();
+    } else {
+      setCars([]);
+    }
+  }, [formData.carMake]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
@@ -97,7 +124,7 @@ const SignUp: React.FC = () => {
     try {
       await signUp(formData);
       alert("회원가입이 완료되었습니다!");
-      navigate("/login"); 
+      navigate("/login");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const errorMessage = error.response?.data?.message || "서버 오류가 발생했습니다.";
@@ -144,17 +171,76 @@ const SignUp: React.FC = () => {
 
           <div className={styles.signupFormGroup}>
             <label>차량정보</label>
-            <select name="carMake" value={formData.carMake} onChange={handleChange} required>
-              <option value="" disabled>브랜드를 선택하세요</option>
-              <option value="쌍용">쌍용</option>
-              <option value="쉐보레">쉐보레</option>
-              <option value="기아">기아</option>
-              <option value="현대">현대</option>
-            </select>
-            <input type="text" name="carModel" value={formData.carModel} onChange={handleChange} placeholder="차 모델" required />
-            <input type="text" name="carNumber" value={formData.carNumber} onChange={handleChange} placeholder="차량 번호" required />
-            <input type="text" name="year" value={formData.year} onChange={handleChange} placeholder="연식" required />
-            <input type="text" name="vin" value={formData.vin} onChange={handleChange} placeholder="차대 번호" required />
+            <div className={styles.vehicleInfoGroup}>
+              <div className={styles.vehicleSelectGroup}>
+                <div>
+                  <FormControl fullWidth>
+                    <InputLabel id="carMake-label">차 브랜드</InputLabel>
+                    <Select
+                      labelId="carMake-label"
+                      name="carMake"
+                      value={formData.carMake}
+                      label="차 브랜드"
+                      onChange={handleChange}
+                      required
+                    >
+                      <MenuItem value="">브랜드를 선택하세요</MenuItem>
+                      {["쌍용", "쉐보레", "기아", "현대"].map((manufacturer, index) => (
+                        <MenuItem key={index} value={manufacturer}>
+                          {manufacturer}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </div>
+                <div>
+                  <FormControl fullWidth>
+                    <InputLabel id="carModel-label">차 모델</InputLabel>
+                    <Select
+                      labelId="carModel-label"
+                      name="carModel"
+                      value={formData.carModel}
+                      label="차 모델"
+                      onChange={handleChange}
+                      required
+                      disabled={!formData.carMake || cars.length === 0}
+                    >
+                      <MenuItem value="">차량을 선택하세요</MenuItem>
+                      {cars.map((car: any) => (
+                        <MenuItem key={car.id} value={car.carModel}>
+                          {car.carModel}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </div>
+              </div>
+              {/* 나머지 차량 정보 입력 필드 (추가 개선 가능) */}
+              <input
+                type="text"
+                name="carNumber"
+                value={formData.carNumber}
+                onChange={handleChange}
+                placeholder="차량 번호"
+                required
+              />
+              <input
+                type="text"
+                name="year"
+                value={formData.year}
+                onChange={handleChange}
+                placeholder="연식"
+                required
+              />
+              <input
+                type="text"
+                name="vin"
+                value={formData.vin}
+                onChange={handleChange}
+                placeholder="차대 번호"
+                required
+              />
+            </div>
           </div>
 
           <div className={styles.signupTerms}>
@@ -175,17 +261,30 @@ const SignUp: React.FC = () => {
 
           <div className={styles.termsContainer} ref={termsRef} onScroll={handleScroll}>
             <h3>이용약관</h3>
-            <p><pre>{agreement}</pre></p>
+            <p>
+              <pre>{agreement}</pre>
+            </p>
           </div>
 
           <label className={styles.termsLabel}>
-            <input type="checkbox" name="termsAgreed" checked={formData.termsAgreed} onChange={handleChange} disabled={!isScrolledToBottom} required />
+            <input
+              type="checkbox"
+              name="termsAgreed"
+              checked={formData.termsAgreed}
+              onChange={handleChange}
+              disabled={!isScrolledToBottom}
+              required
+            />
             약관에 동의합니다.
           </label>
 
           <div className={styles.signupFormActions}>
-            <button type="submit" className={styles.signupButton}>회원가입</button>
-            <button type="reset" className={styles.signupButton} onClick={handleReset}>다시 작성</button>
+            <button type="submit" className={styles.signupButton}>
+              회원가입
+            </button>
+            <button type="reset" className={styles.signupButton} onClick={handleReset}>
+              다시 작성
+            </button>
           </div>
         </form>
       </div>
