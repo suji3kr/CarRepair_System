@@ -182,6 +182,13 @@ VALUES
   (3, 200.00, 'ONLINE', 'FAILED');
 
 
+
+
+
+-- >> table car 오늘 해야할 것
+-- category -> carMake   /   name  ->  carModel
+-- 리액트에서 연결 수정하고 디비 수정하기
+
 create table car (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(100) NOT NULL,
@@ -189,7 +196,7 @@ create table car (
   image_url VARCHAR(255)  -- 부품 이미지 URL을 저장하는 필드 추가
 );
 
-INSERT INTO car (name, image_Url, category) VALUES
+INSERT INTO car (name, image_url, category) VALUES
 ('아반떼', 'avante.jpg', '현대'),
 ('아반떼 하이브리드', 'avante_Hybrid.jpg', '현대'),
 ('아반떼 N', 'avante_N.jpg', '현대'),
@@ -216,7 +223,7 @@ INSERT INTO car (name, image_Url, category) VALUES
 ('베뉴', 'venue.jpg', '현대');
 
 
-INSERT INTO car (name, image_Url, category) VALUES
+INSERT INTO car (name, image_url, category) VALUES
 ('EV3', 'EV3_1.jpg', '기아'),
 ('EV6', 'EV6_1.jpg', '기아'),
 ('EV6_GT', 'EV6_GT_1.jpg', '기아'),
@@ -245,7 +252,7 @@ INSERT INTO car (name, image_Url, category) VALUES
 
 
 
-INSERT INTO car (name, image_Url, category) VALUES
+INSERT INTO car (name, image_url, category) VALUES
 ('렉스턴_뉴_아레나', '렉스턴_뉴_아레나.jpg', '쌍용'),
 ('렉스턴_스포츠', '렉스턴_스포츠.jpg', '쌍용'),
 ('렉스턴_스포츠_칸', '렉스턴_스포츠_칸.jpg', '쌍용'),

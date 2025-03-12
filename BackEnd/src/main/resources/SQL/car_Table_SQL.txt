@@ -215,6 +215,8 @@ CREATE TABLE ai_product (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+
+
 CREATE TABLE contact_messages (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,              -- 문의자 이름
