@@ -24,11 +24,11 @@ public class VehicleService {
                 .orElseThrow(()->  new RuntimeException("차량 정보를 찾을 수 없습니다. V ID Number: " + vin));
     }
 
-    // 차량 정보 저장 메소드
+    // 차량 정보 저장 메소드 (CarInfo도 Vehicle을 상속하므로 동일한 방식으로 처리)
     public Vehicle saveVehicle(Vehicle vehicle) {
         // 공동 소유자 정보 유효성 검사 (coOwner가 true일 경우 필수)
         validateCoOwnerInfo(vehicle);
-        return vehicleRepository.save(vehicle);
+        return vehicleRepository.save(vehicle);  // VehicleRepository를 통해 저장
     }
 
     // 차량 정보 삭제 메소드
@@ -63,7 +63,6 @@ public class VehicleService {
 
     // 새로운 차량 생성
     public Vehicle createVehicle(Vehicle vehicle) {
-        // 공동 소유자 정보 유효성 검사
         validateCoOwnerInfo(vehicle);
         return vehicleRepository.save(vehicle);
     }
