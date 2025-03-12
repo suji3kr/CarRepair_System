@@ -29,6 +29,11 @@ const storeList: Store[] = [
     address: '부산광역시 해운대구',
     phone: '054-555-6789',
   },
+  {
+    name: '차고지 제주점',
+    address: '제주특별자치도 서귀포시',
+    phone: '064-555-6789',
+  },
 ];
 
 const StoreList: React.FC = () => {

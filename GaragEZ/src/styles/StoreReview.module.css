@@ -1,0 +1,119 @@
+.container {
+  margin-top: 80px; /* 헤더 아래 여백 */
+  padding: 2rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pageTitle {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.error {
+  color: red;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* 리뷰 목록 섹션 */
+.storeReviewSection {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 1rem;
+}
+
+.storeHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.storeName {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.storeAverage {
+  display: flex;
+  align-items: center;
+}
+
+.storeAverage span {
+  margin-left: 0.5rem;
+  font-size: 1rem;
+  color: #1976d2;
+}
+
+.reviewList {
+  list-style: none;
+  padding: 0;
+}
+
+.reviewItem {
+  border-bottom: 1px solid #eee;
+  padding: 0.5rem 0;
+}
+
+.reviewContent {
+  margin-bottom: 0.3rem;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.reviewRating {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  color: #1976d2;
+  margin-bottom: 0.3rem;
+}
+
+.reviewRating span {
+  margin-left: 0.5rem;
+}
+
+.reviewDate {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+/* 리뷰 등록 폼 */
+.reviewFormWrapper {
+  background-color: #f8f8f8;
+  padding: 1rem;
+  margin-top: 2rem;
+  border-radius: 4px;
+}
+
+.reviewForm label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.reviewForm select,
+.reviewForm textarea {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.reviewForm button {
+  padding: 0.5rem 1rem;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.reviewForm button:hover {
+  background-color: #115293;
+}
