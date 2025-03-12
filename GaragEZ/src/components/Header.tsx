@@ -115,6 +115,7 @@ const Header: React.FC = () => {
                   <ul>
                     <li><Link to="/map">지도 검색</Link></li>
                     <li><Link to="/StoreList">목록 보기</Link></li>
+                    <li><Link to="/StoreReview">가게별 리뷰</Link></li>
                   </ul>
                 </div>
               </div>

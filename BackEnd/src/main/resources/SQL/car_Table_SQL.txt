@@ -21,6 +21,7 @@ DROP TABLE IF EXISTS ai_product;
 DROP TABLE IF EXISTS user_vehicles;
 DROP TABLE IF EXISTS contact_messages;
 DROP TABLE IF EXISTS car;
+DROP TABLE IF EXISTS store_reviews;
 
 
 SET FOREIGN_KEY_CHECKS=1;
@@ -117,6 +118,7 @@ CREATE TABLE appointments (
   FOREIGN KEY (vehicle_id) REFERENCES vehicles(id) ON DELETE CASCADE
 );
 
+
 -- 🛠 정비소 정보 테이블
 CREATE TABLE repair_store (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -128,6 +130,7 @@ CREATE TABLE repair_store (
   FOREIGN KEY (store_id) REFERENCES store(id) ON DELETE SET NULL,
   FOREIGN KEY (appointment_id) REFERENCES appointments(id) ON DELETE CASCADE
 );
+
 
 -- 📢 알림 테이블
 CREATE TABLE notifications (
@@ -228,6 +231,14 @@ CREATE TABLE contact_messages (
     message TEXT NOT NULL,                     -- 문의 내용
     additional_notes TEXT,                     -- 추가 기재사항 (옵션)
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- 작성일시
+);
+
+CREATE TABLE store_reviews (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    store_name VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    rating DECIMAL(3,1) NOT NULL,  -- 0.0 ~ 5.0 (0.5 단위 가능)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 
