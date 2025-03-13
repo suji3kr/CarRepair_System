@@ -3,14 +3,9 @@ import { useNavigate } from "react-router-dom";
 import styles from "../styles/Car.module.css";
 import Layout from "../components/Layout";
 import { Skeleton } from "@mui/material";
+import { Car } from "../types/car";
 
-// Define Car interface (consistent with backend)
-interface Car {
-  CarId: number;
-  carModel: string;
-  imageUrl: string; // camelCase for consistency
-  carMake: string;
-}
+
 
 // API fetch function with proper typing and error handling
 const fetchCars = async (carMake: string): Promise<Car[]> => {
