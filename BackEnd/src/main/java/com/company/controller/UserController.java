@@ -2,6 +2,7 @@ package com.company.controller;
 
 import com.company.dto.UserSignupRequest;
 import com.company.dto.UserResponseDto;
+import com.company.dto.UserUpdateRequest;
 import com.company.entity.user.User;
 import com.company.service.UserService;
 import com.company.security.JwtTokenProvider;
@@ -67,4 +68,20 @@ public class UserController {
     public ResponseEntity<String> handleValidationException(Exception e) {
         return ResponseEntity.badRequest().body("입력값이 올바르지 않습니다: " + e.getMessage());
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> updateUserProfile(@RequestBody UserUpdateRequest request,
+                                               @RequestHeader("Authorization") String token) {
+        try {
+            String jwtToken = token.replace("Bearer ", "");
+            String userId = jwtTokenProvider.getUserIdFromToken(jwtToken);
+
+            User updatedUser = userService.updateUser(userId, request);
+            return ResponseEntity.ok(new UserResponseDto(updatedUser));
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body("프로필 업데이트 실패: " + e.getMessage());
+        }
+    }
+
+
 }

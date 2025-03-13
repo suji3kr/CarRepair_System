@@ -1,5 +1,6 @@
 package com.company.dto;
 
+import com.company.entity.user.User;
 import com.company.entity.vehicle.Vehicle;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,4 +15,5 @@ public class UserResponseDto {
     private String phone;
     private String role;
     private List<Vehicle> vehicles; // ✅ 차량 정보 추가
+    
 }
