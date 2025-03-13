@@ -3,23 +3,13 @@ import { useNavigate } from "react-router-dom";
 import Layout from "../components/Layout";
 import styles from "../styles/Profile.module.css";
 import axios from "axios";
+import { UserProfile } from "../types/user"; // ✅ 분리된 타입 가져오기
 
-const API_URL = "http://localhost:8094/api/users/me"; // 현재 로그인한 사용자 정보 조회 API
+const API_URL = "http://localhost:8094/api/users/me";
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState<{
-    userId: string;
-    name: string;
-    email: string;
-    phone: string;
-    carMake?: string;
-    carModel?: string;
-    carNumber?: string;
-    year?: string;
-    vin?: string;
-  } | null>(null);
-
+  const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -32,7 +22,7 @@ const Profile: React.FC = () => {
       }
 
       try {
-        const response = await axios.get(API_URL, {
+        const response = await axios.get<UserProfile>(API_URL, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -96,28 +86,43 @@ const Profile: React.FC = () => {
 
         <div className={styles.profileSection}>
           <label>제조사</label>
-          <input type="text" value={user.carMake || "미등록"} readOnly />
+          <input type="text" value={user.vehicle?.carMake || "미등록"} readOnly />
         </div>
 
         <div className={styles.profileSection}>
           <label>모델</label>
-          <input type="text" value={user.carModel || "미등록"} readOnly />
+          <input type="text" value={user.vehicle?.carModel || "미등록"} readOnly />
         </div>
 
         <div className={styles.profileSection}>
           <label>차량 번호</label>
-          <input type="text" value={user.carNumber || "미등록"} readOnly />
+          <input type="text" value={user.vehicle?.carNumber || "미등록"} readOnly />
         </div>
 
         <div className={styles.profileSection}>
           <label>연식</label>
-          <input type="text" value={user.year || "미등록"} readOnly />
+          <input type="text" value={user.vehicle?.year?.toString() || "미등록"} readOnly />
         </div>
 
         <div className={styles.profileSection}>
           <label>차대번호 (VIN)</label>
-          <input type="text" value={user.vin || "미등록"} readOnly />
+          <input type="text" value={user.vehicle?.vin || "미등록"} readOnly />
         </div>
+
+        {/* 공동 소유 정보 추가 */}
+        {user.vehicle?.coOwner && (
+          <>
+            <h3 className={styles.profileSubtitle}>공동 소유 정보</h3>
+            <div className={styles.profileSection}>
+              <label>공동 소유주 이름</label>
+              <input type="text" value={user.vehicle?.coOwnerName || "미등록"} readOnly />
+            </div>
+            <div className={styles.profileSection}>
+              <label>공동 소유주 연락처</label>
+              <input type="text" value={user.vehicle?.coOwnerPhone || "미등록"} readOnly />
+            </div>
+          </>
+        )}
 
         <button className={styles.logoutButton} onClick={handleLogout}>
           로그아웃

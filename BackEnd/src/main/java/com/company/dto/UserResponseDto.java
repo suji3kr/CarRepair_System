@@ -13,5 +13,5 @@ public class UserResponseDto {
     private String email;
     private String phone;
     private String role;
-//    private List<Vehicle> vehicles; // ✅ 차량 정보 추가
+    private List<Vehicle> vehicles; // ✅ 차량 정보 추가
 }

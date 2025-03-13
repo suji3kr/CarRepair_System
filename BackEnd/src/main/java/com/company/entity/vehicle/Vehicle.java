@@ -40,6 +40,7 @@ public class Vehicle {
 
     // 해당 차량에 대한 정비 기록 (양방향 연관관계)
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<MaintenanceRecord> maintenanceRecords;
 
     // 공동 소유자 관련 정보
