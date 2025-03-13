@@ -1,82 +1,161 @@
-.chatContainer {
+.chatbot {
+  width: 380px;
+  border: 1px solid #c3cdd8;;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;  /* 입력창을 하단으로 정렬 */
+  border-radius: 8px;
+  padding: 30px 0px 5px 18px;
+  background: #f0f2f3;
   position: fixed;
   bottom: 20px;
   right: 20px;
+  z-index: 1000;
+  min-height: 500px;  /* 최소 높이 설정 */
+  max-height: 900px;  /* 최대 높이 설정 */
+  overflow-y: auto;
 }
 
-/* 챗봇 토글 버튼 */
-.chatToggle {
+.messages {
+  flex-grow: 1;  /* 남은 공간을 채우도록 설정 */
+  max-height: 450px;
+  overflow-y: auto;
+  padding-bottom: 20px;
+}
+
+.messageWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.userMessage,
+.botMessage {
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+  margin-right: 7px;
+  margin-left: 3px;
+}
+
+.userMessage .messageBox  {
+  margin-right: 25px;
+}
+
+.botMessage .messageBox  {
+  margin-left: 7px;
+}
+
+.messageBox {
+  background: #f0eeee;
+  padding: 10px;
+  border-radius: 10px;
+  width: 180px;
+  height: 80px;
+}
+
+.user {
+  align-items: flex-end; /* 사용자 메시지를 오른쪽으로 정렬 */
+}
+
+.bot {
+  align-items: flex-start; /* 챗봇 메시지를 왼쪽으로 정렬 */
+}
+
+.userIcon {
+  position: absolute;
+  right: 5px;
+  bottom: 0;
+}
+
+.userMessage .messageBox {
+  background: #b1d3f5;
+}
+
+.botMessage .messageBox {
+  background: #e8e8e8;
+}
+
+.botLabel {
+  font-size: 12px;
+  font-weight: bold;
+  color: #ff4500;
+  margin-bottom: 5px;
+}
+
+.userLabel {
+  font-size: 12px;
+  font-weight: bold;
+  color: #0f58ac;
+  margin-bottom: 5px;
+}
+.userMessage .messageBox::before {
+  font-weight: bold;
+}
+
+.searchButton {
+  display: block;
+  margin: 10px auto;
+  padding: 8px;
   background: #007bff;
   color: white;
   border: none;
-  border-radius: 50%;
-  padding: 15px;
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* 챗봇 팝업 창 */
-.chatPopup {
-  width: 380px;
-  height: 500px;
-  border: 1px solid #ccc;
-  background: white;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
+.productList {
+  margin-top: 10px;
+  background: #fff;
+  padding: 10px;
+  border-radius: 5px;
 }
 
-/* 챗봇 헤더 */
-.chatHeader {
+.productItem {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 10px;
-  background: #007bff;
-  color: white;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  margin-bottom: 10px;
 }
 
-/* 메시지 영역 */
-.messages {
-  flex-grow: 1;
-  overflow-y: auto;
-  padding: 10px;
+.productItem img {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
 }
 
-/* 사용자 메시지 */
-.userMessage {
-  text-align: right;
-  background: #d1ecf1;
-  padding: 8px;
-  border-radius: 8px;
-  margin: 5px 0;
-}
-
-/* 챗봇 메시지 */
-.botMessage {
-  text-align: left;
-  background: #f8d7da;
-  padding: 8px;
-  border-radius: 8px;
-  margin: 5px 0;
-}
-
-/* 입력 영역 */
 .inputArea {
-  display: flex;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  background: #efefef;
   padding: 10px;
-  border-top: 1px solid #ccc;
+  padding-right: 18px; /* 오른쪽 패딩 추가 */
+  border-top: 1.5px solid #a5a2a2;
+  box-sizing: border-box; /* padding이 width에 포함되도록 설정 */
+  display: flex;
+  align-items: center;
 }
 
 .inputArea input {
-  flex-grow: 1;
-  padding: 5px;
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #c7c1c1;
+  border-radius: 5px;
+  width: 100%; /* 기존 calc(100% - 60px) 대신 100% */
+  box-sizing: border-box; /* padding이 width에 포함되도록 설정 */
 }
 
 .inputArea button {
-  margin-left: 10px;
+  margin-left: 8px; /* 버튼과 입력 필드 사이 간격 */
+  padding: 8px 16px;
+  background: #b6c9c8;
+  color: #2c1f1f;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.inputArea button:hover {
+  background: #73b5ee;
 }
