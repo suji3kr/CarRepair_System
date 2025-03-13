@@ -7,7 +7,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { GoogleMap, Marker, InfoWindow, useJsApiLoader } from "@react-google-maps/api";
 import { Dayjs } from "dayjs";
-import { Select, MenuItem, FormControl, InputLabel } from "@mui/material";
+import { Select, MenuItem, FormControl, InputLabel, SelectChangeEvent } from "@mui/material";
 
 const predefinedMarkers = [
   { id: "101", lat: 37.5665, lng: 126.978, name: "서울" },
@@ -18,9 +18,9 @@ const predefinedMarkers = [
 ];
 
 interface Car {
-  id: number;
+  carId: number;
   carModel: string;
-  image_url: string;
+  imageUrl: string;
   carMake: string;
 }
 
@@ -28,7 +28,7 @@ interface FormData {
   userId: string;
   name: string;
   carMake: string;
-  carId: string;
+  carModel: string; // carId 제거, carModel만 사용
   inquiryType: string;
   content: string;
   repairStoreId: string;
@@ -37,16 +37,19 @@ interface FormData {
 }
 
 const fetchCarsByMake = async (carMake: string): Promise<Car[]> => {
+  const token = localStorage.getItem("jwtToken");
   const response = await fetch(`http://localhost:8094/api/cars?car_make=${carMake}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+      "Authorization": token ? `Bearer ${token}` : "",
     },
   });
   if (!response.ok) {
     throw new Error(`Failed to fetch cars: ${response.status} ${response.statusText}`);
   }
   const data = await response.json();
+  console.log("Fetched cars:", data); // 디버깅용
   return Array.isArray(data) ? data : data.cars || [];
 };
 
@@ -62,7 +65,7 @@ const ContactForm: React.FC = () => {
     userId: "",
     name: "",
     carMake: "",
-    carId: "",
+    carModel: "",
     inquiryType: "",
     content: "",
     repairStoreId: "",
@@ -72,10 +75,8 @@ const ContactForm: React.FC = () => {
 
   const [cars, setCars] = useState<Car[]>([]);
   const [error, setError] = useState<string | null>(null);
-
   const [selectedMarker, setSelectedMarker] = useState<{ id: string; lat: number; lng: number; name: string } | null>(null);
   const [center, setCenter] = useState<{ lat: number; lng: number }>({ lat: 37.5665, lng: 126.978 });
-  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
@@ -94,11 +95,11 @@ const ContactForm: React.FC = () => {
 
   useEffect(() => {
     const { state } = location;
-    if (state && state.carMake && state.carId) {
+    if (state && state.carMake && state.carModel) {
       setFormData((prev) => ({
         ...prev,
         carMake: state.carMake,
-        carId: state.carId,
+        carModel: state.carModel,
       }));
     }
   }, [location]);
@@ -112,25 +113,14 @@ const ContactForm: React.FC = () => {
             lng: position.coords.longitude,
           };
           setCenter(userPos);
-          setUserLocation(userPos);
         },
         (error) => {
           console.error("위치 가져오기 오류:", error);
-          setUserLocation(null);
         },
         { enableHighAccuracy: true }
       );
     }
   }, []);
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
-
-  const handleDateChange = (date: Dayjs | null) => {
-    setFormData((prevData) => ({ ...prevData, appointmentDate: date }));
-  };
 
   useEffect(() => {
     if (formData.carMake) {
@@ -138,8 +128,8 @@ const ContactForm: React.FC = () => {
         try {
           const data = await fetchCarsByMake(formData.carMake);
           setCars(data);
-        } catch (err: any) {
-          setError(`차량 데이터를 불러오는 데 실패했습니다: ${err.message}`);
+        } catch (err) {
+          setError(`차량 데이터를 불러오는 데 실패했습니다: ${err}`);
           console.error(err);
         }
       };
@@ -148,6 +138,24 @@ const ContactForm: React.FC = () => {
       setCars([]);
     }
   }, [formData.carMake]);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleSelectChange = (e: SelectChangeEvent<string>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+      ...(name === "carMake" ? { carModel: "" } : {}), // carMake 변경 시 carModel 초기화
+    }));
+  };
+
+  const handleDateChange = (date: Dayjs | null) => {
+    setFormData((prevData) => ({ ...prevData, appointmentDate: date }));
+  };
 
   const handleMarkerClick = (marker: { id: string; lat: number; lng: number; name: string }) => {
     setSelectedMarker(marker);
@@ -164,7 +172,6 @@ const ContactForm: React.FC = () => {
       ...formData,
       appointmentDate: formData.appointmentDate?.format("YYYY-MM-DD"),
     });
-    // 예약과 문의 등록 API 호출 후 예약 내역 페이지로 이동하는 로직 등 추가 가능
     alert("문의 및 예약이 성공적으로 제출되었습니다!");
     navigate("/reservations");
   };
@@ -192,8 +199,9 @@ const ContactForm: React.FC = () => {
                   name="carMake"
                   value={formData.carMake}
                   label="제조사 선택"
-                  onChange={handleChange}
+                  onChange={handleSelectChange}
                   required
+                  MenuProps={{ disableScrollLock: true }}
                 >
                   <MenuItem value="">제조사를 선택하세요</MenuItem>
                   {["현대", "기아", "쉐보레", "쌍용"].map((manufacturer, index) => (
@@ -207,18 +215,19 @@ const ContactForm: React.FC = () => {
 
             <div>
               <FormControl fullWidth>
-                <InputLabel id="carId-label">차량 선택</InputLabel>
+                <InputLabel id="carModel-label">차량 선택</InputLabel>
                 <Select
-                  labelId="carId-label"
-                  name="carId"
-                  value={formData.carId}
+                  labelId="carModel-label"
+                  name="carModel"
+                  value={formData.carModel}
                   label="차량 선택"
-                  onChange={handleChange}
+                  onChange={handleSelectChange}
                   required
+                  MenuProps={{ disableScrollLock: true }}
                 >
                   <MenuItem value="">차량을 선택하세요</MenuItem>
                   {cars.map((car) => (
-                    <MenuItem key={car.id} value={car.id.toString()}>
+                    <MenuItem key={car.carId} value={car.carModel}>
                       {car.carModel}
                     </MenuItem>
                   ))}
@@ -237,8 +246,9 @@ const ContactForm: React.FC = () => {
                 name="inquiryType"
                 value={formData.inquiryType}
                 label="문의 유형"
-                onChange={handleChange}
+                onChange={handleSelectChange}
                 required
+                MenuProps={{ disableScrollLock: true }}
               >
                 <MenuItem value="">유형을 선택하세요</MenuItem>
                 <MenuItem value="엔진오일">엔진오일</MenuItem>

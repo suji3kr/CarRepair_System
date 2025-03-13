@@ -58,10 +58,10 @@ springdoc:
       path: /swagger-ui.html
       enabled: true
 
-openapi:
-  chatbot:
-    url: "https://api.example.com/chatbot"
-    api-key: "your-api-key"
+openai:
+  api:
+    url: "https://api.openai.com/v1/chat/completions"
+    key: "your-api-key"
 
 portone:
   secret_key: your_secret_key_here

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+//챗봇 대화 처리기능
 
 @RestController
 @RequestMapping("/api/chat")
