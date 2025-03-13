@@ -85,6 +85,7 @@ const Profile: React.FC = () => {
   if (!user || !formData) {
     return <p className={styles.error}>프로필 정보를 불러올 수 없습니다.</p>;
   }
+  console.log("현재 user 상태:", user);
 
   return (
     <Layout>
