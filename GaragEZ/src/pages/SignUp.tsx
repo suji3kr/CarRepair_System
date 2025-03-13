@@ -254,7 +254,7 @@ const SignUp: React.FC = () => {
             {formData.coOwner && (
               <div className={styles.coOwnerFields}>
                 <p className={styles.coOwnerWarning}>
-                  최초 등록 후 수정이 어려우니 신중하게 작성해주세요. 수정 요청은 관리자 문의를 통해서만 가능합니다.
+                  최초 등록 후 수정이 어려우니 신중하게 작성해주세요.<br />수정 요청은 관리자 문의를 통해서만 가능합니다.
                 </p>
                 <label>공동 소유주 이름:</label>
                 <input
