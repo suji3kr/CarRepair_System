@@ -268,5 +268,3 @@ CREATE TABLE reservations (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-
-SET FOREIGN_KEY_CHECKS=1;

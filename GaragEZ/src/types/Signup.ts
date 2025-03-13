@@ -7,6 +7,7 @@ export interface FormData {
   email: string;
   phone: string;
   // 차량
+  carId: string;
   carMake: string;
   carModel: string;
   carNumber: string;
