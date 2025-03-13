@@ -81,7 +81,7 @@ const Cars: React.FC = () => {
   };
 
   const totalPages = Math.max(1, Math.ceil(cars.length / 10));
-  const displayedItems = Array.isArray(cars) ? cars.slice((currentPage - 1) * 10, currentPage * 10) : [];
+  const displayedItems = Array.isArray(cars) ? cars.slice((currentPage - 1) * 10, currentPage * 8) : [];
 
   return (
     <Layout>

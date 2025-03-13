@@ -12,7 +12,9 @@ select * from approvals;
 select * from maintenance_records;
 select * from reviews;
 select * from payments;
+select * from store_reviews;
 select * from car;
+
 -- --------------- 부품 더미 데이터 하단에 추가 해서 합함 --
 
 
