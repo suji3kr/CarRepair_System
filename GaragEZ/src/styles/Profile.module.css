@@ -1,97 +1,139 @@
 .profileContainer {
-    max-width: 600px;
-    margin: 100px auto;
-    padding: 20px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
+  max-width: 600px;
+  margin: 100px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.profileTitle {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.profileSection {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.profileSection label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.profileSection input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #f8f8f8;
+  font-size: 14px;
+  color: #333;
+}
+
+.profileSection input[readonly] {
+  background: #eee;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.profileSubtitle {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 20px 0 10px;
+  color: #555;
+}
+
+/* 버튼 컨테이너 스타일 추가 */
+.buttonContainer {
+  display: flex;
+  justify-content: space-between; /* 버튼 사이 간격 균등 배치 */
+  gap: 10px; /* 버튼 간격 */
+  margin-top: 20px;
+}
+
+/* 수정하기 버튼 스타일 추가 */
+.editButton {
+  flex: 1; /* 버튼 크기 균등 분배 */
+  padding: 10px;
+  background: #4caf50; /* 녹색 계열로 수정 버튼 스타일 */
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.editButton:hover {
+  background: #45a049; /* 호버 시 약간 어두운 녹색 */
+}
+
+.logoutButton {
+  flex: 1; /* 버튼 크기 균등 분배 */
+  padding: 10px;
+  background: #e74c3c;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.logoutButton:hover {
+  background: #c0392b;
+}
+
+.loading,
+.error {
+  text-align: center;
+  font-size: 16px;
+  color: #e74c3c;
+  margin-top: 20px;
+}
+
+/* 차량 선택 스타일 */
+.vehicleSelect {
+  margin-bottom: 20px;
+}
+
+.vehicleSelect label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.vehicleSelect select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .profileContainer {
+    width: 90%;
+    padding: 15px;
   }
-  
-  .profileTitle {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-  
-  .profileSection {
-    margin-bottom: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  
-  .profileSection label {
-    font-size: 14px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 5px;
-  }
-  
+
   .profileSection input {
-    width: 100%;
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background: #f8f8f8;
-    font-size: 14px;
-    color: #333;
+    font-size: 13px;
+    padding: 6px 10px;
   }
-  
-  .profileSection input[readonly] {
-    background: #eee;
-    color: #666;
-    cursor: not-allowed;
-  }
-  
-  .profileSubtitle {
-    font-size: 18px;
-    font-weight: bold;
-    margin: 20px 0 10px;
-    color: #555;
-  }
-  
+
+  .editButton,
   .logoutButton {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin-top: 20px;
-    background: #e74c3c;
-    color: white;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s ease;
+    font-size: 14px;
+    padding: 8px;
   }
-  
-  .logoutButton:hover {
-    background: #c0392b;
-  }
-  
-  .loading,
-  .error {
-    text-align: center;
-    font-size: 16px;
-    color: #e74c3c;
-    margin-top: 20px;
-  }
-  
-  /* 📌 반응형 디자인 */
-  @media (max-width: 768px) {
-    .profileContainer {
-      width: 90%;
-      padding: 15px;
-    }
-  
-    .profileSection input {
-      font-size: 13px;
-      padding: 6px 10px;
-    }
-  
-    .logoutButton {
-      font-size: 14px;
-      padding: 8px;
-    }
-  }
-  
+}
