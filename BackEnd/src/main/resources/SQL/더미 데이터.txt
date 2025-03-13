@@ -12,9 +12,17 @@ select * from approvals;
 select * from maintenance_records;
 select * from reviews;
 select * from payments;
+<<<<<<< HEAD
+<<<<<<< HEAD
+select * from store_reviews;
+=======
+select * from car;
+>>>>>>> 60dd52574e61d46498522dca66fac213d6807db5
+=======
 select * from store_reviews;
 select * from car;
 
+>>>>>>> 4a0dc84852212fab3d36f8a4035732f0f05a9f7c
 -- --------------- 부품 더미 데이터 하단에 추가 해서 합함 --
 
 

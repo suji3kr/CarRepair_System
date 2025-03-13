@@ -47,7 +47,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         } else {
             log.warn("🚨 JWT 토큰이 유효하지 않음 또는 없음");
         }
-
         chain.doFilter(request, response);
     }
 

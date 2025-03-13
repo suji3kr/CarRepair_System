@@ -24,6 +24,7 @@ import Cars from "./pages/Cars";
 import Profile from "./pages/Profile";
 import StoreReviewPage from "./pages/StoreReviewPage";
 import ScrollToTop from "./components/scrollToTop";
+import ReservationPage from "./pages/ReservationPage";
 
 
 
@@ -81,6 +82,7 @@ const LayoutWrapper: React.FC = () => {
         <Route path="/Cars" element={<Cars />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/storereview" element={<StoreReviewPage />} />
+        <Route path="/reservations" element={<ReservationPage />} />
 
 
 
