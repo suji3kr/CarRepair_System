@@ -5,10 +5,10 @@ import styles from "../styles/SignUp.module.css";
 import { FormData } from "../types/Signup";
 import agreement from "../text/agreement.txt?raw";
 import axios from "axios";
-import { Select, MenuItem, FormControl, InputLabel } from "@mui/material"; // MUI 컴포넌트 추가
+import { Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 
 const API_URL = "http://localhost:8094/api/users/signup";
-const CARS_API_URL = "http://localhost:8094/api/cars?car_make="; // 차량 모델 API
+const CARS_API_URL = "http://localhost:8094/api/cars?car_make=";
 
 const initialFormData: FormData = {
   userId: "",
@@ -34,23 +34,21 @@ const SignUp: React.FC = () => {
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [isGoogleSignup, setIsGoogleSignup] = useState(false);
   const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
-  const [cars, setCars] = useState<any[]>([]); // 차량 모델 목록 상태
+  const [cars, setCars] = useState<any[]>([]);
 
-  // Google 로그인 정보가 있을 경우 초기 상태 설정
   useEffect(() => {
     if (location.state?.email) {
       setFormData((prev) => ({
         ...prev,
         email: location.state.email,
         name: location.state.name || "",
-        userId: location.state.email.split("@")[0], // 이메일 앞부분을 userId로 설정
-        password: "", // Google 로그인 시 비밀번호 입력 비활성화
+        userId: location.state.email.split("@")[0],
+        password: "",
       }));
       setIsGoogleSignup(true);
     }
   }, [location.state]);
 
-  // 차량 브랜드 변경 시 모델 목록 로드
   useEffect(() => {
     if (formData.carMake) {
       const loadCars = async () => {
@@ -193,7 +191,7 @@ const SignUp: React.FC = () => {
                     </Select>
                   </FormControl>
                 </div>
-                <div>
+                <div className={styles.MultiSelect}>
                   <FormControl fullWidth>
                     <InputLabel id="carModel-label">차 모델</InputLabel>
                     <Select
@@ -215,7 +213,6 @@ const SignUp: React.FC = () => {
                   </FormControl>
                 </div>
               </div>
-              {/* 나머지 차량 정보 입력 필드 (추가 개선 가능) */}
               <input
                 type="text"
                 name="carNumber"
@@ -245,16 +242,34 @@ const SignUp: React.FC = () => {
 
           <div className={styles.signupTerms}>
             <label>
-              <input type="checkbox" name="coOwner" checked={formData.coOwner} onChange={handleChange} />
+              <input
+                type="checkbox"
+                name="coOwner"
+                checked={formData.coOwner}
+                onChange={handleChange}
+              />
               공동 소유주 여부
             </label>
 
             {formData.coOwner && (
               <div className={styles.coOwnerFields}>
+                <p className={styles.coOwnerWarning}>
+                  최초 등록 후 수정이 어려우니 신중하게 작성해주세요. 수정 요청은 관리자 문의를 통해서만 가능합니다.
+                </p>
                 <label>공동 소유주 이름:</label>
-                <input type="text" name="coOwnerName" value={formData.coOwnerName} onChange={handleChange} />
+                <input
+                  type="text"
+                  name="coOwnerName"
+                  value={formData.coOwnerName}
+                  onChange={handleChange}
+                />
                 <label>공동 소유주 전화번호:</label>
-                <input type="text" name="coOwnerPhone" value={formData.coOwnerPhone} onChange={handleChange} />
+                <input
+                  type="text"
+                  name="coOwnerPhone"
+                  value={formData.coOwnerPhone}
+                  onChange={handleChange}
+                />
               </div>
             )}
           </div>

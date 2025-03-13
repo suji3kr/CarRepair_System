@@ -2,7 +2,7 @@ package com.company.controller;
 
 import com.company.dto.UserSignupRequest;
 import com.company.dto.UserResponseDto;
-import com.company.dto.UserUpdateRequest;
+import com.company.dto.UserUpdateRequest; // 추가 필요
 import com.company.entity.user.User;
 import com.company.service.UserService;
 import com.company.security.JwtTokenProvider;
@@ -28,10 +28,7 @@ public class UserController {
     // ✅ 회원가입 엔드포인트
     @PostMapping("/signup")
     public ResponseEntity<UserResponseDto> register(@Valid @RequestBody UserSignupRequest request) {
-        // 사용자 등록 후 DTO 반환
         User user = userService.registerUser(request);
-
-        // ✅ 비밀번호가 제거된 UserResponseDto로 변환
         UserResponseDto responseDto = new UserResponseDto(
                 user.getUserId(),
                 user.getName(),
@@ -40,48 +37,45 @@ public class UserController {
                 user.getRole().name(),
                 List.of()
         );
-
-        return ResponseEntity.ok(responseDto); // ✅ 보안 강화: 비밀번호 없는 DTO 반환
+        return ResponseEntity.ok(responseDto);
     }
 
     // ✅ 현재 로그인한 사용자 정보 조회 API
     @GetMapping("/me")
     public ResponseEntity<?> getCurrentUser(@RequestHeader("Authorization") String token) {
         try {
-            // Bearer 토큰에서 실제 토큰 값 추출
             String jwtToken = token.replace("Bearer ", "");
             String userId = jwtTokenProvider.getUserIdFromToken(jwtToken);
-
             UserResponseDto responseDto = userService.getUserByUserIdWithVehicle(userId);
-            if (responseDto == null) {
-                return ResponseEntity.status(404).body("사용자를 찾을 수 없습니다.");
-            }
-
             return ResponseEntity.ok(responseDto);
         } catch (Exception e) {
+            log.error("토큰 검증 실패: {}", e.getMessage());
             return ResponseEntity.status(401).body("유효하지 않은 토큰입니다.");
         }
     }
 
-    // ✅ 예외 처리: 입력값이 누락되었을 경우 400 응답 반환
+    // ✅ 사용자 정보 수정 API
+    @PutMapping("/update")
+    public ResponseEntity<?> updateProfile(
+            @RequestHeader("Authorization") String authHeader,
+            @Valid @RequestBody UserUpdateRequest request) {
+        try {
+            String token = authHeader.replace("Bearer ", "");
+            String userId = jwtTokenProvider.getUserIdFromToken(token);
+            UserResponseDto updatedUser = userService.updateUser(userId, request);
+            return ResponseEntity.ok(updatedUser);
+        } catch (IllegalArgumentException e) {
+            log.error("프로필 수정 실패: {}", e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            log.error("토큰 검증 실패: {}", e.getMessage());
+            return ResponseEntity.status(401).body("유효하지 않은 토큰입니다.");
+        }
+    }
+
+    // ✅ 예외 처리: 입력값 유효성 검사 실패
     @ExceptionHandler(jakarta.validation.ConstraintViolationException.class)
     public ResponseEntity<String> handleValidationException(Exception e) {
         return ResponseEntity.badRequest().body("입력값이 올바르지 않습니다: " + e.getMessage());
     }
-
-    @PutMapping("/update")
-    public ResponseEntity<?> updateUserProfile(@RequestBody UserUpdateRequest request,
-                                               @RequestHeader("Authorization") String token) {
-        try {
-            String jwtToken = token.replace("Bearer ", "");
-            String userId = jwtTokenProvider.getUserIdFromToken(jwtToken);
-
-            User updatedUser = userService.updateUser(userId, request);
-            return ResponseEntity.ok(new UserResponseDto(updatedUser));
-        } catch (Exception e) {
-            return ResponseEntity.status(400).body("프로필 업데이트 실패: " + e.getMessage());
-        }
-    }
-
-
 }
