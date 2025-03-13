@@ -150,4 +150,7 @@ public class UserService {
             vehicleRepository.findByOwner(user)
         );
     }
+
+    public User updateUser(String userId, UserUpdateRequest request) {
+    }
 }
