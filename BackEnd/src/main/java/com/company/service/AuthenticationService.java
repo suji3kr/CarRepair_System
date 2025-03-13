@@ -3,7 +3,6 @@ package com.company.service;
 import com.company.dto.login.AuthResponse;
 import com.company.dto.login.GoogleLoginRequest;
 import com.company.dto.login.LoginRequest;
-import com.company.entity.role.Role;
 import com.company.entity.user.User;
 import com.company.repository.UserRepository;
 import com.company.security.JwtTokenProvider;
@@ -36,10 +35,18 @@ public class AuthenticationService {
             throw new BadCredentialsException("Invalid userId or password");
         }
 
-        // ✅ 기존 회원이므로 isNewUser = false 로 설정
-        return generateJwtForUser(userDetails.getUsername(), false);
-    }
+        // ✅ userId를 기반으로 userRole 가져오기
+        Optional<User> userOpt = userRepository.findByUserId(request.getUserId());
+        if (userOpt.isEmpty()) {
+            throw new BadCredentialsException("User not found");
+        }
 
+        User user = userOpt.get();
+        String userRole = user.getUserRole(); // ✅ userRole 가져오기
+
+        // ✅ 기존 회원이므로 isNewUser = false 로 설정
+        return generateJwtForUser(user.getUserId(), userRole, false);
+    }
 
     /**
      * Google 로그인 (email → userId 변환 후 처리)
@@ -49,9 +56,9 @@ public class AuthenticationService {
 
         Optional<User> userOptional = userRepository.findByEmail(email);
 
-        boolean isNewUser = false; // 기본적으로 기존 회원으로 설정
-
+        boolean isNewUser = false;
         User user;
+
         if (userOptional.isPresent()) {
             user = userOptional.get();
         } else {
@@ -59,21 +66,22 @@ public class AuthenticationService {
             user = new User();
             user.setEmail(email);
             user.setUserId(generateUserIdFromEmail(email));
-            user.setRole(Role.USER);
+            user.setUserRole("USER"); // ✅ 기본 역할을 "USER"로 설정
 
             userRepository.save(user);
-            isNewUser = true; // 신규 회원으로 표시
+            isNewUser = true;
         }
 
-        return new AuthResponse(jwtTokenProvider.createToken(user.getUserId()), user.getUserId(), isNewUser);
+        String userRole = user.getUserRole(); // ✅ userRole 가져오기
+        return generateJwtForUser(user.getUserId(), userRole, isNewUser);
     }
 
     /**
-     * 🔹 JWT 발급 로직 (공통)
+     * 🔹 JWT 발급 로직 (공통) - userRole 추가
      */
-    private AuthResponse generateJwtForUser(String userId, boolean isNewUser) {
-        String token = jwtTokenProvider.createToken(userId);
-        return new AuthResponse(token, userId, isNewUser);
+    private AuthResponse generateJwtForUser(String userId, String userRole, boolean isNewUser) {
+        String token = jwtTokenProvider.createToken(userId, userRole);
+        return new AuthResponse(token, userId, userRole, isNewUser);
     }
 
     /**

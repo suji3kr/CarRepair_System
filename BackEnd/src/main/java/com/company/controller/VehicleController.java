@@ -8,6 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/vehicles")
+@CrossOrigin(origins = "*")  // 모든 출처에서 접근 허용
 public class VehicleController {
 
     @Autowired
