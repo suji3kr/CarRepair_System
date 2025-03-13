@@ -40,6 +40,8 @@ CREATE TABLE users (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+ALTER TABLE users ADD INDEX idx_user_id (user_id);
+
 -- car 이미지 make제조사, model별 리스트
 create table car (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -258,15 +260,18 @@ CREATE TABLE store_reviews (
 -- 예약 페이지
 CREATE TABLE reservations (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    store_id BIGINT NOT NULL,
-    user_id BIGINT NOT NULL,
+    repair_store_id BIGINT NOT NULL,
+    user_id VARCHAR(50) NOT NULL,  -- 문자열 userId (예: "alice123")
+    car_id BIGINT NOT NULL,     -- 예약 시 선택한 차량 ID (vehicles 테이블 참조)
     reservation_time DATETIME NOT NULL,
     details TEXT,
     status ENUM('PENDING', 'CONFIRMED', 'CANCELLED') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (store_id) REFERENCES store(id),
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (repair_store_id) REFERENCES repair_store(id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (car_id) REFERENCES car(id) ON DELETE CASCADE
 );
+
 
 
 SET FOREIGN_KEY_CHECKS=1;

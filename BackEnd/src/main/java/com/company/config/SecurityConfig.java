@@ -2,6 +2,7 @@ package com.company.config;
 
 import com.company.security.JwtTokenFilter;
 import com.company.security.JwtTokenProvider;
+import com.company.security.CustomAuthenticationEntryPoint;
 import com.company.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,48 +31,49 @@ public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final CustomUserDetailsService userDetailsService;
+    private final CustomAuthenticationEntryPoint authenticationEntryPoint;
 
-    public SecurityConfig(JwtTokenProvider jwtTokenProvider, CustomUserDetailsService userDetailsService) {
+    public SecurityConfig(JwtTokenProvider jwtTokenProvider, CustomUserDetailsService userDetailsService,
+                          CustomAuthenticationEntryPoint authenticationEntryPoint) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.userDetailsService = userDetailsService;
+        this.authenticationEntryPoint = authenticationEntryPoint;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // ✅ CORS 직접 설정
-                .csrf(AbstractHttpConfigurer::disable) // ✅ CSRF 보호 비활성화
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // ✅ JWT 기반 세션 없음
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/auth/**",
                                 "/api/users/**",
                                 "api/signup/**",
-                                // ✅ Swagger 허용
                                 "/api-docs/**",
                                 "/swagger-ui/**",
-                                // ✅ 결제 및 부품, 차량 관련
                                 "/api/payment/**",
                                 "/api/parts/**",
                                 "/api/cars/**",
-                                // ✅ 이미지 등 정적 리소스
                                 "/images/**",
-                                // ✅ 판매점 관련 API
                                 "/api/store/**",
-                                // ✅ 가게별 리뷰 API 허용
                                 "/api/storereviews/**",
-                                //chat
-                                "/api/chat/**"
+                                "/api/chat/**",
+                                "/api/reservations/**"
                         ).permitAll()
                         .anyRequest().authenticated()
+                )
+                .exceptionHandling(exception ->
+                        exception.authenticationEntryPoint(authenticationEntryPoint)
                 )
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(new JwtTokenFilter(jwtTokenProvider, userDetailsService),
                         UsernamePasswordAuthenticationFilter.class)
                 .headers(headers -> headers
-                        .addHeaderWriter(new StaticHeadersWriter("Cross-Origin-Opener-Policy", "same-origin-allow-popups")) // ✅ COOP 해결
-                        .addHeaderWriter(new StaticHeadersWriter("Cross-Origin-Embedder-Policy", "require-corp")) // ✅ COEP 정책 추가
-                        .addHeaderWriter(new StaticHeadersWriter("Cross-Origin-Resource-Policy", "cross-origin")) // ✅ CORS 리소스 정책 추가
+                        .addHeaderWriter(new StaticHeadersWriter("Cross-Origin-Opener-Policy", "same-origin-allow-popups"))
+                        .addHeaderWriter(new StaticHeadersWriter("Cross-Origin-Embedder-Policy", "require-corp"))
+                        .addHeaderWriter(new StaticHeadersWriter("Cross-Origin-Resource-Policy", "cross-origin"))
                 );
 
         return http.build();
@@ -80,15 +82,13 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // 프론트엔드 주소 허용
         configuration.setAllowedOrigins(List.of("http://localhost:3000"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
-        configuration.setExposedHeaders(List.of("Authorization")); // ✅ JWT 토큰을 클라이언트에서 받을 수 있도록 설정
+        configuration.setExposedHeaders(List.of("Authorization"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        // 모든 경로에 대해 CORS 설정 적용
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }

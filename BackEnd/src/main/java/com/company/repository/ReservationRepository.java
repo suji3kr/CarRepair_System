@@ -1,13 +1,13 @@
 package com.company.repository;
 
-import com.company.entity.store.Reservation;
-import com.company.entity.store.ReservationStatus;
+import com.company.entity.repair.Reservation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-    List<Reservation> findByStoreId(Long storeId);
-    List<Reservation> findByUserId(Long userId);
+    // User 엔티티의 userId 필드를 기준으로 조회
+    List<Reservation> findByUserUserId(String userId);
+    List<Reservation> findByRepairStoreId(Long repairStoreId);
 }

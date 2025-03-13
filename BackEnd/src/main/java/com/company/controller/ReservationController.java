@@ -1,15 +1,17 @@
 package com.company.controller;
 
-import com.company.entity.store.Reservation;
-import com.company.entity.store.ReservationDTO;
-import com.company.entity.store.ReservationStatus;
+import com.company.entity.repair.Reservation;
+import com.company.entity.repair.ReservationDTO;
+import com.company.entity.repair.ReservationStatus;
 import com.company.service.ReservationService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/reservations")
 @CrossOrigin(origins = "http://localhost:3000")
@@ -19,7 +21,7 @@ public class ReservationController {
     private ReservationService reservationService;
 
     /**
-     * Reservation 엔티티를 DTO로 변환하는 메서드
+     * Reservation 엔티티를 ReservationDTO로 변환하는 메서드
      */
     private ReservationDTO convertToDTO(Reservation reservation) {
         ReservationDTO dto = new ReservationDTO();
@@ -28,22 +30,29 @@ public class ReservationController {
         dto.setDetails(reservation.getDetails());
         dto.setStatus(reservation.getStatus() != null ? reservation.getStatus().toString() : "PENDING");
 
-        // Store 정보 설정 (null 방어)
-        if (reservation.getStore() != null) {
-            dto.setStoreId(reservation.getStore().getId());
-            dto.setStoreName(reservation.getStore().getName() != null ? reservation.getStore().getName() : "알 수 없음");
-            dto.setStoreAddress(reservation.getStore().getAddress() != null ? reservation.getStore().getAddress() : "주소 미등록");
+        // 정비소 정보 설정
+        if (reservation.getRepairStore() != null) {
+            dto.setRepairStoreId(reservation.getRepairStore().getId());
+            dto.setRepairStoreLocation(reservation.getRepairStore().getLocation());
         } else {
-            dto.setStoreId(null);
-            dto.setStoreName("미지정 정비소");
-            dto.setStoreAddress("주소 미등록");
+            dto.setRepairStoreId(null);
+            dto.setRepairStoreLocation("주소 미등록");
         }
 
-        // User 정보 설정
+        // 사용자 정보 설정: User 엔티티의 userId (문자열) 사용
         if (reservation.getUser() != null) {
-            dto.setUserId(reservation.getUser().getId());
+            dto.setUserId(reservation.getUser().getUserId());
         } else {
             dto.setUserId(null);
+        }
+
+        // 차량 정보 설정 (Reservation 엔티티에 새로 추가된 차량 연관관계)
+        if (reservation.getCar() != null) {
+            dto.setCarId(reservation.getCar().getId());
+            dto.setCarModel(reservation.getCar().getCarModel());
+            dto.setCarMake(reservation.getCar().getCarMake());
+        } else {
+            dto.setCarId(null);
         }
 
         return dto;
@@ -54,6 +63,7 @@ public class ReservationController {
      */
     @PostMapping
     public ResponseEntity<ReservationDTO> createReservation(@RequestBody Reservation reservation) {
+        log.info("예약 생성 요청: {}", reservation.toString());
         Reservation saved = reservationService.createReservation(reservation);
         return ResponseEntity.ok(convertToDTO(saved));
     }
@@ -72,9 +82,10 @@ public class ReservationController {
 
     /**
      * 특정 사용자의 예약 리스트 가져오기
+     * userId는 문자열 (예: "alice123")
      */
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<ReservationDTO>> getReservationsByUser(@PathVariable Long userId) {
+    public ResponseEntity<List<ReservationDTO>> getReservationsByUser(@PathVariable String userId) {
         List<Reservation> reservations = reservationService.getReservationsByUser(userId);
         List<ReservationDTO> dtos = reservations.stream()
                 .map(this::convertToDTO)
@@ -91,9 +102,7 @@ public class ReservationController {
             @RequestBody ReservationStatus status
     ) {
         Reservation updated = reservationService.updateReservationStatus(id, status);
-        return updated != null
-                ? ResponseEntity.ok(convertToDTO(updated))
-                : ResponseEntity.notFound().build();
+        return updated != null ? ResponseEntity.ok(convertToDTO(updated)) : ResponseEntity.notFound().build();
     }
 
     /**

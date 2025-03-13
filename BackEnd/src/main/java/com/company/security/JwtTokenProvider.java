@@ -32,7 +32,6 @@ public class JwtTokenProvider {
     // ✅ userId 기반으로 토큰 생성
     public String createToken(String userId) {
         Claims claims = Jwts.claims().setSubject(userId); // ✅ userId를 subject로 설정
-
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
 

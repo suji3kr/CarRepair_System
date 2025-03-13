@@ -1,4 +1,4 @@
-package com.company.entity.store;
+package com.company.entity.repair;
 
 public enum ReservationStatus {
     CONFIRMED,   // 예약 완료

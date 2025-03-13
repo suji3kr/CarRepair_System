@@ -1,4 +1,4 @@
-package com.company.entity.role;
+package com.company.entity.repair;
 
 import com.company.entity.appontment.Appointment;
 import com.company.entity.store.Store;
