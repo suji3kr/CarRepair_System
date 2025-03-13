@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import styles from "../styles/ChatPopup.module.css";
+import styles from "../styles/Chatbot.module.css";
 import { ChatMessage, Product, ChatRequest, ChatResponse } from "../types/chat";
 import { RiChatSmileAiLine } from "react-icons/ri";
-import { BsChatHeart, BsChatSquareDots } from "react-icons/bs";
-import { IoClose } from "react-icons/io5";
+import { BsChatHeart } from "react-icons/bs";
 
-const ChatPopup: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const ChatBot: React.FC = () => {
   const [input, setInput] = useState<string>("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [products, setProducts] = useState<Product[] | null>(null);
+  
+  // 📌 메시지 컨테이너를 참조할 useRef 생성
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   // 📌 메시지가 변경될 때마다 스크롤을 최하단으로 이동
@@ -18,7 +18,6 @@ const ChatPopup: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // 📌 메시지 전송 함수
   const sendMessage = async () => {
     if (!input.trim()) return;
 
@@ -49,86 +48,64 @@ const ChatPopup: React.FC = () => {
   };
 
   return (
-    <div className={styles.chatContainer}>
-      {/* 챗봇 열기 버튼 */}
-      {!isOpen && (
-        <button className={styles.chatToggle} onClick={() => setIsOpen(true)}>
-          <BsChatSquareDots size={24} /> 
-        </button>
-      )}
-
-      {/* 챗봇 팝업 */}
-      {isOpen && (
-        <div className={styles.chatPopup}>
-          {/* 챗봇 헤더 */}
-          <div className={styles.chatHeader}>
-            <h3>챗봇 상담</h3>
-            <button onClick={() => setIsOpen(false)}>
-              <IoClose size={24} />
-            </button>
-          </div>
-
-          {/* 채팅 메시지 영역 */}
-          <div className={styles.messages}>
-            {messages.map((msg, idx) => (
-              <div key={idx} className={`${styles.messageWrapper} ${styles[msg.sender]}`}>
-                {msg.sender === "user" ? (
-                  <div className={styles.userMessage}>
-                    <RiChatSmileAiLine className={styles.userIcon} />
-                    <div className={styles.messageBox}>
-                      <span className={styles.userLabel}>내 질문</span>
-                      <p>{msg.content}</p>
-                    </div>
-                  </div>
-                ) : (
-                  <div className={styles.botMessage}>
-                    <BsChatHeart className={styles.botIcon} />
-                    <div className={styles.messageBox}>
-                      <span className={styles.botLabel}>챗봇 상담사</span>
-                      <p>{msg.content}</p>
-                    </div>
-                  </div>
-                )}
+    <div className={styles.chatbot} style={{ zIndex: 1000 }}>
+      <div className={styles.messages}>
+        {messages.map((msg, idx) => (
+          <div key={idx} className={`${styles.messageWrapper} ${styles[msg.sender]}`}>
+            {msg.sender === "user" ? (
+              <div className={styles.userMessage}>
+                <RiChatSmileAiLine className={styles.userIcon} />
+                <div className={styles.messageBox}>
+                  <span className={styles.userLabel}>내 질문</span>
+                  <p>{msg.content}</p>
+                </div>
               </div>
-            ))}
-
-            {products && (
-              <div className={styles.productList}>
-                <h3>🛒 최저가 상품 추천</h3>
-                {products.map((product) => (
-                  <div key={product.id} className={styles.productItem}>
-                    <img src={product.imageUrl} alt={product.name} />
-                    <div>
-                      <a href={product.link} target="_blank" rel="noopener noreferrer">
-                        {product.name}
-                      </a>
-                      <p>💰 {product.price.toLocaleString()}원</p>
-                    </div>
-                  </div>
-                ))}
+            ) : (
+              <div className={styles.botMessage}>
+                <BsChatHeart className={styles.botIcon} />
+                <div className={styles.messageBox}>
+                  <span className={styles.botLabel}>챗봇 상담사</span>
+                  <p>{msg.content}</p>
+                </div>
               </div>
             )}
-
-            {/* 스크롤 이동용 요소 */}
-            <div ref={messagesEndRef} />
           </div>
+        ))}
 
-          {/* 입력 영역 */}
-          <div className={styles.inputArea}>
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyPress={(e) => e.key === "Enter" && sendMessage()}
-              placeholder="질문을 입력하세요"
-              aria-label="채팅 입력"
-            />
-            <button onClick={sendMessage}>전송</button>
+        {products && (
+          <div className={styles.productList}>
+            <h3>🛒 최저가 상품 추천</h3>
+            {products.map((product) => (
+              <div key={product.id} className={styles.productItem}>
+                <img src={product.imageUrl} alt={product.name} />
+                <div>
+                  <a href={product.link} target="_blank" rel="noopener noreferrer">
+                    {product.name}
+                  </a>
+                  <p>💰 {product.price.toLocaleString()}원</p>
+                </div>
+              </div>
+            ))}
           </div>
-        </div>
-      )}
+        )}
+
+        {/* 📌 스크롤을 하단으로 이동시키는 요소 */}
+        <div ref={messagesEndRef} />
+      </div>
+
+      <div className={styles.inputArea}>
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyPress={(e) => e.key === "Enter" && sendMessage()}
+          placeholder="질문을 입력하세요"
+          aria-label="채팅 입력"
+        />
+        <button onClick={sendMessage}>전송</button>
+      </div>
     </div>
   );
 };
 
-export default ChatPopup;
+export default ChatBot;
