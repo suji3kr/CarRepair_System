@@ -6,7 +6,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { GoogleMap, Marker, InfoWindow, useJsApiLoader } from "@react-google-maps/api";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { Select, MenuItem, FormControl, InputLabel, SelectChangeEvent } from "@mui/material";
 
 const predefinedMarkers = [
@@ -267,7 +267,7 @@ const ContactForm: React.FC = () => {
           <div className={styles.contactInputGroup}>
             <label>예약 날짜</label>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker value={formData.appointmentDate} onChange={handleDateChange} format="YYYY-MM-DD" />
+              <DatePicker value={formData.appointmentDate} onChange={handleDateChange} format="YYYY-MM-DD" minDate={dayjs()}/>
             </LocalizationProvider>
           </div>
 
