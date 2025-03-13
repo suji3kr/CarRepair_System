@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+// 최저가 상품 조회기능
+
 @RestController
 @RequestMapping("/api/products")
 public class AIProductController {
