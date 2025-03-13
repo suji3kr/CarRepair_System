@@ -1,14 +1,8 @@
+// Car.ts
+// Define Car interface (consistent with backend)
 export interface Car {
-  id: number;
+  CarId: number;
   carModel: string;
-  imageUrl: string;
+  imageUrl: string; // camelCase for consistency
   carMake: string;
 }
-
-export const fetchCars = async (car_Make: string): Promise<Car[]> => {
-  const response = await fetch(`http://localhost:8094/api/parts?category=${car_Make}`);
-  if (!response.ok) {
-    throw new Error("Failed to fetch parts");
-  }
-  return response.json();
-};
