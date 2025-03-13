@@ -6,7 +6,7 @@ export interface Car {
 }
 
 export const fetchCars = async (car_Make: string): Promise<Car[]> => {
-  const response = await fetch(`http://localhost:8080/api/parts?category=${car_Make}`);
+  const response = await fetch(`http://localhost:8094/api/parts?category=${car_Make}`);
   if (!response.ok) {
     throw new Error("Failed to fetch parts");
   }

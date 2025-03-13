@@ -2,6 +2,7 @@ package com.company.service;
 
 import com.company.dto.UserResponseDto;
 import com.company.dto.UserSignupRequest;
+import com.company.dto.UserUpdateRequest; // 새 DTO 추가 필요
 import com.company.entity.role.Role;
 import com.company.entity.user.User;
 import com.company.entity.vehicle.Vehicle;
@@ -27,77 +28,53 @@ public class UserService {
     // ✅ 일반 회원가입 메서드
     @Transactional
     public User registerUser(UserSignupRequest request) {
-
-        // 🚨 중복된 userId 검사 (이미 존재하면 예외 발생)
         if (userRepository.existsByUserId(request.getUserId())) {
             throw new IllegalArgumentException("이미 존재하는 사용자 ID입니다.");
         }
 
-        // 🚨 사용자 정보 저장
         User user = new User();
         user.setUserId(request.getUserId());
         user.setName(request.getName());
         user.setEmail(request.getEmail());
         user.setPhone(request.getPhone());
-
-        // ✅ 비밀번호 암호화 (필수)
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-
-        // ✅ 기본 역할 USER 설정
         user.setRole(Role.USER);
 
-        log.info("[회원가입] 새 계정 등록: " + user.toString());
+        log.info("[회원가입] 새 계정 등록: {}", user);
         User savedUser = userRepository.save(user);
 
-        // ✅ 차량 정보가 있는 경우 차량 저장
         if (request.getCarModel() != null && request.getVin() != null) {
-            Vehicle vehicle = new Vehicle();
-            vehicle.setOwner(savedUser);  // 사용자 정보를 차량의 owner_id로 설정
-            vehicle.setCarMake(request.getCarMake());
-            vehicle.setCarModel(request.getCarModel());
-
-            // 🚨 year 변환 시 NumberFormatException 방지 (DTO에서 Integer로 변경)
-            vehicle.setYear(request.getYear());
-
-            vehicle.setVin(request.getVin());
-            vehicle.setCarNumber(request.getCarNumber());
-            saveVehicleInfo(savedUser, request);
+            saveVehicleInfo(savedUser, request); // 차량 정보 저장
         }
 
         return savedUser;
     }
 
-    // ✅ Google 로그인 후 자동 회원가입 메서드 (차량 정보 포함)
+    // ✅ Google 로그인 후 자동 회원가입 메서드
     @Transactional
     public User googleRegisterUser(String email, String name) {
-        // 🚨 중복된 이메일 검사 (이미 존재하면 기존 계정 반환)
         Optional<User> existingUser = userRepository.findByEmail(email);
         if (existingUser.isPresent()) {
-            return existingUser.get(); // 기존 회원 반환
+            return existingUser.get();
         }
 
-        // ✅ Google 계정은 비밀번호를 사용하지 않으므로 null로 설정 (비밀번호 없이 로그인 가능)
         String userId = email.split("@")[0];
-
-        // 🚨 사용자 정보 저장
         User user = new User();
-        user.setUserId(userId); // 이메일 앞부분을 userId로 사용
+        user.setUserId(userId);
         user.setName(name);
         user.setEmail(email);
-        user.setPhone("N/A"); // 기본 값 설정 (Google 로그인 시 전화번호 없음)
-        user.setPassword(null); // Google 계정은 비밀번호 사용 안 함
+        user.setPhone("N/A");
+        user.setPassword(null); // Google 계정은 비밀번호 없음
         user.setRole(Role.USER);
 
-        log.info("[Google 회원가입] 새 계정 등록: " + user.toString());
+        log.info("[Google 회원가입] 새 계정 등록: {}", user);
         User savedUser = userRepository.save(user);
 
-        // 🚗 Google 로그인 회원도 차량 정보를 등록할 수 있도록 추가
         saveDefaultVehicle(savedUser);
-
         return savedUser;
     }
 
-    // ✅ 차량 정보 저장 로직을 별도로 분리 (일반 회원가입과 Google 회원가입에서 사용 가능)
+    // ✅ 차량 정보 저장 로직
     private void saveVehicleInfo(User user, UserSignupRequest request) {
         Vehicle vehicle = new Vehicle();
         vehicle.setOwner(user);
@@ -107,7 +84,6 @@ public class UserService {
         vehicle.setVin(request.getVin());
         vehicle.setCarNumber(request.getCarNumber());
 
-        // 🚗 공동 소유자 정보가 있으면 설정
         if (request.isCoOwner()) {
             vehicle.setCoOwner(true);
             vehicle.setCoOwnerName(request.getCoOwnerName());
@@ -115,13 +91,14 @@ public class UserService {
         }
 
         vehicleRepository.save(vehicle);
+        log.info("[차량 정보 저장] 사용자: {}, 차량: {}", user.getUserId(), vehicle);
     }
 
-    // ✅ Google 로그인 시 기본 차량 정보를 추가하는 메서드
+    // ✅ Google 로그인 시 기본 차량 정보 추가
     private void saveDefaultVehicle(User user) {
         Vehicle vehicle = new Vehicle();
         vehicle.setOwner(user);
-        vehicle.setCarMake("Unknown"); // 기본 차량 정보 설정
+        vehicle.setCarMake("Unknown");
         vehicle.setCarModel("Unknown");
         vehicle.setYear(0);
         vehicle.setVin("N/A");
@@ -129,28 +106,59 @@ public class UserService {
         vehicle.setCoOwner(false);
 
         vehicleRepository.save(vehicle);
+        log.info("[기본 차량 저장] 사용자: {}", user.getUserId());
     }
 
     // ✅ userId 기반 사용자 조회
     public User getUserByUserId(String userId) {
-        Optional<User> userOptional = userRepository.findByUserId(userId);
-        return userOptional.orElse(null);
+        return userRepository.findByUserId(userId).orElse(null);
     }
 
-    @Transactional
+    // ✅ 사용자와 차량 정보 조회
+    @Transactional(readOnly = true)
     public UserResponseDto getUserByUserIdWithVehicle(String userId) {
-
-        User user = userRepository.findByUserId(userId).orElseThrow();
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
         return new UserResponseDto(
-            user.getUserId(),
-            user.getName(),
-            user.getEmail(),
-            user.getPhone(),
-            user.getRole().name(),
-            vehicleRepository.findByOwner(user)
+                user.getUserId(),
+                user.getName(),
+                user.getEmail(),
+                user.getPhone(),
+                user.getRole().name(),
+                vehicleRepository.findByOwner(user)
         );
     }
 
-    public User updateUser(String userId, UserUpdateRequest request) {
+    // ✅ 사용자 정보 수정
+    @Transactional
+    public UserResponseDto updateUser(String userId, UserUpdateRequest request) {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        // 수정 가능한 필드만 업데이트
+        if (request.getName() != null && !request.getName().isEmpty()) {
+            user.setName(request.getName());
+        }
+        if (request.getEmail() != null && !request.getEmail().isEmpty()) {
+            if (!request.getEmail().equals(user.getEmail()) && userRepository.existsByEmail(request.getEmail())) {
+                throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
+            }
+            user.setEmail(request.getEmail());
+        }
+        if (request.getPhone() != null && !request.getPhone().isEmpty()) {
+            user.setPhone(request.getPhone());
+        }
+
+        User updatedUser = userRepository.save(user);
+        log.info("[사용자 정보 수정] 업데이트된 사용자: {}", updatedUser);
+
+        return new UserResponseDto(
+                updatedUser.getUserId(),
+                updatedUser.getName(),
+                updatedUser.getEmail(),
+                updatedUser.getPhone(),
+                updatedUser.getRole().name(),
+                vehicleRepository.findByOwner(updatedUser)
+        );
     }
 }
