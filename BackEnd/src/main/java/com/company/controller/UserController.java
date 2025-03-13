@@ -36,8 +36,8 @@ public class UserController {
                 user.getName(),
                 user.getEmail(),
                 user.getPhone(),
-                user.getRole().name(),
-                List.of()
+                user.getRole().name()
+//                List.of()
         );
 
         return ResponseEntity.ok(responseDto); // ✅ 보안 강화: 비밀번호 없는 DTO 반환
@@ -62,8 +62,8 @@ public class UserController {
                     user.getName(),
                     user.getEmail(),
                     user.getPhone(),
-                    user.getRole().name(),
-                    vehicleService.getVehicleByOwner(user)
+                    user.getRole().name()
+//                    vehicleService.getVehicleByOwner(user)
             );
 
             return ResponseEntity.ok(responseDto);

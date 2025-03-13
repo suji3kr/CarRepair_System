@@ -5,6 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +17,7 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class JwtTokenFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
@@ -27,6 +29,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         String token = getTokenFromRequest(request);
 
+        logRequestDetails(request, token); // ✅ 요청 정보 로깅 추가
+
         if (token != null && jwtTokenProvider.validateToken(token)) {
             String userId = jwtTokenProvider.getUserIdFromToken(token); // ✅ userId 사용
             UserDetails userDetails = userDetailsService.loadUserByUsername(userId); // ✅ userId로 조회
@@ -36,7 +40,12 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
                 SecurityContextHolder.getContext().setAuthentication(auth);
+                log.info("✅ 사용자 인증 완료: {}", userId); // ✅ 인증 완료 로그 추가
+            } else {
+                log.warn("🚨 사용자 정보를 찾을 수 없음: {}", userId);
             }
+        } else {
+            log.warn("🚨 JWT 토큰이 유효하지 않음 또는 없음");
         }
 
         chain.doFilter(request, response);
@@ -48,5 +57,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             return bearerToken.substring(7);
         }
         return null;
+    }
+
+    private void logRequestDetails(HttpServletRequest request, String token) {
+        log.info("🔹 요청 정보: [{}] {}", request.getMethod(), request.getRequestURI());
+        log.info("🔹 JWT 토큰: {}", token != null ? "존재함" : "없음");
     }
 }
