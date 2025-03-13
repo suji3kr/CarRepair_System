@@ -1,14 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import styles from "../styles/Chatbot.module.css";
 import { ChatMessage, Product, ChatRequest, ChatResponse } from "../types/chat";
-import { RiChatSmile2Line, RiChatSmileAiLine, RiChatAiFill } from "react-icons/ri";
-import { IoLogoWechat } from "react-icons/io5";
+import { RiChatSmileAiLine } from "react-icons/ri";
+import { BsChatHeart } from "react-icons/bs";
 
 const ChatBot: React.FC = () => {
   const [input, setInput] = useState<string>("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [products, setProducts] = useState<Product[] | null>(null);
+  
+  // 📌 메시지 컨테이너를 참조할 useRef 생성
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  // 📌 메시지가 변경될 때마다 스크롤을 최하단으로 이동
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -54,9 +62,9 @@ const ChatBot: React.FC = () => {
               </div>
             ) : (
               <div className={styles.botMessage}>
-                <IoLogoWechat className={styles.botIcon} />
+                <BsChatHeart className={styles.botIcon} />
                 <div className={styles.messageBox}>
-                  <span className={styles.botLabel}>답변</span>
+                  <span className={styles.botLabel}>챗봇 상담사</span>
                   <p>{msg.content}</p>
                 </div>
               </div>
@@ -80,6 +88,9 @@ const ChatBot: React.FC = () => {
             ))}
           </div>
         )}
+
+        {/* 📌 스크롤을 하단으로 이동시키는 요소 */}
+        <div ref={messagesEndRef} />
       </div>
 
       <div className={styles.inputArea}>

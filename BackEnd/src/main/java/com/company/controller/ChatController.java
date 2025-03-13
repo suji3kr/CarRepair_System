@@ -4,10 +4,10 @@ import com.company.dto.chat.ChatRequest;
 import com.company.dto.chat.ChatResponse;
 import com.company.service.ChatService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/chat")
@@ -25,5 +25,9 @@ public class ChatController {
     public ResponseEntity<ChatResponse> sendMessage(@RequestBody ChatRequest request) {
         String answer = chatService.getAnswer(request.getMessage());
         return ResponseEntity.ok(new ChatResponse(answer));
+    }
+    @GetMapping("/questions")
+    public ResponseEntity<Map<String, List<String>>> getQuestions() {
+        return ResponseEntity.ok(chatService.getSampleQuestions());
     }
 }

@@ -1,19 +1,24 @@
 .chatbot {
-  width: 400px;
-  border: 1px solid #ccc;
+  width: 380px;
+  border: 1px solid #c3cdd8;;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;  /* 입력창을 하단으로 정렬 */
   border-radius: 8px;
-  padding: 10px;
-  background: #f9f9f9;
+  padding: 30px 0px 5px 18px;
+  background: #f0f2f3;
   position: fixed;
   bottom: 20px;
   right: 20px;
   z-index: 1000;
-  max-height: 500px;
+  min-height: 500px;  /* 최소 높이 설정 */
+  max-height: 900px;  /* 최대 높이 설정 */
   overflow-y: auto;
 }
 
 .messages {
-  max-height: 300px;
+  flex-grow: 1;  /* 남은 공간을 채우도록 설정 */
+  max-height: 450px;
   overflow-y: auto;
   padding-bottom: 20px;
 }
@@ -30,6 +35,8 @@
   display: flex;
   align-items: flex-start;
   position: relative;
+  margin-right: 7px;
+  margin-left: 3px;
 }
 
 .userMessage .messageBox  {
@@ -41,7 +48,7 @@
 }
 
 .messageBox {
-  background: #f0f0f0;
+  background: #f0eeee;
   padding: 10px;
   border-radius: 10px;
   width: 180px;
@@ -63,7 +70,7 @@
 }
 
 .userMessage .messageBox {
-  background: #d1e7fd;
+  background: #b1d3f5;
 }
 
 .botMessage .messageBox {
@@ -121,28 +128,34 @@
   position: relative;
   bottom: 0;
   width: 100%;
-  background: #fff;
+  background: #efefef;
   padding: 10px;
-  border-top: 1px solid #ccc;
+  padding-right: 18px; /* 오른쪽 패딩 추가 */
+  border-top: 1.5px solid #a5a2a2;
+  box-sizing: border-box; /* padding이 width에 포함되도록 설정 */
+  display: flex;
+  align-items: center;
 }
 
-.input {
+.inputArea input {
   flex: 1;
   padding: 8px;
-  border: 1px solid #ddd;
+  border: 1px solid #c7c1c1;
   border-radius: 5px;
-  width: calc(100% - 60px);
+  width: 100%; /* 기존 calc(100% - 60px) 대신 100% */
+  box-sizing: border-box; /* padding이 width에 포함되도록 설정 */
 }
 
-.button {
-  padding: 8px 12px;
-  background: #007bff;
-  color: white;
+.inputArea button {
+  margin-left: 8px; /* 버튼과 입력 필드 사이 간격 */
+  padding: 8px 16px;
+  background: #b6c9c8;
+  color: #2c1f1f;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
-.button:hover {
-  background: #0056b3;
+.inputArea button:hover {
+  background: #73b5ee;
 }
