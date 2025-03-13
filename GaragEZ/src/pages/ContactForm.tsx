@@ -7,7 +7,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { GoogleMap, Marker, InfoWindow, useJsApiLoader } from "@react-google-maps/api";
 import { Dayjs } from "dayjs";
-import { Select, MenuItem, FormControl, InputLabel } from "@mui/material"; // MUI 컴포넌트 추가
+import { Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 
 const predefinedMarkers = [
   { id: "101", lat: 37.5665, lng: 126.978, name: "서울" },
@@ -164,7 +164,9 @@ const ContactForm: React.FC = () => {
       ...formData,
       appointmentDate: formData.appointmentDate?.format("YYYY-MM-DD"),
     });
-    alert("문의가 성공적으로 제출되었습니다!");
+    // 예약과 문의 등록 API 호출 후 예약 내역 페이지로 이동하는 로직 등 추가 가능
+    alert("문의 및 예약이 성공적으로 제출되었습니다!");
+    navigate("/reservations");
   };
 
   return (
@@ -180,7 +182,7 @@ const ContactForm: React.FC = () => {
             <input type="text" name="userId" value={formData.userId} onChange={handleChange} readOnly required />
           </div>
 
-          {/* 제조사와 차량 선택 (MUI Select로 변경) */}
+          {/* 제조사와 차량 선택 */}
           <div className={styles.carSelectionGroup}>
             <div>
               <FormControl fullWidth>
@@ -213,7 +215,6 @@ const ContactForm: React.FC = () => {
                   label="차량 선택"
                   onChange={handleChange}
                   required
-                  disabled={!formData.carMake || cars.length === 0}
                 >
                   <MenuItem value="">차량을 선택하세요</MenuItem>
                   {cars.map((car) => (
@@ -225,27 +226,28 @@ const ContactForm: React.FC = () => {
               </FormControl>
             </div>
           </div>
+
           {error && <p className={styles.error}>{error}</p>}
 
           <div className={styles.contactInputGroup}>
-          <FormControl fullWidth>
-            <InputLabel id="inquiryType-label">문의 유형</InputLabel>
-            <Select
-              labelId="inquiryType-label"
-              name="inquiryType"
-              value={formData.inquiryType}
-              label="문의 유형"
-              onChange={handleChange}
-              required
-            >
-              <MenuItem value="">유형을 선택하세요</MenuItem>
-              <MenuItem value="엔진오일">엔진오일</MenuItem>
-              <MenuItem value="타이어">타이어</MenuItem>
-              <MenuItem value="정기점검">정기점검</MenuItem>
-              <MenuItem value="기타">기타</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
+            <FormControl fullWidth>
+              <InputLabel id="inquiryType-label">문의 유형</InputLabel>
+              <Select
+                labelId="inquiryType-label"
+                name="inquiryType"
+                value={formData.inquiryType}
+                label="문의 유형"
+                onChange={handleChange}
+                required
+              >
+                <MenuItem value="">유형을 선택하세요</MenuItem>
+                <MenuItem value="엔진오일">엔진오일</MenuItem>
+                <MenuItem value="타이어">타이어</MenuItem>
+                <MenuItem value="정기점검">정기점검</MenuItem>
+                <MenuItem value="기타">기타</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
 
           <div className={styles.contactInputGroup}>
             <label>문의 내용</label>
@@ -260,15 +262,14 @@ const ContactForm: React.FC = () => {
           </div>
 
           <div className={styles.contactInputGroup}>
-            <label>선택한 정비소</label>
+            <label>선택한 정비소 (아래 지도에서 선택 시 자동 입력)</label>
             <input type="text" name="repairStoreName" value={formData.repairStoreName} readOnly />
           </div>
 
           {isLoaded && (
             <div className={styles.mapContainer}>
-              <h3>가까운 정비소 선택</h3>
+              <h3>가까운 정비소 선택 (마커를 선택하세요)</h3>
               <GoogleMap mapContainerStyle={{ width: "100%", height: "400px" }} center={center} zoom={12}>
-                {userLocation && <Marker position={userLocation} label="내 위치" />}
                 {predefinedMarkers.map((marker) => (
                   <Marker
                     key={marker.id}

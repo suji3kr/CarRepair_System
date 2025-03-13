@@ -4,34 +4,87 @@
   border-radius: 8px;
   padding: 10px;
   background: #f9f9f9;
-  position: fixed; /* 화면에 고정 */
-  bottom: 20px; /* 화면 하단에서 20px 띄움 */
-  right: 20px; /* 화면 우측에서 20px 띄움 */
-  z-index: 1000; /* 네비게이션 바보다 위에 배치 */
-  max-height: 500px; /* 최대 높이 설정 */
-  overflow-y: auto; /* 채팅 내용이 많아지면 스크롤 가능 */
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  max-height: 500px;
+  overflow-y: auto;
 }
 
 .messages {
   max-height: 300px;
   overflow-y: auto;
-  padding-bottom: 20px; /* 입력창과 겹치지 않게 여백 추가 */
+  padding-bottom: 20px;
 }
 
-.message {
-  padding: 8px;
-  border-radius: 5px;
-  margin-bottom: 5px;
+.messageWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.userMessage,
+.botMessage {
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+}
+
+.userMessage .messageBox  {
+  margin-right: 25px;
+}
+
+.botMessage .messageBox  {
+  margin-left: 7px;
+}
+
+.messageBox {
+  background: #f0f0f0;
+  padding: 10px;
+  border-radius: 10px;
+  width: 180px;
+  height: 80px;
 }
 
 .user {
-  background: #d1e7fd;
-  text-align: right;
+  align-items: flex-end; /* 사용자 메시지를 오른쪽으로 정렬 */
 }
 
 .bot {
+  align-items: flex-start; /* 챗봇 메시지를 왼쪽으로 정렬 */
+}
+
+.userIcon {
+  position: absolute;
+  right: 5px;
+  bottom: 0;
+}
+
+.userMessage .messageBox {
+  background: #d1e7fd;
+}
+
+.botMessage .messageBox {
   background: #e8e8e8;
-  text-align: left;
+}
+
+.botLabel {
+  font-size: 12px;
+  font-weight: bold;
+  color: #ff4500;
+  margin-bottom: 5px;
+}
+
+.userLabel {
+  font-size: 12px;
+  font-weight: bold;
+  color: #0f58ac;
+  margin-bottom: 5px;
+}
+.userMessage .messageBox::before {
+  font-weight: bold;
 }
 
 .searchButton {
@@ -64,11 +117,32 @@
   margin-right: 10px;
 }
 
-.input-area {
+.inputArea {
   position: relative;
   bottom: 0;
   width: 100%;
   background: #fff;
   padding: 10px;
   border-top: 1px solid #ccc;
+}
+
+.input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: calc(100% - 60px);
+}
+
+.button {
+  padding: 8px 12px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: #0056b3;
 }
