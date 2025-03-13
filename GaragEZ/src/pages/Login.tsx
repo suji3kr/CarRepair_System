@@ -10,10 +10,9 @@ const clientId = "818242899946-o4a9sbi3d9dum52egbn797lhv2fpreq1.apps.googleuserc
 const Login = () => {
     const [userId, setUserId] = useState("");
     const [password, setPassword] = useState("");
-    const [rememberMe, setRememberMe] = useState(false); // 기본값 false로 변경
+    const [rememberMe, setRememberMe] = useState(false);
     const navigate = useNavigate();
 
-    // ✅ 페이지 로드 시 저장된 아이디 불러오기
     useEffect(() => {
         const savedUserId = localStorage.getItem("savedUserId");
         if (savedUserId) {
@@ -22,36 +21,38 @@ const Login = () => {
         }
     }, []);
 
-    const handleLoginSuccess = (userId: string, userEmail?: string) => {
+    const handleLoginSuccess = (userId: string, userRole: string, userEmail?: string) => {
         localStorage.setItem("userId", userId);
+        localStorage.setItem("userRole", userRole); // ✅ userRole 저장
+
         if (userEmail) {
             localStorage.setItem("userEmail", userEmail);
         }
-        // ✅ rememberMe가 체크되어 있으면 아이디 저장
+
         if (rememberMe) {
             localStorage.setItem("savedUserId", userId);
         } else {
             localStorage.removeItem("savedUserId");
         }
+
+        // ✅ 로그인한 사용자 정보 콘솔 출력
+        console.log("🔹 로그인 성공!");
+        console.log("👤 사용자 ID:", userId);
+        console.log("🎭 사용자 역할(userRole):", userRole);
+        if (userEmail) console.log("📧 사용자 이메일:", userEmail);
+
         alert(`환영합니다, ${userId}님!`);
         navigate("/home");
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!userId) {
-            alert("아이디를 입력해주세요.");
-            return;
-        }
-        if (!password) {
-            alert("비밀번호를 입력해주세요.");
+        if (!userId || !password) {
+            alert("아이디와 비밀번호를 입력해주세요.");
             return;
         }
 
-        const loginRequest: LoginRequest = {
-            userId: userId,
-            password: password
-        };
+        const loginRequest: LoginRequest = { userId, password };
 
         try {
             const response = await fetch("http://localhost:8094/api/auth/login", {
@@ -69,13 +70,19 @@ const Login = () => {
 
             const data: JwtResponse = await response.json();
             localStorage.setItem("token", data.token);
-            handleLoginSuccess(userId);
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                alert("로그인 중 오류가 발생했습니다: " + error.message);
-            } else {
-                alert("알 수 없는 오류가 발생했습니다.");
-            }
+
+            // ✅ userRole이 없으면 기본값 "user"로 설정
+            const userRole = data.userRole || "user"; 
+
+            // ✅ 로그인 정보 콘솔 출력
+            console.log("🔹 일반 로그인 성공!");
+            console.log("👤 사용자 ID:", userId);
+            console.log("🎭 사용자 역할(userRole):", userRole);
+
+            handleLoginSuccess(userId, userRole);
+        } catch (error) {
+            alert("로그인 중 오류가 발생했습니다.");
+            console.error(error);
         }
     };
 
@@ -125,7 +132,6 @@ const Login = () => {
 
             if (!res.ok) {
                 const errorText = await res.text();
-                // ✅ 추가 정보가 필요한 경우 signup 페이지로 이동
                 if (res.status === 400 && errorText.includes("additional info required")) {
                     navigate("/signup", {
                         state: {
@@ -142,18 +148,22 @@ const Login = () => {
                 return;
             }
 
-            // JwtResponse - newUser, userId도 받도록 수정
             const data: JwtResponse = await res.json();
             localStorage.setItem("token", data.token);
-            // 신규 유저 회원가입으로
-            handleLoginSuccess(userName, userEmail);
-        } catch (error: unknown) {
+
+            // ✅ userRole이 없으면 기본값 "user"로 설정
+            const userRole = data.userRole || "user"; 
+
+            // ✅ Google 로그인 정보 콘솔 출력
+            console.log("🔹 Google 로그인 성공!");
+            console.log("👤 사용자 이름:", userName);
+            console.log("📧 사용자 이메일:", userEmail);
+            console.log("🎭 사용자 역할(userRole):", userRole);
+
+            handleLoginSuccess(userName, userRole, userEmail);
+        } catch (error) {
             console.error("Google 로그인 오류:", error);
-            if (error instanceof Error) {
-                alert(`Google 로그인 중 오류가 발생했습니다: ${error.message}`);
-            } else {
-                alert(`Google 로그인 중 알 수 없는 오류가 발생했습니다: ${JSON.stringify(error)}`);
-            }
+            alert("Google 로그인 중 오류가 발생했습니다.");
         }
     };
 
@@ -205,14 +215,12 @@ const Login = () => {
                                         <input type="submit" value="로그인" />
                                     </li>
                                     <li className={styles.googleLogin}>
-                                        <div className={styles.googleLoginWrapper}>
-                                            <GoogleLogin
-                                                onSuccess={handleGoogleSuccess}
-                                                onError={handleGoogleFailure}
-                                                useOneTap
-                                                auto_select={false}
-                                            />
-                                        </div>
+                                        <GoogleLogin
+                                            onSuccess={handleGoogleSuccess}
+                                            onError={handleGoogleFailure}
+                                            useOneTap
+                                            auto_select={false}
+                                        />
                                     </li>
                                     <p className={styles.signup}>
                                         아직 회원이 아니신가요? <a href="/signup">회원가입하러가기</a>

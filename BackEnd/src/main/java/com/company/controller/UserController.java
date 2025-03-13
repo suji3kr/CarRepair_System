@@ -63,7 +63,7 @@ public class UserController {
                     user.getEmail(),
                     user.getPhone(),
                     user.getRole().name()
-//                    vehicleService.getVehicleByOwner(user)
+//                  vehicleService.getVehicleByOwner(user)
             );
 
             return ResponseEntity.ok(responseDto);

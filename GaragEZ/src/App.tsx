@@ -25,8 +25,7 @@ import Profile from "./pages/Profile";
 import StoreReviewPage from "./pages/StoreReviewPage";
 import ScrollToTop from "./components/scrollToTop";
 import ReservationPage from "./pages/ReservationPage";
-
-
+import AdminRoutes from "./routes/AdminRoutes"; // ✅ 관리자 페이지 추가
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
@@ -40,16 +39,18 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   );
 };
 
-
-
 const App: React.FC = () => {
   return (
     <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
       <AuthProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Landing />} /> {/* ✅ Landing 페이지 (Header 없음) */}
-            <Route path="*" element={<LayoutWrapper />} /> {/* ✅ 다른 모든 페이지는 Layout 적용 */}
+            {/* ✅ 일반 페이지 라우팅 */}
+            <Route path="/" element={<Landing />} />
+            <Route path="/*" element={<LayoutWrapper />} />
+
+            {/* ✅ 관리자 페이지 라우팅 추가 */}
+            <Route path="/admin/*" element={<AdminRoutes />} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>
@@ -72,20 +73,17 @@ const LayoutWrapper: React.FC = () => {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/event" element={<Event />} />
         <Route path="/partshop" element={<PartsShop />} />
-        <Route path="/Map" element={<Map />} />
+        <Route path="/map" element={<Map />} />
         <Route path="/part/:id" element={<PartDetail />} /> {/* 상세 페이지 추가 */}
         <Route path="/cart" element={<Cart />} />
         <Route path="/menu1/team" element={<Team />} />
         <Route path="/menu1/CompanyHistory" element={<CompanyHistory />} />
-        <Route path="/StoreList" element={<StoreList />} />
-        <Route path="/PastEvents" element={<PastEvents />} />
-        <Route path="/Cars" element={<Cars />} />
+        <Route path="/storelist" element={<StoreList />} />
+        <Route path="/pastevents" element={<PastEvents />} />
+        <Route path="/cars" element={<Cars />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/storereview" element={<StoreReviewPage />} />
         <Route path="/reservations" element={<ReservationPage />} />
-
-
-
       </Routes>
     </Layout>
   );

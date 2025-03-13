@@ -47,5 +47,13 @@ public class User {
     @Column(name = "terms_agreed", nullable = false)
     private boolean termsAgreed = false;
 
+    // ✅ 역할(Role)을 문자열(String)로 변환하여 반환하는 메서드 추가
+    public String getUserRole() {
+        return (role != null) ? role.name() : "USER"; // 🚀 null일 경우 기본값 "USER" 반환
+    }
 
+    // ✅ 역할(Role) 설정 메서드 추가
+    public void setUserRole(String userRole) {
+        this.role = Role.valueOf(userRole.toUpperCase()); // 🚀 소문자를 대문자로 변환하여 저장
+    }
 }
