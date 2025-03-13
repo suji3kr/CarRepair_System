@@ -36,8 +36,8 @@ public class UserController {
                 user.getName(),
                 user.getEmail(),
                 user.getPhone(),
-                user.getRole().name()
-//                List.of()
+                user.getRole().name(),
+                List.of()
         );
 
         return ResponseEntity.ok(responseDto); // ✅ 보안 강화: 비밀번호 없는 DTO 반환
@@ -51,20 +51,10 @@ public class UserController {
             String jwtToken = token.replace("Bearer ", "");
             String userId = jwtTokenProvider.getUserIdFromToken(jwtToken);
 
-            User user = userService.getUserByUserId(userId);
-            if (user == null) {
+            UserResponseDto responseDto = userService.getUserByUserIdWithVehicle(userId);
+            if (responseDto == null) {
                 return ResponseEntity.status(404).body("사용자를 찾을 수 없습니다.");
             }
-
-            // ✅ 비밀번호가 제거된 UserResponseDto로 변환
-            UserResponseDto responseDto = new UserResponseDto(
-                    user.getUserId(),
-                    user.getName(),
-                    user.getEmail(),
-                    user.getPhone(),
-                    user.getRole().name()
-//                    vehicleService.getVehicleByOwner(user)
-            );
 
             return ResponseEntity.ok(responseDto);
         } catch (Exception e) {

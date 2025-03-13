@@ -1,5 +1,6 @@
 package com.company.service;
 
+import com.company.dto.UserResponseDto;
 import com.company.dto.UserSignupRequest;
 import com.company.entity.role.Role;
 import com.company.entity.user.User;
@@ -134,5 +135,19 @@ public class UserService {
     public User getUserByUserId(String userId) {
         Optional<User> userOptional = userRepository.findByUserId(userId);
         return userOptional.orElse(null);
+    }
+
+    @Transactional
+    public UserResponseDto getUserByUserIdWithVehicle(String userId) {
+
+        User user = userRepository.findByUserId(userId).orElseThrow();
+        return new UserResponseDto(
+            user.getUserId(),
+            user.getName(),
+            user.getEmail(),
+            user.getPhone(),
+            user.getRole().name(),
+            vehicleRepository.findByOwner(user)
+        );
     }
 }

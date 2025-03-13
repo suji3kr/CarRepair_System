@@ -46,7 +46,6 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/auth/**",
                                 "/api/users/**",
-                                "api/signup/**",
                                 // ✅ Swagger 허용
                                 "/api-docs/**",
                                 "/swagger-ui/**",
