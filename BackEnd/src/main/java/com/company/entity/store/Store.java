@@ -23,6 +23,10 @@ public class Store {
     @JoinColumn(name = "part_id")
     private Part part;
 
+    // 추가: 가게 이름과 주소
+    private String name;
+    private String address;
+
     private double price;
     private int stock;
 

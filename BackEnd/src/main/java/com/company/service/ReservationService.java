@@ -5,7 +5,6 @@ import com.company.entity.store.ReservationStatus;
 import com.company.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -16,7 +15,8 @@ public class ReservationService {
     private ReservationRepository reservationRepository;
 
     public Reservation createReservation(Reservation reservation) {
-        reservation.setStatus(ReservationStatus.PENDING); // 예약 상태를 '대기중'으로 설정
+        // 예: 예약 생성 시 기본 상태를 PENDING 으로 설정
+        reservation.setStatus(ReservationStatus.PENDING);
         return reservationRepository.save(reservation);
     }
 
@@ -33,19 +33,21 @@ public class ReservationService {
     }
 
     public Reservation updateReservationStatus(Long id, ReservationStatus status) {
-        Optional<Reservation> reservation = reservationRepository.findById(id);
-        if (reservation.isPresent()) {
-            reservation.get().setStatus(status);
-            return reservationRepository.save(reservation.get());
+        Optional<Reservation> optReservation = reservationRepository.findById(id);
+        if (optReservation.isPresent()) {
+            Reservation reservation = optReservation.get();
+            reservation.setStatus(status);
+            return reservationRepository.save(reservation);
         }
         return null;
     }
 
     public void cancelReservation(Long id) {
-        Optional<Reservation> reservation = reservationRepository.findById(id);
-        if (reservation.isPresent()) {
-            reservation.get().setStatus(ReservationStatus.CANCELLED);
-            reservationRepository.save(reservation.get());
+        Optional<Reservation> optReservation = reservationRepository.findById(id);
+        if (optReservation.isPresent()) {
+            Reservation reservation = optReservation.get();
+            reservation.setStatus(ReservationStatus.CANCELLED);
+            reservationRepository.save(reservation);
         }
     }
 }

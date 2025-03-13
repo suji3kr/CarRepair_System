@@ -14,7 +14,7 @@ const Event: React.FC = () => {
     { imageUrl: "/images/Event1.jpg", link: "https://example.com/event1" },
     { imageUrl: "/images/Event2.jpg", link: "https://example.com/event2" },
     { imageUrl: "/images/Event3.jpg", link: "https://example.com/event3" },
-    { imageUrl: "/images/Event4.jpg", link: "https://example.com/event4" },
+    { imageUrl: "/images/Event4.jpg", link: "https://www.skzic.com/index.do" },
   ]);
 
   return (
