@@ -271,7 +271,3 @@ CREATE TABLE reservations (
     FOREIGN KEY (user_id) REFERENCES users(user_id),
     FOREIGN KEY (car_id) REFERENCES car(id) ON DELETE CASCADE
 );
-
-
-
-SET FOREIGN_KEY_CHECKS=1;

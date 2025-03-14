@@ -1,31 +1,32 @@
 package com.company.entity.cars;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Table(name = "car")  // 테이블명이 car인 경우 명시
+@Getter
+@Setter
+@NoArgsConstructor  // 기본 생성자 자동 생성
 public class Car {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "carModel")
+
+    @Column(name = "car_model") // snake_case 사용 가능
     private String carModel;
 
-    @Column(name = "image_url")
-    private String image_url;
+    @Column(name = "image_url") // snake_case 사용 가능
+    private String imageUrl;
 
-    @Column(name = "carMake")
+    @Column(name = "car_make")
     private String carMake;
 
-    // 기본 생성자
-    public Car() {}
-
-    // getters, setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public String getCarModel() { return carModel; }
-    public void setCarModel(String carModel) { this.carModel = carModel; }
-    public String getImage_url() { return image_url; }
-    public void setImage_url(String image_url) { this.image_url = image_url; }
-    public String getCarMake() { return carMake; }
-    public void setCarMake(String carMake) { this.carMake = carMake; }
+    // ✅ 기존 세터에서 오타 수정
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }

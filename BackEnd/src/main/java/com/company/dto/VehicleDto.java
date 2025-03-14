@@ -6,6 +6,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class VehicleDto {
+    private String owner_id;
+    private String car_id;
     private String carMake;
     private String carModel;
     private int year;

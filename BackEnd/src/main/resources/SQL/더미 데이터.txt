@@ -13,11 +13,13 @@ select * from part_prices;
 select * from setup_tracks;
 select * from approvals;
 select * from maintenance_records;
-select * from car;
+
 select * from reviews;
 select * from payments;
 select * from store_reviews;
 select * from reservations;
+select * from car;
+
 -- --------------- 부품 더미 데이터 하단에 추가 해서 합함 --
 
 

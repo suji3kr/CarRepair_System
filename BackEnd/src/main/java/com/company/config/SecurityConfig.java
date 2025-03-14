@@ -10,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -27,6 +28,7 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true)  // ✅ @PreAuthorize 활성화
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
@@ -43,16 +45,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // ✅ CORS 설정
+                .csrf(AbstractHttpConfigurer::disable) // ✅ CSRF 보호 비활성화
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // ✅ JWT 기반 세션 없음
                 .authorizeHttpRequests(auth -> auth
+                        // ✅ 관리자 API는 ADMIN 권한 필요
+                        .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
+
+                        // ✅ 허용된 API 경로들 (로그인, 회원가입, 기타 공개 API)
                         .requestMatchers(
                                 "/api/auth/**",
                                 "/api/users/**",
-                                "api/signup/**",
+                                "/api/signup/**",
                                 "/api-docs/**",
                                 "/swagger-ui/**",
+                                "/api/vehicles/**",
                                 "/api/payment/**",
                                 "/api/parts/**",
                                 "/api/cars/**",
@@ -62,6 +69,8 @@ public class SecurityConfig {
                                 "/api/chat/**",
                                 "/api/reservations/**"
                         ).permitAll()
+
+                        // ✅ 나머지 요청은 로그인 필요
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception ->

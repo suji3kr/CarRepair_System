@@ -12,4 +12,7 @@ export interface GoogleLoginRequest {
 // JWT 응답 타입
 export interface JwtResponse {
   token: string;
+  newUser: boolean; // 새로운 사용자 여부 (true/false)
+  userId: number;   // 사용자 ID
+  userRole?: string;  // ✅ userRole 추가 (선택적 속성으로 설정)
 }
