@@ -49,6 +49,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable) // ✅ CSRF 보호 비활성화
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // ✅ JWT 기반 세션 없음
                 .authorizeHttpRequests(auth -> auth
+                        // ✅ Swagger 접근 제한
+//                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").hasRole("ADMIN")
+
                         // ✅ 관리자 API는 ADMIN 권한 필요
                         .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
 
@@ -57,7 +60,7 @@ public class SecurityConfig {
                                 "/api/auth/**",
                                 "/api/users/**",
                                 "/api/signup/**",
-                                "/api-docs/**",
+                                "/v3/**",
                                 "/swagger-ui/**",
                                 "/api/vehicles/**",
                                 "/api/payment/**",
@@ -119,4 +122,6 @@ public class SecurityConfig {
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
+
+
 }

@@ -52,11 +52,8 @@ logging:
               BasicBinder: TRACE
 
 springdoc:
-  api-docs:
-    path: /api-docs
-    swagger-ui:
-      path: /swagger-ui.html
-      enabled: true
+  swagger-ui:
+    enabled: true
 
 portone:
   secret_key: your_secret_key_here
