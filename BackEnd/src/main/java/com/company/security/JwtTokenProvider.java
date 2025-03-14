@@ -33,7 +33,7 @@ public class JwtTokenProvider {
     public String createToken(String userId, String userRole) {
         Claims claims = Jwts.claims().setSubject(userId);
         claims.put("role", userRole); // ✅ 역할(role) 추가
-
+      
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
 

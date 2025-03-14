@@ -1,5 +1,8 @@
+show tables;
+select now() from dual;
 select * from users;
 select * from vehicles;
+select * from user_vehicles;
 select * from parts;
 select * from store;
 select * from store_orders;
@@ -10,9 +13,11 @@ select * from part_prices;
 select * from setup_tracks;
 select * from approvals;
 select * from maintenance_records;
+
 select * from reviews;
 select * from payments;
 select * from store_reviews;
+select * from reservations;
 select * from car;
 
 -- --------------- 부품 더미 데이터 하단에 추가 해서 합함 --
@@ -27,100 +32,24 @@ VALUES
   ('johnDoe', 'John Doe', 'johndoe@example.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-1234-5678', 'USER');
 -- 비번은 항상 password123
 
-INSERT INTO car (car_model, image_url, car_make) VALUES
-('아반떼', 'avante.jpg', '현대'),
-('아반떼 하이브리드', 'avante_Hybrid.jpg', '현대'),
-('아반떼 N', 'avante_N.jpg', '현대'),
-('캐스퍼 전기', 'casper_electric.jpg', '현대'),
-('캐스퍼', 'casper.jpg', '현대'),
-('그랜져 하이브리드', 'grandeur_Hybrid.jpg', '현대'),
-('그랜져', 'grandeur.jpg', '현대'),
-('아이오닉 5', 'ioniq_5.jpg', '현대'),
-('아이오닉 6', 'ioniq_6.jpg', '현대'),
-('아이오닉 9', 'ioniq_9.jpg', '현대'),
-('코나 전기', 'kona_Electric.jpg', '현대'),
-('코나 하이브리드', 'kona_Hybrid.jpg', '현대'),
-('코나', 'kona.jpg', '현대'),
-('넥소', 'nexo.jpg', '현대'),
-('팰리세이드', 'palisade.jpg', '현대'),
-('포터 2', 'porter_2.jpg', '현대'),
-('산타페 하이브리드', 'santafe_Hybrid.jpg', '현대'),
-('산타페', 'santafe.jpg', '현대'),
-('ST1', 'ST1.jpg', '현대'),
-('스타리아', 'staria.jpg', '현대'),
-('스타리아 하이브리드', 'staria_Hybrid.jpg', '현대'),
-('투산 하이브리드', 'tucsan_Hybrid.jpg', '현대'),
-('투산', 'tucsan.jpg', '현대'),
-('베뉴', 'venue.jpg', '현대');
-
-
-INSERT INTO car (car_model, image_url, car_make) VALUES
-('EV3', 'EV3_1.jpg', '기아'),
-('EV6', 'EV6_1.jpg', '기아'),
-('EV6_GT', 'EV6_GT_1.jpg', '기아'),
-('EV9_1', 'EV9_1.jpg', '기아'),
-('EV9_GT', 'EV9_GT_1.jpg', '기아'),
-('K5', 'K5_1.jpg', '기아'),
-('K8', 'K8_1.jpg', '기아'),
-('K9', 'K9_1.jpg', '기아'),
-('모닝', 'morning_1.jpg', '기아'),
-('니로', 'niro_1.jpg', '기아'),
-('니로 전기차', 'niro_EV_1.jpg', '기아'),
-('레이', 'ray_1.jpg', '기아'),
-('레이 전기차', 'ray_EV_1.jpg', '기아'),
-('쏘렌토', 'sorento.jpg', '기아'),
-('스포티지', 'sportage.jpg', '기아'),
-('타스만', 'tasman.jpg', '기아'),
-('봉고3_파워게이트', 'bongo3_powergate.jpg', '기아'),
-('카니발 하이리무진', 'carnival_hign.jpg', '기아');
-
-
-INSERT INTO car (car_model, image_url, car_make) VALUES
-('콜로라도', 'colorado.jpg', '쉐보레'),
-('타호', 'taho.jpg', '쉐보레'),
-('트레버스', 'travers.jpg', '쉐보레'),
-('트레일블레이저', 'trailblazer.jpg', '쉐보레'),
-('트렉스크로스오버', 'trexcrossover.jpg', '쉐보레');
-
-
-
-INSERT INTO car (car_model, image_url, car_make) VALUES
-('렉스턴_뉴_아레나', '렉스턴_뉴_아레나.jpg', '쌍용'),
-('렉스턴_스포츠', '렉스턴_스포츠.jpg', '쌍용'),
-('렉스턴_스포츠_칸', '렉스턴_스포츠_칸.jpg', '쌍용'),
-('렉스턴_써밋', '렉스턴_써밋.jpg', '쌍용'),
-('무쏘EV', '무쏘EV.jpg', '쌍용'),
-('액티언', '액티언.jpg', '쌍용'),
-('코란도', '코란도.jpg', '쌍용'),
-('코란도_EV', '코란도_EV.jpg', '쌍용'),
-('코란도_EV_택시', '코란도_EV_택시.jpg', '쌍용'),
-('토레스', '토레스.jpg', '쌍용'),
-('토레스_EVX', '토레스_EVX.jpg', '쌍용'),
-('토레스_EVX_밴', '토레스_EVX_밴.jpg', '쌍용'),
-('토레스_EVX_택시', '토레스_EVX_택시.jpg', '쌍용'),
-('토레스_바이퓨얼_택시', '토레스_바이퓨얼_택시.jpg', '쌍용'),
-('토레스_밴', '토레스_밴.jpg', '쌍용'),
-('티볼리', '티볼리.jpg', '쌍용');
-
-
 -- 2. 차량 정보 추가 (car_id 포함)
 INSERT INTO vehicles (owner_id, car_id, car_make, car_model, year, vin, car_number)
 VALUES
   ((SELECT id FROM users WHERE user_id = 'alice123'),
-   (SELECT id FROM car WHERE car_make = '쌍용' AND car_model = '티볼리'),
-   '쌍용', '티볼리', 2015, 'VIN000001', '11가 1234'),
+   (SELECT id FROM car WHERE car_make = 'Toyota' AND car_model = 'Corolla'),
+   'Toyota', 'Corolla', 2015, 'VIN000001', '11가 1234'),
 
   ((SELECT id FROM users WHERE user_id = 'alice123'),
-   (SELECT id FROM car WHERE car_make = '쌍용' AND car_model = '코란도_EV'),
-   '쌍용', '코란도_EV', 2018, 'VIN000002', '22나 5678'),
+   (SELECT id FROM car WHERE car_make = 'Honda' AND car_model = 'Civic'),
+   'Honda', 'Civic', 2018, 'VIN000002', '22나 5678'),
 
   ((SELECT id FROM users WHERE user_id = 'bob456'),
-   (SELECT id FROM car WHERE car_make = '기아' AND car_model = 'K9'),
-   '기아', 'K9', 2017, 'VIN000003', '33다 9012'),
+   (SELECT id FROM car WHERE car_make = 'Ford' AND car_model = 'Focus'),
+   'Ford', 'Focus', 2017, 'VIN000003', '33다 9012'),
 
   ((SELECT id FROM users WHERE user_id = 'johnDoe'),
-   (SELECT id FROM car WHERE car_make = '현대' AND car_model = '아반떼 하이브리드'),
-   '현대', '아반떼 하이브리드', 2020, 'VIN123456', '12가 3456');
+   (SELECT id FROM car WHERE car_make = 'Hyundai' AND car_model = 'Sonata'),
+   'Hyundai', 'Sonata', 2020, 'VIN123456', '12가 3456');
 
 -- 3. 사용자 차량 관계 설정 (M:N 관계)
 INSERT INTO user_vehicles (user_id, vehicle_id)
@@ -274,6 +203,81 @@ VALUES
   (3, 200.00, 'ONLINE', 'FAILED');
 
 
+INSERT INTO car (car_model, image_url, car_make) VALUES
+('아반떼', 'avante.jpg', '현대'),
+('아반떼 하이브리드', 'avante_Hybrid.jpg', '현대'),
+('아반떼 N', 'avante_N.jpg', '현대'),
+('캐스퍼 전기', 'casper_electric.jpg', '현대'),
+('캐스퍼', 'casper.jpg', '현대'),
+('그랜져 하이브리드', 'grandeur_Hybrid.jpg', '현대'),
+('그랜져', 'grandeur.jpg', '현대'),
+('아이오닉 5', 'ioniq_5.jpg', '현대'),
+('아이오닉 6', 'ioniq_6.jpg', '현대'),
+('아이오닉 9', 'ioniq_9.jpg', '현대'),
+('코나 전기', 'kona_Electric.jpg', '현대'),
+('코나 하이브리드', 'kona_Hybrid.jpg', '현대'),
+('코나', 'kona.jpg', '현대'),
+('넥소', 'nexo.jpg', '현대'),
+('팰리세이드', 'palisade.jpg', '현대'),
+('포터 2', 'porter_2.jpg', '현대'),
+('산타페 하이브리드', 'santafe_Hybrid.jpg', '현대'),
+('산타페', 'santafe.jpg', '현대'),
+('ST1', 'ST1.jpg', '현대'),
+('스타리아', 'staria.jpg', '현대'),
+('스타리아 하이브리드', 'staria_Hybrid.jpg', '현대'),
+('투산 하이브리드', 'tucsan_Hybrid.jpg', '현대'),
+('투산', 'tucsan.jpg', '현대'),
+('베뉴', 'venue.jpg', '현대');
+
+
+INSERT INTO car (car_model, image_url, car_make) VALUES
+('EV3', 'EV3_1.jpg', '기아'),
+('EV6', 'EV6_1.jpg', '기아'),
+('EV6_GT', 'EV6_GT_1.jpg', '기아'),
+('EV9_1', 'EV9_1.jpg', '기아'),
+('EV9_GT', 'EV9_GT_1.jpg', '기아'),
+('K5', 'K5_1.jpg', '기아'),
+('K8', 'K8_1.jpg', '기아'),
+('K9', 'K9_1.jpg', '기아'),
+('모닝', 'morning_1.jpg', '기아'),
+('니로', 'niro_1.jpg', '기아'),
+('니로 전기차', 'niro_EV_1.jpg', '기아'),
+('레이', 'ray_1.jpg', '기아'),
+('레이 전기차', 'ray_EV_1.jpg', '기아'),
+('쏘렌토', 'sorento.jpg', '기아'),
+('스포티지', 'sportage.jpg', '기아'),
+('타스만', 'tasman.jpg', '기아'),
+('봉고3_파워게이트', 'bongo3_powergate.jpg', '기아'),
+('카니발 하이리무진', 'carnival_hign.jpg', '기아');
+
+
+INSERT INTO car (car_model, image_url, car_make) VALUES
+('콜로라도', 'colorado.jpg', '쉐보레'),
+('타호', 'taho.jpg', '쉐보레'),
+('트레버스', 'travers.jpg', '쉐보레'),
+('트레일블레이저', 'trailblazer.jpg', '쉐보레'),
+('트렉스크로스오버', 'trexcrossover.jpg', '쉐보레');
+
+
+
+INSERT INTO car (car_model, image_url, car_make) VALUES
+('렉스턴_뉴_아레나', '렉스턴_뉴_아레나.jpg', '쌍용'),
+('렉스턴_스포츠', '렉스턴_스포츠.jpg', '쌍용'),
+('렉스턴_스포츠_칸', '렉스턴_스포츠_칸.jpg', '쌍용'),
+('렉스턴_써밋', '렉스턴_써밋.jpg', '쌍용'),
+('무쏘EV', '무쏘EV.jpg', '쌍용'),
+('액티언', '액티언.jpg', '쌍용'),
+('코란도', '코란도.jpg', '쌍용'),
+('코란도_EV', '코란도_EV.jpg', '쌍용'),
+('코란도_EV_택시', '코란도_EV_택시.jpg', '쌍용'),
+('토레스', '토레스.jpg', '쌍용'),
+('토레스_EVX', '토레스_EVX.jpg', '쌍용'),
+('토레스_EVX_밴', '토레스_EVX_밴.jpg', '쌍용'),
+('토레스_EVX_택시', '토레스_EVX_택시.jpg', '쌍용'),
+('토레스_바이퓨얼_택시', '토레스_바이퓨얼_택시.jpg', '쌍용'),
+('토레스_밴', '토레스_밴.jpg', '쌍용'),
+('티볼리', '티볼리.jpg', '쌍용');
+
 -- 각 가게별 리뷰 삽입 (평점 추가)
 INSERT INTO store_reviews (store_name, content, rating, created_at)
 VALUES
@@ -291,3 +295,5 @@ VALUES
 
   ('차고지 제주점', '차고지 제주점 덕분에 제주도에서도 안심하고 정비받았습니다.', 5.0, NOW()),
   ('차고지 제주점', '전문적인 기술력에 감동했습니다.', 5.0, NOW());
+
+  
