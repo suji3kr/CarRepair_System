@@ -1,22 +1,19 @@
 import { useNavigate } from "react-router-dom";
+import { useChatBot } from "../context/ChatBotContext"; // ✅ 전역 상태 사용
 import styles from "../styles/Sidebar.module.css";
 
+
 const Sidebar: React.FC = () => {
-  const navigate = useNavigate(); // navigate 훅 사용
+  const navigate = useNavigate();
+  
+  const { openChat } = useChatBot(); // ✅ 챗봇 열기 함수 가져오기
 
   const handleLogout = () => {
-    // localStorage에서 정보 삭제
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
     localStorage.removeItem("userEmail");
-
-    // 로그아웃 알림 메시지
     alert("로그아웃되었습니다. 다음에 또 방문해주세요!");
-
-    // 홈으로 이동
-    navigate("/home"); 
-
-    // 새로고침 (선택적)
+    navigate("/home");
     window.location.reload();
   };
 
@@ -40,13 +37,13 @@ const Sidebar: React.FC = () => {
         <p className={styles.text}>장바구니</p>
       </a>
 
-      {/* 챗봇 */}
-      <a href="/chat-bot" className={styles.iconWrapper}>
+      {/* 챗봇 버튼 */}
+      <div className={styles.iconWrapper} onClick={openChat}>
         💬
         <p className={styles.text}>챗봇</p>
-      </a>
+      </div>
 
-      {/* 🔥 TOP 아이콘 (div로 변경) */}
+      {/* 🔥 TOP 아이콘 */}
       <div
         className={styles.topIcon}
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
@@ -54,8 +51,8 @@ const Sidebar: React.FC = () => {
         ⬆️
       </div>
 
-       {/* 로그아웃 버튼 */}
-       <button className={styles.logoutButton} onClick={handleLogout}>
+      {/* 로그아웃 버튼 */}
+      <button className={styles.logoutButton} onClick={handleLogout}>
         🚪
         <p className={styles.text}>로그아웃</p>
       </button>

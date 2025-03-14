@@ -41,10 +41,10 @@ const Landing: React.FC = () => {
           <source src={CardrivingVideo} type="video/mp4" />
         </video>
         <div className={styles.content}>
-          <h1>소중한 당신의 자동차를 위한 선택</h1>
-          <p>수리는 저희에게 맡기세요</p>
+          <h1>GaragEZ</h1>
+          <p>누구나 쉽고 간편한 자동차 수리 예약</p>
           <button className={styles.btn} onClick={goHome}>
-            더 알아보기
+            홈페이지 둘러보기
           </button>
         </div>
       </div>
