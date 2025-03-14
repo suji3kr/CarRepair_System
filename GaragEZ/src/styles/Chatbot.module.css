@@ -1,26 +1,27 @@
 .chatbot {
   width: 380px;
-  border: 1px solid #c3cdd8;;
+  border: 1px solid #c3cdd8;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;  /* 입력창을 하단으로 정렬 */
-  border-radius: 8px;
-  padding: 30px 0px 5px 18px;
+  justify-content: space-between; /* 입력창을 하단으로 정렬 */
+  border-radius: 0 0 8px 8px;
+  padding-top: 10px;
   background: #f0f2f3;
   position: fixed;
   bottom: 20px;
   right: 20px;
   z-index: 1000;
-  min-height: 500px;  /* 최소 높이 설정 */
-  max-height: 900px;  /* 최대 높이 설정 */
+  min-height: 510px; /* 최소 높이 설정 */
+  max-height: 900px; /* 최대 높이 설정 */
   overflow-y: auto;
 }
 
 .messages {
-  flex-grow: 1;  /* 남은 공간을 채우도록 설정 */
+  flex-grow: 1; /* 남은 공간을 채우도록 설정 */
   max-height: 450px;
   overflow-y: auto;
   padding-bottom: 20px;
+  padding: 0 10px;
 }
 
 .messageWrapper {
@@ -28,6 +29,7 @@
   flex-direction: column;
   align-items: flex-start;
   margin-bottom: 10px;
+  width: 100%; /* ✅ 부모 컨테이너 크기를 유지 */
 }
 
 .userMessage,
@@ -35,46 +37,53 @@
   display: flex;
   align-items: flex-start;
   position: relative;
-  margin-right: 7px;
-  margin-left: 3px;
+  width: 100%; /* ✅ 메시지 박스가 부모 컨테이너를 넘지 않도록 조정 */
 }
 
-.userMessage .messageBox  {
-  margin-right: 25px;
+.userMessage {
+  justify-content: flex-end; /* ✅ 사용자 메시지는 우측 정렬 */
 }
 
-.botMessage .messageBox  {
-  margin-left: 7px;
+.botMessage {
+  justify-content: flex-start; /* ✅ 챗봇 메시지는 좌측 정렬 */
 }
 
 .messageBox {
   background: #f0eeee;
   padding: 10px;
   border-radius: 10px;
-  width: 180px;
-  height: 80px;
+  max-width: 75%;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  display: inline-block;
+  box-sizing: border-box;
+  overflow: hidden;
+  position: relative; /* ✅ 아이콘 위치 기준점 설정 */
 }
 
-.user {
-  align-items: flex-end; /* 사용자 메시지를 오른쪽으로 정렬 */
-}
-
-.bot {
-  align-items: flex-start; /* 챗봇 메시지를 왼쪽으로 정렬 */
-}
-
+/* 사용자 아이콘 위치 조정 */
 .userIcon {
-  position: absolute;
-  right: 5px;
-  bottom: 0;
+  position: absolute; /* ✅ 메시지 박스 내부에서 절대 위치 설정 */
+  right: 5px; /* ✅ 오른쪽 정렬 */
+  bottom: 5px; /* ✅ 하단 정렬 */
+  width: 18px; /* ✅ 아이콘 크기 조정 */
+  height: 18px;
 }
 
+/* 사용자 메시지 스타일 */
 .userMessage .messageBox {
   background: #b1d3f5;
+  text-align: left;
+  align-self: flex-end; /* ✅ 사용자의 메시지는 우측 정렬 */
+  margin-right: 30px;
 }
 
+/* 챗봇 메시지 스타일 */
 .botMessage .messageBox {
   background: #e8e8e8;
+  text-align: left;
+  align-self: flex-start; /* ✅ 챗봇 메시지는 좌측 정렬 */
 }
 
 .botLabel {
@@ -90,6 +99,7 @@
   color: #0f58ac;
   margin-bottom: 5px;
 }
+
 .userMessage .messageBox::before {
   font-weight: bold;
 }
@@ -132,7 +142,7 @@
   padding: 10px;
   padding-right: 18px; /* 오른쪽 패딩 추가 */
   border-top: 1.5px solid #a5a2a2;
-  box-sizing: border-box; /* padding이 width에 포함되도록 설정 */
+  box-sizing: border-box; /* ✅ padding이 width에 포함되도록 설정 */
   display: flex;
   align-items: center;
 }
@@ -142,8 +152,8 @@
   padding: 8px;
   border: 1px solid #c7c1c1;
   border-radius: 5px;
-  width: 100%; /* 기존 calc(100% - 60px) 대신 100% */
-  box-sizing: border-box; /* padding이 width에 포함되도록 설정 */
+  width: 100%; /* ✅ 기존 calc(100% - 60px) 대신 100% */
+  box-sizing: border-box; /* ✅ padding이 width에 포함되도록 설정 */
 }
 
 .inputArea button {

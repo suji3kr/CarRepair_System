@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa"; // React Icons 추가
 import styles from "../styles/Footer.module.css";
+import { useChatBot } from "../context/ChatBotContext";
 
 const Footer = () => {
+  const { openChat } = useChatBot(); // ✅ 챗봇 열기 함수 가져오기
+  
   return (
     <footer className={styles.footer}>
       <div className={styles.footer_content}>
@@ -13,9 +16,26 @@ const Footer = () => {
             <p>차고지가 여러분의 차를 책임집니다.</p>
           </div>
           <div className={styles.footerLogos}>
-            <img src="/images/gez-logo(w).png" alt="GaragEZ Logo" style={{ width: "7%", height: "auto" }} />
-            <a href="http://pf.kakao.com/_xoxgfxjn"><img src="/images/kakaotalk.png" alt="KakaoTalk" /></a>
-            <img src="/images/chatbot.png" alt="ChatBot" />
+            {/* ✅ 로고 클릭 시 메인으로 이동 */}
+            <Link to="/main">
+              <img
+                src="/images/gez-logo(w).png" 
+                alt="GaragEZ Logo"
+                className={styles.gezLogo} 
+              />
+            </Link>
+
+            <a href="http://pf.kakao.com/_xoxgfxjn">
+              <img src="/images/kakaotalk.png" alt="KakaoTalk" />
+            </a>
+
+            {/* ✅ ChatBot 클릭 시 /chat-bot 이동 */}
+            <img 
+              src="/images/chatbot.png" 
+              alt="ChatBot" 
+              style={{ cursor: "pointer" }} 
+              onClick={openChat} // ✅ 팝업 열기
+            />
           </div>
         </div>
 
