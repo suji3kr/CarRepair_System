@@ -1,5 +1,22 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+ /* 폰트 */
+@font-face {
+  font-family: 'MarinesBold';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2502-1@1.0/MarinesBold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard-Regular';
+  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* 스타일 */
+
 .landingRoot {
   position: fixed;
   top: 0; left: 0;
@@ -80,24 +97,28 @@ video {
 }
 
 .content h1 {
-  font-size: 3rem;
+  font-size: 5rem;
   font-weight: bold;
+  font-family: 'SF Chaerilidae', sans-serif;
 }
 
 .content p {
-  font-size: 1.2rem;
+  font-size: 2rem;
   margin: 10px 0;
+  font-family: 'MarinesBold';
 }
 
-.btn {
+.content button{
   display: inline-block;
   padding: 10px 20px;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   color: white;
   background: rgba(255, 255, 255, 0.3);
   border: none;
   cursor: pointer;
   transition: background 0.3s;
+  margin-top: 20px;
+  font-family: 'Pretendard-Regular';
 }
 
 .btn:hover {

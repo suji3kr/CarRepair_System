@@ -1,13 +1,15 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { GoogleOAuthProvider } from "@react-oauth/google"; // Google OAuth 추가
-import { AuthProvider } from "./components/AuthContext"; // AuthContext 불러오기
+import { GoogleOAuthProvider } from "@react-oauth/google"; 
+import { AuthProvider } from "./components/AuthContext";
+import { ChatBotProvider } from "./context/ChatBotContext"; // ✅ 챗봇 전역 상태 추가
+import ChatBotPopup from "./components/ChatBotPoPup"; // ✅ 전역 챗봇 모달 추가
 import Header from "./components/Header";
+import Sidebar from "./components/Sidebar"; // ✅ 사이드바 추가
 import Landing from "./pages/Landing";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import MainPage from "./pages/MainPage";
-import ChatBot from "./pages/ChatBot";
 import ContactForm from "./pages/ContactForm";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
@@ -43,22 +45,25 @@ const App: React.FC = () => {
   return (
     <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
       <AuthProvider>
-        <BrowserRouter>
-          <Routes>
-            {/* ✅ 일반 페이지 라우팅 */}
-            <Route path="/" element={<Landing />} />
-            <Route path="/*" element={<LayoutWrapper />} />
+        <ChatBotProvider> {/* ✅ 챗봇 전역 상태 추가 */}
+          <BrowserRouter>
+            <Sidebar /> {/* ✅ 사이드바 추가 */}
+            <ChatBotPopup /> {/* ✅ 전역 챗봇 모달 추가 */}
+            <Routes>
+              {/* ✅ 일반 페이지 라우팅 */}
+              <Route path="/" element={<Landing />} />
+              <Route path="/*" element={<LayoutWrapper />} />
 
-            {/* ✅ 관리자 페이지 라우팅 추가 */}
-            <Route path="/admin/*" element={<AdminRoutes />} />
-          </Routes>
-        </BrowserRouter>
+              {/* ✅ 관리자 페이지 라우팅 추가 */}
+              <Route path="/admin/*" element={<AdminRoutes />} />
+            </Routes>
+          </BrowserRouter>
+        </ChatBotProvider>
       </AuthProvider>
     </GoogleOAuthProvider>
   );
 };
 
-// ✅ 모든 페이지를 `Layout`과 함께 렌더링하는 컴포넌트
 const LayoutWrapper: React.FC = () => {
   return (
     <Layout>
@@ -68,13 +73,12 @@ const LayoutWrapper: React.FC = () => {
         <Route path="/home" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<ContactForm />} />
-        <Route path="/chat-bot" element={<ChatBot />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/event" element={<Event />} />
         <Route path="/partshop" element={<PartsShop />} />
         <Route path="/map" element={<Map />} />
-        <Route path="/part/:id" element={<PartDetail />} /> {/* 상세 페이지 추가 */}
+        <Route path="/part/:id" element={<PartDetail />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/menu1/team" element={<Team />} />
         <Route path="/menu1/CompanyHistory" element={<CompanyHistory />} />

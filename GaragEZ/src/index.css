@@ -17,3 +17,4 @@ html {
   -ms-overflow-style: none; /* ✅ IE, Edge */
   scrollbar-width: thin; /* ✅ Firefox에서 최소한의 크기로 설정 */
 }
+
