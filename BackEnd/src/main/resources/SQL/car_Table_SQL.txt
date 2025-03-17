@@ -261,7 +261,6 @@ CREATE TABLE store_reviews (
 CREATE TABLE reservations (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     appointment_id VARCHAR(20) UNIQUE NOT NULL,  -- 사람이 읽기 쉬운 예약 ID
-    appointments_id BIGINT NOT NULL,  -- appointments 테이블과 연결
     repair_store_id BIGINT NOT NULL,
     user_id VARCHAR(50) NOT NULL,
     car_id BIGINT NOT NULL,
@@ -269,7 +268,6 @@ CREATE TABLE reservations (
     details TEXT,
     status ENUM('PENDING', 'CONFIRMED', 'CANCELLED') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (appointments_id) REFERENCES appointments(id) ON DELETE CASCADE,
     FOREIGN KEY (repair_store_id) REFERENCES repair_store(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (car_id) REFERENCES car(id) ON DELETE CASCADE
