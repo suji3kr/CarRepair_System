@@ -7,8 +7,8 @@ import agreement from "../text/agreement.txt?raw";
 import axios from "axios";
 import { Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 
-const API_URL = "http://localhost:8094/api/users/signup";
-const CARS_API_URL = "http://localhost:8094/api/cars?car_make=";
+const API_URL = `${import.meta.env.VITE_API_URL}/api/users/signup`;
+const CARS_API_URL = `${import.meta.env.VITE_API_URL}/api/cars?car_make=`;
 
 const initialFormData: FormData = {
   userId: "",

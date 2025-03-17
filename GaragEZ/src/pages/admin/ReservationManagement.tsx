@@ -5,7 +5,7 @@ const ReservationManagement: React.FC = () => {
   const [reservations, setReservations] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8094/api/admin/reservations")
+    fetch(`${import.meta.env.VITE_API_URL}/api/admin/reservations`)
       .then((res) => res.json())
       .then((data) => setReservations(data))
       .catch((error) => console.error("Error fetching reservations:", error));

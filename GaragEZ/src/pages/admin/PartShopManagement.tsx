@@ -5,7 +5,7 @@ const PartShopManagement: React.FC = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8094/api/admin/partshop")
+    fetch(`${import.meta.env.VITE_API_URL}/api/admin/partshop`)
       .then((res) => res.json())
       .then((data) => setProducts(data))
       .catch((error) => console.error("Error fetching products:", error));

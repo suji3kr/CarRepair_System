@@ -46,7 +46,7 @@ const ReservationPage: React.FC = () => {
         throw new Error("사용자 정보 또는 토큰이 없습니다.");
       }
 
-      const response = await fetch(`http://localhost:8094/api/reservations/user/${userId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/reservations/user/${userId}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -76,7 +76,7 @@ const ReservationPage: React.FC = () => {
       if (!token) {
         throw new Error("토큰이 없습니다.");
       }
-      const response = await fetch(`http://localhost:8094/api/reservations/${reservationId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/reservations/${reservationId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

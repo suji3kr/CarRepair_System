@@ -5,7 +5,7 @@ const UserManagement: React.FC = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8094/api/admin/users")
+    fetch(`${import.meta.env.VITE_API_URL}/api/admin/users`)
       .then((res) => res.json())
       .then((data) => setUsers(data))
       .catch((error) => console.error("Error fetching users:", error));
