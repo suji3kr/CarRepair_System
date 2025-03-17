@@ -313,4 +313,21 @@ VALUES
   ('차고지 제주점', '차고지 제주점 덕분에 제주도에서도 안심하고 정비받았습니다.', 5.0, NOW()),
   ('차고지 제주점', '전문적인 기술력에 감동했습니다.', 5.0, NOW());
 
-  
+-- reservations 테이블에 샘플 데이터 삽입 예시
+INSERT INTO reservations (
+    appointment_id,       -- 사람이 읽기 쉬운 예약 ID
+    repair_store_id,      -- repair_store 테이블의 ID (예시: 1)
+    user_id,              -- users 테이블의 user_id (예시: 'alice123')
+    car_id,               -- car 테이블의 ID (예시: 1)
+    reservation_time,     -- 예약 시간
+    details,              -- 예약 상세 정보
+    status                -- 예약 상태 (PENDING, CONFIRMED, CANCELLED 중 하나)
+) VALUES (
+    'RES20250320A1B2',    -- 예시 예약 ID
+    1,                   -- 예시 repair_store ID
+    'alice123',          -- 예시 사용자 ID
+    1,                   -- 예시 차량 ID
+    '2025-03-20 10:00:00', -- 예약 시간 예시
+    '정기 점검 및 유지보수 예약', -- 예약 상세 정보
+    'PENDING'            -- 초기 예약 상태
+);

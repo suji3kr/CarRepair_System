@@ -38,7 +38,7 @@ interface FormData {
 
 const fetchCarsByMake = async (carMake: string): Promise<Car[]> => {
   const token = localStorage.getItem("jwtToken");
-  const response = await fetch(`http://localhost:8094/api/cars?car_make=${carMake}`, {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/api/cars?car_make=${carMake}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

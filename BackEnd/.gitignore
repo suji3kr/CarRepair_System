@@ -17,6 +17,7 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
+
 ### IntelliJ IDEA ###
 .idea
 *.iws
@@ -35,3 +36,8 @@ out/
 
 ### VS Code ###
 .vscode/
+
+
+# .pem 키 파일을 무시
+*.pem
+

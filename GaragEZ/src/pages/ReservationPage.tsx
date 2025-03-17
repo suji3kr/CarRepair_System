@@ -14,43 +14,59 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-// 백엔드가 반환하는 정비소(가게) 정보 인터페이스
-interface Store {
-  id: number;
-  name: string;
-  address: string;
-}
-
-// Reservation 인터페이스에서 차량 정보를 "carId"로 사용 (SQL의 car_id 컬럼과 일치)
+// 예약 정보 인터페이스
 interface Reservation {
   id: number;
-  store: Store;
+  store: {
+    name: string;
+  };
   carId: number;
   reservationTime: string;
   details: string;
-  status: string; // 예: PENDING, CONFIRMED, CANCELLED 등
+  status: string;
 }
 
 const ReservationPage: React.FC = () => {
-  const [reservations, setReservations] = useState<Reservation[]>([]);
+  const [reservations, setReservations] = useState<Reservation[]>([
+    {
+      id: 1,
+      store: {
+        name: "차고지 서울점",
+      },
+      carId: 123,
+      reservationTime: "2025-03-18T10:00:00Z",
+      details: "엔진오일 교체",
+      status: "완료",
+    },
+    {
+      id: 2,
+      store: {
+        name: "차고지 용인중앙지점",
+      },
+      carId: 123,
+      reservationTime: "2025-03-20T14:00:00Z",
+      details: "차량 점검 예약",
+      status: "대기중",
+    },
+  ]);
   const [error, setError] = useState<string>("");
   const navigate = useNavigate();
 
-  // 예약 목록을 가져오는 함수 (userId를 문자열 그대로 사용)
+  // 예약 목록을 가져오는 함수
   const fetchReservations = async () => {
     try {
-      const userId = localStorage.getItem("userId"); // 예: "alice123"
+      const userId = localStorage.getItem("userId"); // 사용자 ID
       const token = localStorage.getItem("token");
 
       if (!userId || !token) {
-        throw new Error("사용자 정보 또는 토큰이 없습니다.");
+        throw new Error("");
       }
 
-      const response = await fetch(`http://localhost:8094/api/reservations/user/${userId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/reservations/user/${userId}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -61,37 +77,40 @@ const ReservationPage: React.FC = () => {
       const data = await response.json();
       setReservations(data);
     } catch (err: any) {
-      setError(err.message || "예약을 불러오는 중 오류가 발생했습니다.");
+      setError(err.message || "");
     }
   };
 
-  useEffect(() => {
-    fetchReservations();
-  }, []);
-
-  // 예약 취소 처리 함수 (Authorization 헤더 포함)
+  // 예약 취소 처리 함수
   const handleCancel = async (reservationId: number) => {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
         throw new Error("토큰이 없습니다.");
       }
-      const response = await fetch(`http://localhost:8094/api/reservations/${reservationId}`, {
+
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/reservations/${reservationId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
+
       if (!response.ok) {
         throw new Error("예약 취소에 실패했습니다.");
       }
+
       alert("예약이 취소되었습니다.");
-      fetchReservations();
+      fetchReservations(); // 예약 목록 다시 불러오기
     } catch (err: any) {
       alert(err.message || "예약 취소 중 오류가 발생했습니다.");
     }
   };
+
+  useEffect(() => {
+    fetchReservations(); // 컴포넌트가 마운트될 때 예약 목록 불러오기
+  }, []);
 
   return (
     <Layout>
@@ -142,13 +161,6 @@ const ReservationPage: React.FC = () => {
                   </TableCell>
                 </TableRow>
               ))}
-              {reservations.length === 0 && (
-                <TableRow>
-                  <TableCell colSpan={7} align="center">
-                    예약 내역이 없습니다.
-                  </TableCell>
-                </TableRow>
-              )}
             </TableBody>
           </Table>
         </TableContainer>
