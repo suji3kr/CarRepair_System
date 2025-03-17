@@ -22,7 +22,7 @@ const StoreReviewPage: React.FC = () => {
   const fetchReviews = async () => {
     try {
       setError("");
-      const response = await fetch("http://localhost:8094/api/storereviews");
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/storereviews`);
       if (!response.ok) {
         throw new Error("리뷰를 불러오는데 실패했습니다.");
       }
@@ -62,7 +62,7 @@ const StoreReviewPage: React.FC = () => {
         alert("가게명과 리뷰 내용을 입력해주세요.");
         return;
       }
-      const response = await fetch("http://localhost:8094/api/storereviews", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/storereviews`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newReview),

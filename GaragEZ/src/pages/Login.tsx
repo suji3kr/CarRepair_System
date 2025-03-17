@@ -55,7 +55,7 @@ const Login = () => {
         const loginRequest: LoginRequest = { userId, password };
 
         try {
-            const response = await fetch("http://localhost:8094/api/auth/login", {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(loginRequest),
@@ -123,7 +123,7 @@ const Login = () => {
                 tokenId: response.credential,
             };
 
-            const res = await fetch("http://localhost:8094/api/auth/google-login", {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/google-login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(googleLoginRequest),

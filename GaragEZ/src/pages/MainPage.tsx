@@ -18,7 +18,7 @@ const MainPage: React.FC = () => {
   const [reviews, setReviews] = useState<Review[]>([]);
 
   useEffect(() => {
-    axios.get<Review[]>('http://localhost:8094/api/reviews')
+    axios.get<Review[]>(`${import.meta.env.VITE_API_URL}/api/reviews`)
       .then(response => {
         setReviews(response.data);
       })

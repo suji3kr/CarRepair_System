@@ -3,8 +3,8 @@ import axios from "axios";
 import { UserWithVehicles } from "../types/user";
 
 
-const API_URL = "http://localhost:8094/api/users/me";
-const UPDATE_API_URL = "http://localhost:8094/api/users/update"; // 수정용 API 엔드포인트
+const API_URL = `${import.meta.env.VITE_API_URL}/api/users/me`;
+const UPDATE_API_URL = `${import.meta.env.VITE_API_URL}/api/users/update`; // 수정용 API 엔드포인트
 
 // ✅ 사용자 정보 가져오기
 export const fetchUserProfile = async (token: string): Promise<UserWithVehicles> => {

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Part } from "../types/part";  // Part 타입 임포트
 
-const API_BASE_URL = "http://localhost:8094/api/parts";
+const API_BASE_URL = `${import.meta.env.VITE_API_URL}/api/parts`;
 
 // ✅ 모든 부품 가져오기
 export const fetchParts = async (): Promise<Part[]> => {

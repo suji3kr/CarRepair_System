@@ -10,7 +10,7 @@ import { Car } from "../types/car";
 // API fetch function with proper typing and error handling
 const fetchCars = async (carMake: string): Promise<Car[]> => {
   try {
-    const response = await fetch(`http://localhost:8094/api/cars?car_make=${carMake}`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/cars?car_make=${carMake}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

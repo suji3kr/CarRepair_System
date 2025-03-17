@@ -25,7 +25,7 @@ const ReviewBoard: React.FC = () => {
   // 백엔드에서 리뷰 가져오기
   const fetchReviews = async () => {
     try {
-      const response = await axios.get<Review[]>('http://localhost:8094/api/reviews');
+      const response = await axios.get<Review[]>(`${import.meta.env.VITE_API_URL}/api/reviews`);
       setReviews(response.data);
     } catch (error) {
       console.error('리뷰 가져오기 에러:', error);
@@ -47,7 +47,7 @@ const ReviewBoard: React.FC = () => {
     };
 
     try {
-      const response = await axios.post<Review>('http://localhost:8094/api/reviews', newReview);
+      const response = await axios.post<Review>(`${import.meta.env.VITE_API_URL}/api/reviews`, newReview);
       // API가 생성된 리뷰를 반환한다고 가정하면, 새 리뷰를 목록에 추가
       setReviews([response.data, ...reviews]);
       setAuthor('');

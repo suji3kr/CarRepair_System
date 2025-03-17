@@ -5,7 +5,7 @@ const CarManagement: React.FC = () => {
   const [cars, setCars] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8094/api/admin/cars")
+    fetch(`${import.meta.env.VITE_API_URL}/api/admin/cars`)
       .then((res) => res.json())
       .then((data) => setCars(data))
       .catch((error) => console.error("Error fetching cars:", error));

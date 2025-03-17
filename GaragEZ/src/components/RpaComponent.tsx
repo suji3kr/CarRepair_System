@@ -21,7 +21,7 @@ const RPAComponent: React.FC = () => {
         try {
 
             const response = await axios.get<RPAResponse>(
-                `http://localhost:8094/api/rpa/scrape?url=${encodeURIComponent(url)}`
+                `${import.meta.env.VITE_API_URL}/api/rpa/scrape?url=${encodeURIComponent(url)}`
             );
 
             setResult(response.data);
