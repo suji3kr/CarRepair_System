@@ -29,18 +29,17 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         String token = getTokenFromRequest(request);
 
-        logRequestDetails(request, token); // ✅ 요청 정보 로깅 추가
+        logRequestDetails(request, token);
 
         if (token != null && jwtTokenProvider.validateToken(token)) {
-            String userId = jwtTokenProvider.getUserIdFromToken(token); // ✅ userId 사용
-            UserDetails userDetails = userDetailsService.loadUserByUsername(userId); // ✅ userId로 조회
+            String userId = jwtTokenProvider.getUserIdFromToken(token);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
 
             if (userDetails != null) {
                 UsernamePasswordAuthenticationToken auth =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-
                 SecurityContextHolder.getContext().setAuthentication(auth);
-                log.info("✅ 사용자 인증 완료: {}", userId); // ✅ 인증 완료 로그 추가
+                log.info("✅ 사용자 인증 완료: {}", userId);
             } else {
                 log.warn("🚨 사용자 정보를 찾을 수 없음: {}", userId);
             }
@@ -52,10 +51,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     private String getTokenFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-        return null;
+        return (bearerToken != null && bearerToken.startsWith("Bearer ")) ? bearerToken.substring(7) : null;
     }
 
     private void logRequestDetails(HttpServletRequest request, String token) {

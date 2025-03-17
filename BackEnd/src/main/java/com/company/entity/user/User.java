@@ -1,7 +1,9 @@
 package com.company.entity.user;
 
+import com.company.entity.cars.Car;
 import com.company.entity.role.Role;
 import com.company.entity.vehicle.Vehicle;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -51,8 +53,9 @@ public class User {
     @Column(name = "terms_agreed", nullable = false)
     private boolean termsAgreed = false;
 
-    // 차량 관계 추가
+    // ✅ 차량 관계 추가
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Vehicle> vehicles = new ArrayList<>();
 
     public String getUserRole() {
@@ -67,4 +70,5 @@ public class User {
             log.warn("잘못된 역할 값: {}, 기본값 USER로 설정", userRole);
         }
     }
+
 }

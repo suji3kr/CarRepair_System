@@ -40,6 +40,20 @@ public class UserController {
         return ResponseEntity.ok(responseDto);
     }
 
+    // ✅ 사용자 ID 기반 조회 API (PK 사용)
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUserById(@PathVariable Long id) {
+        try {
+            UserResponseDto userResponse = userService.getUserById(id);
+            return ResponseEntity.ok(userResponse);
+        } catch (IllegalArgumentException e) {
+            log.error("사용자 조회 실패: {}", e.getMessage());
+            return ResponseEntity.badRequest().body("사용자를 찾을 수 없습니다.");
+        }
+    }
+
+
+
     // ✅ 현재 로그인한 사용자 정보 조회 API
     @GetMapping("/me")
     public ResponseEntity<?> getCurrentUser(@RequestHeader("Authorization") String token) {
