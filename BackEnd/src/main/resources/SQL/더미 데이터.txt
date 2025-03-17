@@ -82,7 +82,24 @@ INSERT INTO parts (name, category, price, stock, created_at, image_url) VALUES
 
 -- 🚘 타이어 (30개)
 INSERT INTO parts (name, category, price, stock, created_at, image_url) VALUES
-('Optimo_H426_195-65R15', '타이어', 150000, 30, NOW(), 'Optimo_H426_195-65R15.png'),
+('Optimo 245-45R18', '타이어', 104500, 30, NOW(), 'Optimo_H426_195-65R15.png'),
+('Optimo 195-65R15', '타이어', 78300, 30, NOW(), 'Optimo_H426_195-65R15.png'),
+('Optimo 205-55R16', '타이어', 73200, 30, NOW(), 'Optimo_H426_195-65R15.png'),
+('Optimo 235-55R19', '타이어', 124600, 30, NOW(), 'Optimo_H426_195-65R15.png'),
+('Optimo 215-55R17', '타이어', 85200, 30, NOW(), 'Optimo_H426_195-65R15.png'),
+('Optimo 245-40R19', '타이어', 126700, 30, NOW(), 'Optimo_H426_195-65R15.png'),
+('Optimo 235-60R18', '타이어', 131000, 30, NOW(), 'Optimo_H426_195-65R15.png'),
+('Optimo 215-45R17', '타이어', 86500, 30, NOW(), 'Optimo_H426_195-65R15.png'),
+('Optimo 225-50R17', '타이어', 88700, 30, NOW(), 'Optimo_H426_195-65R15.png'),
+('Optimo 235-45R18', '타이어', 104900, 30, NOW(), 'Optimo_H426_195-65R15.png'),
+('Optimo 215-60R16', '타이어', 92100, 30, NOW(), 'Optimo_H426_195-65R15.png'),
+('Optimo 235-55R18', '타이어', 109700, 30, NOW(), 'Optimo_H426_195-65R15.png'),
+('Optimo 225-45R18', '타이어', 104200, 30, NOW(), 'Optimo_H426_195-65R15.png'),
+('Optimo 225-55R18', '타이어', 109100, 30, NOW(), 'Optimo_H426_195-65R15.png'),
+('Optimo 235-55R17', '타이어', 92900, 30, NOW(), 'Optimo_H426_195-65R15.png'),
+('Optimo 215-50R17', '타이어', 83100, 30, NOW(), 'Optimo_H426_195-65R15.png'),
+
+
 
 
 -- 🛞 와이퍼 (30개)
