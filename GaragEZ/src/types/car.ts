@@ -1,8 +1,9 @@
-// Car.ts
-// Define Car interface (consistent with backend)
+// src/types/Car.ts
 export interface Car {
-  CarId: number;
+  id: number; // ✅ Snake_Case → camelCase로 변경
   carModel: string;
-  imageUrl: string; // camelCase for consistency
+  imageUrl: string;
   carMake: string;
+  year: number; // ✅ 백엔드에 존재하는 필드 추가
+  carNumber: string; // ✅ 추가된 필드
 }

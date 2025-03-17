@@ -161,4 +161,20 @@ public class UserService {
                 vehicleRepository.findByOwner(updatedUser)
         );
     }
+
+
+    @Transactional(readOnly = true)
+    public UserResponseDto getUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        return new UserResponseDto(
+                user.getUserId(),
+                user.getName(),
+                user.getEmail(),
+                user.getPhone(),
+                user.getRole().name(),
+                null // ✅ 차량 정보 제외
+        );
+    }
 }

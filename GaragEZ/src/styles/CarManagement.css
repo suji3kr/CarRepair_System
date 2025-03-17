@@ -1,0 +1,45 @@
+/* ✅ 테이블 스타일 */
+.car-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .car-table th, .car-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .car-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+  }
+  
+  /* ✅ 이미지 스타일 */
+  .car-table img {
+    border-radius: 5px;
+    object-fit: cover;
+  }
+  
+  /* ✅ 삭제 버튼 스타일 */
+  .delete-btn {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+  }
+  
+  .delete-btn:hover {
+    background-color: #cc0000;
+  }
+  
+  /* ✅ 에러 메시지 스타일 */
+  .error-message {
+    color: red;
+    font-weight: bold;
+  }
+  

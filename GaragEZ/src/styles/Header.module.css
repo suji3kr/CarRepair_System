@@ -190,3 +190,9 @@
 .logoutButton:hover {
   color: red;
 }
+
+.profileButton {
+  color: #fff;
+  font-size: 20px;
+  margin-top: 5px;
+}

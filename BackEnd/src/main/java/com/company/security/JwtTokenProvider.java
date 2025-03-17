@@ -3,37 +3,44 @@ package com.company.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Map;
 
-@Component // Bean 등록
+@Slf4j
+@Component
 public class JwtTokenProvider {
 
     private final SecretKey secretKey;
-    private final long validityInMilliseconds = 3600000; // 1시간
-    private final ObjectMapper objectMapper; // ✅ Jackson ObjectMapper 추가
+    private final long validityInMilliseconds;
+    private final ObjectMapper objectMapper;
 
-    public JwtTokenProvider() {
-        // ✅ 환경변수 또는 고정된 Base64 Key 사용 (서버 재시작 시 동일한 키 유지)
-        String secret = "mySuperSecretKeyForJwtTokenAuthentication"; // 🔹 안전한 키로 변경 필요
-        this.secretKey = Keys.hmacShaKeyFor(Base64.getEncoder().encode(secret.getBytes()));
-
-        // ✅ ObjectMapper 인스턴스 생성 (전역 변수)
+    // ✅ 환경 변수 또는 application.properties에서 키를 불러오도록 개선
+    public JwtTokenProvider(@Value("${jwt.secret}") String secret, @Value("${jwt.expiration}") long validityMs) {
+        this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        this.validityInMilliseconds = validityMs;
         this.objectMapper = new ObjectMapper();
     }
 
-    // ✅ userId 기반으로 토큰 생성
+    // ✅ userId 기반으로 토큰 생성, "ROLE_" 중복 방지 및 일관성 유지
     public String createToken(String userId, String userRole) {
         Claims claims = Jwts.claims().setSubject(userId);
-        claims.put("role", userRole); // ✅ 역할(role) 추가
-      
+
+        // "ROLE_" 접두사가 없는 경우만 추가
+        if (!userRole.startsWith("ROLE_")) {
+            userRole = "ROLE_" + userRole;
+        }
+        claims.put("role", userRole);
+
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
 
@@ -41,22 +48,31 @@ public class JwtTokenProvider {
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(validity)
-                .signWith(secretKey)
+                .signWith(secretKey, SignatureAlgorithm.HS256) // ✅ 알고리즘 명시
                 .compact();
     }
 
-
-    // ✅ 토큰 유효성 검사
+    // ✅ JWT 토큰 유효성 검사 개선 (더 상세한 예외 로그 추가)
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
+            log.info("✅ JWT 토큰 유효성 검증 성공");
             return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            return false;
+        } catch (ExpiredJwtException e) {
+            log.error("🚨 JWT 토큰 만료됨: {}", e.getMessage());
+        } catch (UnsupportedJwtException e) {
+            log.error("🚨 지원되지 않는 JWT 형식: {}", e.getMessage());
+        } catch (MalformedJwtException e) {
+            log.error("🚨 JWT 토큰이 변조되었거나 잘못됨: {}", e.getMessage());
+        } catch (SecurityException e) {
+            log.error("🚨 JWT 서명이 올바르지 않음: {}", e.getMessage());
+        } catch (IllegalArgumentException e) {
+            log.error("🚨 JWT 토큰이 비어있음 또는 잘못됨: {}", e.getMessage());
         }
+        return false;
     }
 
-    // ✅ userId를 반환하도록 수정
+    // ✅ userId 추출
     public String getUserIdFromToken(String token) {
         return Jwts.parserBuilder().setSigningKey(secretKey).build()
                 .parseClaimsJws(token)
@@ -64,46 +80,44 @@ public class JwtTokenProvider {
                 .getSubject();
     }
 
-    // ✅ 인증 객체 반환
+    // ✅ 사용자의 인증 정보 생성
     public Authentication getAuthentication(String token, UserDetails userDetails) {
         return new UsernamePasswordAuthenticationToken(userDetails, token, userDetails.getAuthorities());
     }
 
     // ✅ Google JWT에서 이메일 추출
     public String extractEmail(String idToken) {
-        try {
-            Map<String, Object> payload = decodeJwtPayload(idToken);
-            return (String) payload.get("email"); // Google JWT에서 "email" 필드 추출
-        } catch (Exception e) {
-            return null;
-        }
+        return extractClaim(idToken, "email");
     }
 
     // ✅ Google JWT에서 이름 추출
     public String extractName(String idToken) {
+        return extractClaim(idToken, "name");
+    }
+
+    // ✅ Google JWT의 Payload 디코딩 (예외 처리 개선 및 성능 최적화)
+    private String extractClaim(String token, String claimKey) {
         try {
-            Map<String, Object> payload = decodeJwtPayload(idToken);
-            return (String) payload.get("name"); // Google JWT에서 "name" 필드 추출
+            Map<String, Object> payload = decodeJwtPayload(token);
+            return payload.getOrDefault(claimKey, "").toString();
         } catch (Exception e) {
+            log.error("🚨 Google JWT에서 '{}' 추출 실패: {}", claimKey, e.getMessage());
             return null;
         }
     }
 
-    // ✅ Google JWT의 Payload 부분을 Base64 디코딩하여 JSON으로 변환하는 메서드
+    // ✅ Google JWT의 Payload 디코딩 (잘못된 토큰 형식에 대한 방어 로직 추가)
     private Map<String, Object> decodeJwtPayload(String token) {
         try {
             String[] parts = token.split("\\.");
             if (parts.length < 2) {
-                throw new IllegalArgumentException("Invalid JWT token format");
+                throw new IllegalArgumentException("🚨 JWT 토큰 형식이 올바르지 않음");
             }
-
-            // ✅ Base64 디코딩
             byte[] decodedBytes = Base64.getUrlDecoder().decode(parts[1]);
-            String payload = new String(decodedBytes);
-
-            // ✅ JSON을 Map<String, Object>으로 변환
+            String payload = new String(decodedBytes, StandardCharsets.UTF_8);
             return objectMapper.readValue(payload, Map.class);
         } catch (Exception e) {
+            log.error("🚨 JWT Payload 파싱 오류: {}", e.getMessage());
             throw new RuntimeException("JWT Payload 파싱 중 오류 발생: " + e.getMessage(), e);
         }
     }

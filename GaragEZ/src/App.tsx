@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google"; 
 import { AuthProvider } from "./components/AuthContext";
 import { ChatBotProvider } from "./context/ChatBotContext"; // ✅ 챗봇 전역 상태 추가
-import ChatBotPopup from "./components/ChatBotPoPup"; // ✅ 전역 챗봇 모달 추가
+import ChatBotPopup from "./components/ChatBotPopup"; // ✅ 전역 챗봇 모달 추가
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar"; // ✅ 사이드바 추가
 import Landing from "./pages/Landing";

@@ -3,7 +3,6 @@ spring:
     active: secret, common
 
 ---
-
 spring.config.activate.on-profile: common
 
 server:
@@ -13,15 +12,15 @@ spring:
   security:
     user:
       name: admin
-      password: admin  # 기본 로그인 계정 설정
+      password: admin
   data:
     rest:
       basePath: /api
   devtools:
     livereload:
-      enabled: true  # 브라우저 LiveReload 활성화
+      enabled: true
     restart:
-      enabled: true  # 코드 변경 시 애플리케이션 자동 재시작
+      enabled: true
   main:
     banner-mode: "off"
   application:
@@ -40,6 +39,12 @@ spring:
     hibernate:
       ddl-auto: none
 
+# ✅ JWT 설정 추가
+jwt:
+  secret: mySuperSecretKeyForJwtTokenAuthenticationAndValidation1234
+  expiration: 86400000  # 24시간 (1일)
+
+# ✅ 로깅 설정 (Hibernate SQL 쿼리 및 Debug 설정)
 logging:
   level:
     org:
@@ -51,10 +56,12 @@ logging:
             sql:
               BasicBinder: TRACE
 
+# ✅ Swagger UI 활성화
 springdoc:
   swagger-ui:
     enabled: true
 
+# ✅ PortOne 결제 API 설정 (필요할 경우)
 portone:
   secret_key: your_secret_key_here
   api:
