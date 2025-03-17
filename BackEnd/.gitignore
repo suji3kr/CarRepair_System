@@ -16,7 +16,7 @@ build/
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
-.kmw dodreamcomputer.pem
+kmw dodreamcomputer.pem
 
 ### IntelliJ IDEA ###
 .idea
