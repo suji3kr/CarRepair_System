@@ -88,6 +88,7 @@ const LayoutWrapper: React.FC = () => {
         <Route path="/profile" element={<Profile />} />
         <Route path="/storereview" element={<StoreReviewPage />} />
         <Route path="/reservations" element={<ReservationPage />} />
+        <Route path="/interior" element={<ReservationPage />} />
       </Routes>
     </Layout>
   );
