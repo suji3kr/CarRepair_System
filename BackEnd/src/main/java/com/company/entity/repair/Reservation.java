@@ -2,14 +2,13 @@ package com.company.entity.repair;
 
 import com.company.entity.cars.Car;
 import com.company.entity.user.User;
-import com.company.entity.repair.ReservationStatus;
-import com.company.entity.vehicle.Vehicle; // Vehicle 엔티티 패키지에 맞게 수정하세요
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
 import java.time.LocalDateTime;
 
-@Entity(name = "reservations")
+@Entity
+@Table(name = "reservations")  // 테이블명 명시
 @Data
 @ToString
 public class Reservation {
@@ -33,7 +32,7 @@ public class Reservation {
     private User user;
 
     /**
-     * 차량(Vehicle)와의 연관관계 – 예약 시 선택한 차량 정보
+     * 차량(Car)와의 연관관계 – 예약 시 선택한 차량 정보
      */
     @ManyToOne
     @JoinColumn(name = "car_id", nullable = false)
@@ -57,4 +56,10 @@ public class Reservation {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ReservationStatus status;
+
+    /**
+     * 예약 생성 시간 (자동 저장)
+     */
+    @Column(name = "created_at", updatable = false, nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now(); // 엔티티 생성 시 자동 설정
 }
