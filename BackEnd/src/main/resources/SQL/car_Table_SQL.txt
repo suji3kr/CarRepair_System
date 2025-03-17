@@ -125,26 +125,26 @@ CREATE TABLE store_orders (
 -- 🛠 정비 예약 테이블  -- 관리자가 진행 상황 알 수 있어야 하는 예약 테이블
 CREATE TABLE appointments (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  user_id BIGINT,
-  vehicle_id BIGINT,
+  user_id BIGINT NOT NULL,
+  vehicle_id BIGINT NOT NULL,
   service_type VARCHAR(100) NOT NULL,
   status ENUM('예약', '진행중', '완료') NOT NULL,
-  appointments_date TIMESTAMP NOT NULL,  -- 예약 날짜
+  appointments_date TIMESTAMP NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (vehicle_id) REFERENCES vehicles(id) ON DELETE CASCADE
 );
 
--- 🛠 정비소 정보 테이블
+-- 🛠 정비소 정보 테이블 (store 테이블과 연결됨)
 CREATE TABLE repair_store (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  store_id BIGINT,
-  appointment_id BIGINT,
+  store_id BIGINT NOT NULL,  -- store 테이블과 연결
+  appointment_id BIGINT,  -- appointments 테이블과 연결
   location VARCHAR(255) NOT NULL,
   contact_info VARCHAR(100),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (store_id) REFERENCES store(id) ON DELETE SET NULL,
-  FOREIGN KEY (appointment_id) REFERENCES appointments(id) ON DELETE CASCADE
+  FOREIGN KEY (store_id) REFERENCES store(id) ON DELETE CASCADE,
+  FOREIGN KEY (appointment_id) REFERENCES appointments(id) ON DELETE SET NULL
 );
 
 -- 📢 알림 테이블
@@ -257,17 +257,20 @@ CREATE TABLE store_reviews (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 예약 페이지
+-- 🚘 예약 페이지 테이블 (예약 ID 및 repair_store 연계)
 CREATE TABLE reservations (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    appointment_id VARCHAR(20) UNIQUE NOT NULL,  -- 사람이 읽기 쉬운 예약 ID
+    appointments_id BIGINT NOT NULL,  -- appointments 테이블과 연결
     repair_store_id BIGINT NOT NULL,
-    user_id VARCHAR(50) NOT NULL,  -- 문자열 userId (예: "alice123")
-    car_id BIGINT NOT NULL,     -- 예약 시 선택한 차량 ID (vehicles 테이블 참조)
+    user_id VARCHAR(50) NOT NULL,
+    car_id BIGINT NOT NULL,
     reservation_time DATETIME NOT NULL,
     details TEXT,
     status ENUM('PENDING', 'CONFIRMED', 'CANCELLED') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (repair_store_id) REFERENCES repair_store(id),
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (appointments_id) REFERENCES appointments(id) ON DELETE CASCADE,
+    FOREIGN KEY (repair_store_id) REFERENCES repair_store(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (car_id) REFERENCES car(id) ON DELETE CASCADE
 );
