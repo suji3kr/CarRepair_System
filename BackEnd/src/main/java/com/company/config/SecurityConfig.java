@@ -70,7 +70,7 @@ public class SecurityConfig {
                                 "/api/store/**",
                                 "/api/storereviews/**",
                                 "/api/chat/**",
-                                "/api/reservations/**"
+                                "/api/reservations/user/**"
                         ).permitAll()
 
                         // ✅ 나머지 요청은 로그인 필요

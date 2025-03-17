@@ -42,11 +42,13 @@ public class Reservation {
     /**
      * 예약 시간
      */
+    @Column(name = "reservation_time", nullable = false)
     private LocalDateTime reservationTime;
 
     /**
      * 예약에 대한 세부사항
      */
+    @Column(columnDefinition = "TEXT")
     private String details;
 
     /**

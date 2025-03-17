@@ -21,14 +21,14 @@ interface Store {
   address: string;
 }
 
-// Reservation 인터페이스에서 차량 정보를 "carId"로 사용 (SQL의 car_id 컬럼과 일치)
+// Reservation 인터페이스 – SQL 스키마에 맞게 차량 정보는 carId로 표시
 interface Reservation {
   id: number;
   store: Store;
   carId: number;
   reservationTime: string;
   details: string;
-  status: string; // 예: PENDING, CONFIRMED, CANCELLED 등
+  status: string; // PENDING, CONFIRMED, CANCELLED 등
 }
 
 const ReservationPage: React.FC = () => {
@@ -69,7 +69,7 @@ const ReservationPage: React.FC = () => {
     fetchReservations();
   }, []);
 
-  // 예약 취소 처리 함수 (Authorization 헤더 포함)
+  // 예약 취소 처리 함수
   const handleCancel = async (reservationId: number) => {
     try {
       const token = localStorage.getItem("token");
@@ -87,7 +87,7 @@ const ReservationPage: React.FC = () => {
         throw new Error("예약 취소에 실패했습니다.");
       }
       alert("예약이 취소되었습니다.");
-      fetchReservations();
+      fetchReservations(); // 목록 갱신
     } catch (err: any) {
       alert(err.message || "예약 취소 중 오류가 발생했습니다.");
     }
@@ -129,13 +129,8 @@ const ReservationPage: React.FC = () => {
                   <TableCell>{reservation.details}</TableCell>
                   <TableCell>{reservation.status}</TableCell>
                   <TableCell align="center">
-                    {(reservation.status === "PENDING" ||
-                      reservation.status === "CONFIRMED") && (
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        onClick={() => handleCancel(reservation.id)}
-                      >
+                    {(reservation.status === "PENDING" || reservation.status === "CONFIRMED") && (
+                      <Button variant="contained" color="secondary" onClick={() => handleCancel(reservation.id)}>
                         취소
                       </Button>
                     )}
