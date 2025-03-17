@@ -25,12 +25,12 @@ spring:
   main:
     banner-mode: "off"
   application:
-    name: cardatabase
+    name: garagez
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/cardb
-    username: caruser
-    password: 12345
+    url: jdbc:mysql://aor.cpsuay4ugddy.ap-northeast-2.rds.amazonaws.com:3306/garagez
+    username: garagez
+    password: gez11qq11qq
   jpa:
     open-in-view: false
     properties:
