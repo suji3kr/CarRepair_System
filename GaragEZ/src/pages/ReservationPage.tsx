@@ -13,6 +13,25 @@ import {
   Button,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+
+
+// 백엔드가 반환하는 정비소(가게) 정보 인터페이스
+interface Store {
+  id: number;
+  name: string;
+  address: string;
+}
+
+// Reservation 인터페이스 – SQL 스키마에 맞게 차량 정보는 carId로 표시
+interface Reservation {
+  id: number;
+  store: Store;
+  carId: number;
+  reservationTime: string;
+  details: string;
+  status: string; // PENDING, CONFIRMED, CANCELLED 등
+}
+
 import { Reservation } from "../types/reservation";
 
 const ReservationPage: React.FC = () => {
@@ -98,7 +117,6 @@ const ReservationPage: React.FC = () => {
         if (!newCarResponse.ok) {
           throw new Error("차량 정보 등록 실패");
         }
-
         const newCarData = await newCarResponse.json();
         carId = newCarData.id;  // 새로 등록된 차량 ID
       } else {
@@ -138,7 +156,6 @@ const ReservationPage: React.FC = () => {
       }
     }
   };
-
   // 예약 취소 처리 함수
   const handleCancel = async (reservationId: number) => {
     try {
@@ -160,6 +177,9 @@ const ReservationPage: React.FC = () => {
       }
 
       alert("예약이 취소되었습니다.");
+      fetchReservations(); // 목록 갱신
+    } catch (err: any) {
+      alert(err.message || "예약 취소 중 오류가 발생했습니다.");
       await fetchReservations(); // ✅ 예약 목록 업데이트
 
     } catch (err: unknown) {
@@ -207,13 +227,8 @@ const ReservationPage: React.FC = () => {
                   <TableCell>{reservation.details}</TableCell>
                   <TableCell>{reservation.status}</TableCell>
                   <TableCell align="center">
-                    {(reservation.status === "PENDING" ||
-                      reservation.status === "CONFIRMED") && (
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        onClick={() => handleCancel(reservation.id)}
-                      >
+                    {(reservation.status === "PENDING" || reservation.status === "CONFIRMED") && (
+                      <Button variant="contained" color="secondary" onClick={() => handleCancel(reservation.id)}>
                         취소
                       </Button>
                     )}
