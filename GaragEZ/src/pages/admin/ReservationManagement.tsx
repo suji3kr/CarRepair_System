@@ -9,7 +9,7 @@ const ReservationManagement: React.FC = () => {
     const token = localStorage.getItem("token");
 
     axios
-      .get("http://localhost:8094/api/admin/reservations", {
+      .get(`${import.meta.env.VITE_API_URL}/api/admin/reservations`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

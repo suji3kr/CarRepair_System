@@ -20,7 +20,7 @@ const UserManagement: React.FC = () => {
 
     const fetchUsers = async () => {
       try {
-        const response = await axios.get<User[]>("http://localhost:8094/api/admin/users", {
+        const response = await axios.get<User[]>(`${import.meta.env.VITE_API_URL}/api/admin/users`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -43,7 +43,7 @@ const handleDelete = async (id: number) => { // ✅ id 직접 사용
   if (!window.confirm("이 회원을 삭제하시겠습니까?")) return;
 
   try {
-    await axios.delete(`http://localhost:8094/api/admin/users/${id}`, { // ✅ id 사용
+    await axios.delete(`${import.meta.env.VITE_API_URL}/api/admin/users/${id}`, { // ✅ id 사용
       headers: {
         Authorization: `Bearer ${token}`,
       },

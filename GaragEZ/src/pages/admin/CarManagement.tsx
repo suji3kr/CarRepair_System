@@ -54,7 +54,7 @@ const CarManagement: React.FC = () => {
     if (!window.confirm("이 차량을 삭제하시겠습니까?")) return;
 
     try {
-      await axios.delete(`http://localhost:8094/api/admin/cars/${carId}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/admin/cars/${carId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

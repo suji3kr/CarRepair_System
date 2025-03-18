@@ -28,6 +28,7 @@ import StoreReviewPage from "./pages/StoreReviewPage";
 import ScrollToTop from "./components/scrollToTop";
 import ReservationPage from "./pages/ReservationPage";
 import AdminRoutes from "./routes/AdminRoutes"; // ✅ 관리자 페이지 추가
+import Interior from "./pages/Interior";
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
@@ -77,6 +78,7 @@ const LayoutWrapper: React.FC = () => {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/event" element={<Event />} />
         <Route path="/partshop" element={<PartsShop />} />
+        <Route path="/partshop/interior" element={<Interior />} />
         <Route path="/map" element={<Map />} />
         <Route path="/part/:id" element={<PartDetail />} />
         <Route path="/cart" element={<Cart />} />
