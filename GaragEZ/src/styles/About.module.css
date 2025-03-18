@@ -162,13 +162,3 @@
   object-fit: cover;
   border-radius: 8px;
 }
-
-h3 {
-  margin: 15px 0 10px;
-  font-size: 20px;
-}
-
-p {
-  font-size: 16px;
-  color: gray;
-}
