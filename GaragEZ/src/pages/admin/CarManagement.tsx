@@ -21,7 +21,7 @@ const CarManagement: React.FC = () => {
     const fetchCars = async () => {
       try {
         // ✅ 응답 타입 명확하게 지정 (Car[])
-        const response = await axios.get<Car[]>("http://localhost:8094/api/admin/cars", {
+        const response = await axios.get<Car[]>(`${import.meta.env.VITE_API_URL}/api/admin/cars`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
