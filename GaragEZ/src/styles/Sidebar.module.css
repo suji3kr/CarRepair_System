@@ -25,11 +25,12 @@ a {
   color: #444;
   font-size: 24px;
   cursor: pointer;
-  transition: color 0.2s;
+  transition: color 0.2s, transform 0.2s;
 }
 
 .iconWrapper:hover {
   color: #007bff;
+  transform: scale(1.2);
 }
 
 .text {
@@ -58,6 +59,12 @@ a {
 .logoutButton {
   border: none;
   background: none;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.logoutButton:hover {
+  cursor: pointer;
+  transform: scale(1.2);
 }
 
 /* ✅ 모바일 버전 - 사이드바 숨기기 */
