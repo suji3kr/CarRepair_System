@@ -7,7 +7,8 @@ import java.util.List;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-    // User 엔티티의 userId 필드를 기준으로 조회
-    List<Reservation> findByUserUserId(String userId);
-    List<Reservation> findByRepairStoreId(Long repairStoreId);
+    // User 엔티티의 user_id (문자열)을 기준으로 조회
+    List<Reservation> findByUser_UserId(String userId);
+    // RepairStore 엔티티의 id를 기준으로 조회
+    List<Reservation> findByRepairStore_Id(Long repairStoreId);
 }
