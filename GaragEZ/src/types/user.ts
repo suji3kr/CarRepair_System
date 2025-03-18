@@ -20,7 +20,7 @@ export interface UserWithVehicles {
 }
 
 export interface User {
-  id: string; // UserResponseDto의 userId에 매핑
+  id: number; // UserResponseDto의 userId에 매핑
   userId: string;
   name: string;
   email: string;
