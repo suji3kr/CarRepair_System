@@ -1,52 +1,90 @@
-a{
-    text-decoration: none;
+a {
+  text-decoration: none;
 }
 
+/* ✅ 기본 사이드바 (데스크톱 전용) */
 .sidebar {
-    position: fixed;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 60px;
-    background: white;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .iconWrapper {
-    text-align: center;
-    color: #444;
-    font-size: 24px;
-    cursor: pointer;
-  }
-  
-  .iconWrapper:hover {
-    color: #007bff;
-  }
-  
-  .text {
-    font-size: 12px;
-    margin-top: 2px;
-  }
-  
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 60px;
+  background: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
 
-  /* TOP 버튼 스타일 */
+/* ✅ 아이콘 스타일 */
+.iconWrapper {
+  text-align: center;
+  color: #444;
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.iconWrapper:hover {
+  color: #007bff;
+}
+
+.text {
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+/* ✅ TOP 버튼 스타일 */
 .topIcon {
-    font-size: 24px;
-    color: #444;
-    cursor: pointer;
-    background: none;
-    border: none;
-    transition: color 0.2s, transform 0.2s;
+  font-size: 24px;
+  color: #444;
+  cursor: pointer;
+  background: none;
+  border: none;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.topIcon:hover {
+  color: #007bff;
+  transform: scale(1.2);
+}
+
+/* ✅ 모바일 버전 - 사이드바 숨기기 */
+@media (max-width: 600px) {
+  .sidebar {
+      right: -70px; /* 기본적으로 숨김 */
+      transition: right 0.3s ease-in-out;
   }
-  
-  .topIcon:hover {
-    color: #007bff;
-    transform: scale(1.2);
+
+  .sidebar.open {
+      right: 10px; /* 사이드바 열릴 때 */
   }
-  
+
+  /* ✅ 모바일에서 보일 얇은 버튼 */
+  .mobileToggleButton {
+      position: fixed;
+      right: 0px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 80px;
+      background: #181f25;
+      color: white;
+      font-size: 14px;
+      writing-mode: vertical-rl;
+      text-align: center;
+      cursor: pointer;
+      border-radius: 5px 0 0 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: -2px 0 6px rgba(0, 0, 0, 0.2);
+  }
+
+  .mobileToggleButton:hover {
+      background: #0056b3;
+  }
+}
