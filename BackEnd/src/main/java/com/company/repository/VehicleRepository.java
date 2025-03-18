@@ -14,4 +14,5 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 
     // ✅ 특정 VIN을 가진 차량을 조회하는 메서드
     Optional<Vehicle> findByVin(String vin);
+
 }

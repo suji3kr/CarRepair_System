@@ -49,8 +49,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable) // ✅ CSRF 보호 비활성화
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // ✅ JWT 기반 세션 없음
                 .authorizeHttpRequests(auth -> auth
-                        // ✅ Swagger 접근 제한
-//                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").hasRole("ADMIN")
+                        // ✅ Swagger 접근 권한 설정 (관리자만 접근 가능)
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").hasAuthority("ROLE_ADMIN")
 
                         // ✅ 관리자 API는 ADMIN 권한 필요
                         .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
@@ -60,8 +60,6 @@ public class SecurityConfig {
                                 "/api/auth/**",
                                 "/api/users/**",
                                 "/api/signup/**",
-                                "/v3/**",
-                                "/swagger-ui/**",
                                 "/api/vehicles/**",
                                 "/api/payment/**",
                                 "/api/parts/**",
@@ -80,8 +78,7 @@ public class SecurityConfig {
                         exception.authenticationEntryPoint(authenticationEntryPoint)
                 )
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(new JwtTokenFilter(jwtTokenProvider, userDetailsService),
-                        UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class) // ✅ Bean으로 관리하는 필터 사용
                 .headers(headers -> headers
                         .addHeaderWriter(new StaticHeadersWriter("Cross-Origin-Opener-Policy", "same-origin-allow-popups"))
                         .addHeaderWriter(new StaticHeadersWriter("Cross-Origin-Embedder-Policy", "require-corp"))
@@ -123,5 +120,8 @@ public class SecurityConfig {
         return provider;
     }
 
-
+    @Bean
+    public JwtTokenFilter jwtTokenFilter() {
+        return new JwtTokenFilter(jwtTokenProvider, userDetailsService); // ✅ 필터를 Bean으로 관리
+    }
 }

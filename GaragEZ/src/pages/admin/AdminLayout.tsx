@@ -1,7 +1,7 @@
 // src/pages/admin/AdminLayout.tsx
 import React from "react";
 import { Outlet, Link } from "react-router-dom";
-import { Box, AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemText } from "@mui/material";
+import { Box, AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemText, ListItemButton } from "@mui/material";
 
 const adminMenu = [
   { path: "/admin/users", label: "회원관리" },
@@ -24,8 +24,10 @@ const AdminLayout: React.FC = () => {
         <Toolbar />
         <List>
           {adminMenu.map((menu, index) => (
-            <ListItem button key={index} component={Link} to={menu.path}>
-              <ListItemText primary={menu.label} />
+            <ListItem key={index} disablePadding>
+              <ListItemButton component={Link} to={menu.path}>
+                <ListItemText primary={menu.label} />
+              </ListItemButton>
             </ListItem>
           ))}
         </List>
