@@ -124,7 +124,7 @@ const handlePayment = async (isAll: boolean) => {
   console.log("Request Data:", paymentData);
 
   try {
-    const completeResponse = await fetch("/api/payment/complete", {
+    const completeResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/payment/complete`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(paymentData),
