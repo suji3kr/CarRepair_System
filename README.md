@@ -3,6 +3,9 @@
 </br></br>
 </br>
 
+![qrcode_183859022_e9525d467cf73c86a7e46ea7616e95dd (1)](https://github.com/user-attachments/assets/8a06a584-6ce2-4347-b04c-fac3abe91c8a)
+
+
 
 ## *GaragEZ(차고지)*
 

@@ -120,8 +120,8 @@ const Header: React.FC = () => {
             <div className={styles.category}>
               <h3>부품샵</h3>
               <ul>
-                <li><Link to="/menu3/engine">엔진 부품</Link></li>
-                <li><Link to="/menu3/interior">인테리어 부품</Link></li>
+                <li><Link to="/partshop">엔진 부품</Link></li>
+                <li><Link to="/partshop/interior">인테리어 부품</Link></li>
               </ul>
             </div>
             <div className={styles.category}>

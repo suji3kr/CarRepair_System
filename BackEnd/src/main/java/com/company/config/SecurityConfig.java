@@ -45,8 +45,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // ✅ CORS 설정
-                .csrf(AbstractHttpConfigurer::disable) // ✅ CSRF 보호 비활성화
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // ✅ CORS 필터 적용
+                .csrf(AbstractHttpConfigurer::disable) // ✅ CSRF 보호 비활성화 (JWT 환경에서는 필요 없음)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // ✅ JWT 기반 세션 없음
                 .authorizeHttpRequests(auth -> auth
                         // ✅ Swagger 접근 권한 설정 (관리자만 접근 가능)
@@ -78,7 +78,7 @@ public class SecurityConfig {
                         exception.authenticationEntryPoint(authenticationEntryPoint)
                 )
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class) // ✅ Bean으로 관리하는 필터 사용
+                .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class) // ✅ JWT 필터 적용
                 .headers(headers -> headers
                         .addHeaderWriter(new StaticHeadersWriter("Cross-Origin-Opener-Policy", "same-origin-allow-popups"))
                         .addHeaderWriter(new StaticHeadersWriter("Cross-Origin-Embedder-Policy", "require-corp"))
@@ -91,10 +91,14 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000","http://garagez.s3-website.ap-northeast-2.amazonaws.com"));
+        configuration.setAllowedOrigins(List.of(
+                "http://localhost:3000",
+                "http://garagez.s3-website.ap-northeast-2.amazonaws.com",
+                "http://15.164.248.15:8094"
+        ));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
-        configuration.setExposedHeaders(List.of("Authorization"));
+        configuration.setAllowedHeaders(List.of("*")); // ✅ 모든 헤더 허용
+        configuration.setExposedHeaders(List.of("Authorization")); // ✅ 클라이언트에서 Authorization 헤더 접근 허용
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
