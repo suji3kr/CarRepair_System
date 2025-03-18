@@ -42,6 +42,26 @@
   gap: 40px;
 }
 
+.menu li {
+  position: relative;
+}
+
+.menuButton {
+  display: none; /* 데스크톱에서는 숨김 */
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.3s ease;
+}
+
+.menuButton:hover {
+  color: #ddd;
+}
+
 .menu li a {
   color: inherit;
   text-decoration: none;
@@ -53,7 +73,37 @@
   color: #ddd;
 }
 
-/* 드롭다운 전체 컨테이너 */
+/* 서브메뉴 (모바일용) */
+.submenu {
+  display: none; /* 데스크톱에서는 숨김 */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out;
+}
+
+.submenu.open {
+  max-height: 200px; /* 충분한 높이 설정 */
+}
+
+.submenu li {
+  padding: 8px 0;
+}
+
+.submenu li a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  display: block;
+}
+
+.submenu li a:hover {
+  color: #007bff;
+}
+
+/* 드롭다운 전체 컨테이너 (데스크톱용) */
 .dropdownContainer {
   position: fixed;
   top: 100%;
@@ -233,7 +283,7 @@
 
   .mobileOpen {
     display: flex;
-    max-height: 500px;
+    max-height: 600px; /* 소메뉴를 포함할 충분한 높이 */
   }
 
   .menu {
@@ -243,8 +293,38 @@
     text-align: center;
   }
 
+  .menu li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: -10px;
+  }
+
+  .menu li a {
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+    margin-left: -10px;
+  }
+
+  .menuButton {
+    display: inline-flex; /* 모바일에서만 표시 */
+    align-items: center;
+    margin-left: 5px;
+    position: absolute;
+    left: 60%;
+    top: 13px;
+  }
+
+  .submenu {
+    display: block; /* 모바일에서만 표시 */
+    background: rgba(255, 255, 255, 0.1); /* 소메뉴 구분을 위한 배경 */
+    padding-left: 20px; /* 들여쓰기 */
+    width: 100%;
+  }
+
   .dropdownContainer {
-    display: none;
+    display: none; /* 모바일에서 데스크톱 드롭다운 숨김 */
   }
 
   .authButtons {

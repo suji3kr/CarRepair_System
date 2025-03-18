@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaShoppingCart, FaUserPlus, FaSignOutAlt, FaUser, FaUserCircle, FaBars } from "react-icons/fa"; // FaBars 추가
+import { FaShoppingCart, FaUserPlus, FaSignOutAlt, FaUser, FaUserCircle, FaBars, FaAngleDown } from "react-icons/fa";
 import styles from "../styles/Header.module.css";
 
 const Header: React.FC = () => {
@@ -9,7 +9,8 @@ const Header: React.FC = () => {
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [isGoogleUser, setIsGoogleUser] = useState(false);
   const [userRole, setUserRole] = useState<string | null>(null);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // 모바일 메뉴 상태 추가
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -58,6 +59,11 @@ const Header: React.FC = () => {
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
+    if (isMobileMenuOpen) setOpenSubmenu(null);
+  };
+
+  const toggleSubmenu = (menu: string) => {
+    setOpenSubmenu(openSubmenu === menu ? null : menu);
   };
 
   const displayName = userEmail ? userEmail.split("@")[0] : userId;
@@ -71,12 +77,10 @@ const Header: React.FC = () => {
           </Link>
         </div>
 
-        {/* 모바일 햄버거 버튼 */}
         <button className={styles.hamburger} onClick={toggleMobileMenu}>
           <FaBars />
         </button>
 
-        {/* 데스크톱 메뉴 및 드롭다운 */}
         <div className={`${styles.menuWrapper} ${isMobileMenuOpen ? styles.mobileOpen : ""}`}>
           <ul className={styles.menu}>
             {userRole === "ADMIN" ? (
@@ -88,16 +92,61 @@ const Header: React.FC = () => {
               </>
             ) : (
               <>
-                <li><Link to="/about">회사소개</Link></li>
-                <li><Link to="/contact">견적·상담</Link></li>
-                <li><Link to="/partshop">부품샵</Link></li>
-                <li><Link to="/event">이벤트</Link></li>
-                <li><Link to="/map">가까운 가게</Link></li>
+                <li>
+                  <Link to="/about">회사소개</Link>
+                  <button onClick={() => toggleSubmenu("about")} className={styles.menuButton}>
+                    <FaAngleDown />
+                  </button>
+                  <ul className={`${styles.submenu} ${openSubmenu === "about" ? styles.open : ""}`}>
+                    <li><Link to="/menu1/CompanyHistory">회사 연혁</Link></li>
+                    <li><Link to="/menu1/team">팀 소개</Link></li>
+                  </ul>
+                </li>
+                <li>
+                  <Link to="/contact">견적·상담</Link>
+                  <button onClick={() => toggleSubmenu("contact")} className={styles.menuButton}>
+                    <FaAngleDown />
+                  </button>
+                  <ul className={`${styles.submenu} ${openSubmenu === "contact" ? styles.open : ""}`}>
+                    <li><Link to="/contact">견적 요청</Link></li>
+                    <li><Link to="/Cars">차량별 문의</Link></li>
+                  </ul>
+                </li>
+                <li>
+                  <Link to="/partshop">부품샵</Link>
+                  <button onClick={() => toggleSubmenu("partshop")} className={styles.menuButton}>
+                    <FaAngleDown />
+                  </button>
+                  <ul className={`${styles.submenu} ${openSubmenu === "partshop" ? styles.open : ""}`}>
+                    <li><Link to="/partshop">엔진 부품</Link></li>
+                    <li><Link to="/partshop/interior">인테리어 부품</Link></li>
+                  </ul>
+                </li>
+                <li>
+                  <Link to="/event">이벤트</Link>
+                  <button onClick={() => toggleSubmenu("event")} className={styles.menuButton}>
+                    <FaAngleDown />
+                  </button>
+                  <ul className={`${styles.submenu} ${openSubmenu === "event" ? styles.open : ""}`}>
+                    <li><Link to="/event">진행 중 이벤트</Link></li>
+                    <li><Link to="/PastEvents">지난 이벤트</Link></li>
+                  </ul>
+                </li>
+                <li>
+                  <Link to="/map">가까운 가게</Link>
+                  <button onClick={() => toggleSubmenu("map")} className={styles.menuButton}>
+                    <FaAngleDown />
+                  </button>
+                  <ul className={`${styles.submenu} ${openSubmenu === "map" ? styles.open : ""}`}>
+                    <li><Link to="/map">지도 검색</Link></li>
+                    <li><Link to="/StoreList">목록 보기</Link></li>
+                    <li><Link to="/StoreReview">가게별 리뷰</Link></li>
+                  </ul>
+                </li>
               </>
             )}
           </ul>
 
-          {/* 데스크톱에서만 보이는 드롭다운 */}
           {userRole !== "ADMIN" && (
             <div className={styles.dropdownContainer}>
               <div className={styles.dropdownBox}>
@@ -144,7 +193,6 @@ const Header: React.FC = () => {
           )}
         </div>
 
-        {/* 로그인 상태에 따른 UI */}
         <div className={styles.authButtons}>
           {isLoggedIn ? (
             <>
