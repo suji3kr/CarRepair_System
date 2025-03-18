@@ -9,7 +9,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <div className={styles.layout}>
       <Header />
-      <main className={styles.mainContent}> {/* ✅ 스크롤 숨김 설정 */}
+      <main className={styles.mainContent}>
         {children}
       </main>
       <Sidebar />
