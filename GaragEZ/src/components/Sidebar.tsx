@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSwipeable } from "react-swipeable";
 import { useChatBot } from "../context/ChatBotContext"; // ✅ 전역 상태 사용
@@ -8,6 +8,12 @@ const Sidebar: React.FC = () => {
   const navigate = useNavigate();
   const { openChat } = useChatBot(); // ✅ 챗봇 열기 함수 가져오기
   const [isOpen, setIsOpen] = useState(false); // ✅ 사이드바 상태 추가
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // ✅ 로그인 상태 관리
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token); // ✅ 토큰 존재 여부에 따라 로그인 상태 설정
+  }, []);
 
   // ✅ 모바일에서 버튼 클릭 시 토글
   const toggleSidebar = () => {
@@ -69,10 +75,12 @@ const Sidebar: React.FC = () => {
           ⬆️ <p className={styles.text}>TOP</p>
         </div>
 
-        {/* 로그아웃 버튼 */}
-        <button className={styles.logoutButton} onClick={handleLogout}>
-          🚪 <p className={styles.text}>로그아웃</p>
-        </button>
+        {/* 로그아웃 버튼 (로그인 상태일 때만 표시) */}
+        {isLoggedIn && (
+          <button className={styles.logoutButton} onClick={handleLogout}>
+            🚪 <p className={styles.text}>로그아웃</p>
+          </button>
+        )}
       </div>
     </>
   );
