@@ -67,6 +67,11 @@ a {
   transform: scale(1.2);
 }
 
+.mobileToggleButton {
+  display: none;
+}
+
+
 /* ✅ 모바일 버전 - 사이드바 숨기기 */
 @media (max-width: 600px) {
   .sidebar {
