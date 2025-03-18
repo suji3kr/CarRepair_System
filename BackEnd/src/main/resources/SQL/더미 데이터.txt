@@ -29,6 +29,7 @@ VALUES
   ('bob456', 'Bob Johnson', 'bob@example.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-2345-6789', 'USER'),
   ('admin001', 'Charlie Admin', 'charlie@admin.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-3456-7890', 'ADMIN'),
   ('johnDoe', 'John Doe', 'johndoe@example.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-1234-5678', 'USER');
+  ('admin', 'admin', 'admin@GragEZ.com', '$2a$10$wnqmSFXQNzeFFUFMe5/Aj..yr3a8rilU9TXY7uIxYafbheVbHkZQW', '010-1234-5678', 'ADMIN');
 -- 비번은 항상 password123
 
 -- 2. 차량 정보 추가 (car_id 포함)

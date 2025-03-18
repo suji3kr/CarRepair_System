@@ -66,19 +66,24 @@ const Login = () => {
                 try {
                     const errorData = await response.json(); // JSON 응답 파싱
                     let errorMessage = "로그인 실패: 알 수 없는 오류";
-            
+                
                     // 특정 오류 메시지에 대한 한글 변환
-                    if (errorData.message.includes("User not found")) {
+                    if (errorData.message?.includes("User not found")) {
                         errorMessage = "로그인 실패: 해당 사용자를 찾을 수 없습니다📌";
-                    } else if (errorData.message.includes("Unauthorized")) {
+                    } else if (errorData.message?.includes("Unauthorized")) {
                         errorMessage = "로그인 실패: 인증되지 않은 사용자입니다📌";
                     }
-            
+                
                     alert(errorMessage);
                 } catch (e) {
+                    if (e instanceof Error) {
+                        console.error("JSON 파싱 오류:", e.message);
+                    } else {
+                        console.error("알 수 없는 오류:", e);
+                    }
                     alert("로그인 실패: 서버 응답 오류");
                 }
-                return;
+                
             }
 
             const data: JwtResponse = await response.json();
