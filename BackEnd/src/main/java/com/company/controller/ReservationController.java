@@ -1,17 +1,15 @@
 package com.company.controller;
 
-import com.company.entity.repair.Reservation;
 import com.company.entity.repair.ReservationDTO;
+import com.company.entity.repair.Reservation;
 import com.company.entity.repair.ReservationStatus;
 import com.company.service.ReservationService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
 @RestController
 @RequestMapping("/api/reservations")
 @CrossOrigin(origins = "http://localhost:3000")
@@ -21,36 +19,38 @@ public class ReservationController {
     private ReservationService reservationService;
 
     /**
-     * Reservation 엔티티를 ReservationDTO로 변환하는 메서드
+     * Reservation 엔티티를 ReservationDTO로 변환
      */
     private ReservationDTO convertToDTO(Reservation reservation) {
         ReservationDTO dto = new ReservationDTO();
         dto.setId(reservation.getId());
         dto.setReservationTime(reservation.getReservationTime());
         dto.setDetails(reservation.getDetails());
-        dto.setStatus(reservation.getStatus() != null ? reservation.getStatus().toString() : "PENDING");
+        dto.setStatus(reservation.getStatus() != null
+                ? reservation.getStatus().toString()
+                : "PENDING");
 
-        // 정비소 정보 설정
         if (reservation.getRepairStore() != null) {
             dto.setRepairStoreId(reservation.getRepairStore().getId());
+            // ★ 여기가 문제였음: repairStore 엔티티에 getName()이 없으면 오류
+            dto.setRepairStoreName(reservation.getRepairStore().getName());
             dto.setRepairStoreLocation(reservation.getRepairStore().getLocation());
         } else {
             dto.setRepairStoreId(null);
+            dto.setRepairStoreName("미지정 정비소");
             dto.setRepairStoreLocation("주소 미등록");
         }
 
-        // 사용자 정보 설정: User 엔티티의 userId (문자열) 사용
         if (reservation.getUser() != null) {
             dto.setUserId(reservation.getUser().getUserId());
         } else {
             dto.setUserId(null);
         }
 
-        // 차량 정보 설정 (Reservation 엔티티에 새로 추가된 차량 연관관계)
         if (reservation.getCar() != null) {
             dto.setCarId(reservation.getCar().getId());
-            dto.setCarModel(reservation.getCar().getCarModel());
             dto.setCarMake(reservation.getCar().getCarMake());
+            dto.setCarModel(reservation.getCar().getCarModel());
         } else {
             dto.setCarId(null);
         }
@@ -63,17 +63,16 @@ public class ReservationController {
      */
     @PostMapping
     public ResponseEntity<ReservationDTO> createReservation(@RequestBody Reservation reservation) {
-        log.info("예약 생성 요청: {}", reservation.toString());
         Reservation saved = reservationService.createReservation(reservation);
         return ResponseEntity.ok(convertToDTO(saved));
     }
 
     /**
-     * 특정 가게의 예약 리스트 가져오기
+     * 특정 사용자의 예약 목록 조회 (userId는 문자열)
      */
-    @GetMapping("/store/{storeId}")
-    public ResponseEntity<List<ReservationDTO>> getReservationsByStore(@PathVariable Long storeId) {
-        List<Reservation> reservations = reservationService.getReservationsByStore(storeId);
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<ReservationDTO>> getReservationsByUser(@PathVariable String userId) {
+        List<Reservation> reservations = reservationService.getReservationsByUser(userId);
         List<ReservationDTO> dtos = reservations.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
@@ -81,12 +80,11 @@ public class ReservationController {
     }
 
     /**
-     * 특정 사용자의 예약 리스트 가져오기
-     * userId는 문자열 (예: "alice123")
+     * 특정 가게의 예약 목록 조회
      */
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<ReservationDTO>> getReservationsByUser(@PathVariable String userId) {
-        List<Reservation> reservations = reservationService.getReservationsByUser(userId);
+    @GetMapping("/store/{storeId}")
+    public ResponseEntity<List<ReservationDTO>> getReservationsByStore(@PathVariable Long storeId) {
+        List<Reservation> reservations = reservationService.getReservationsByStore(storeId);
         List<ReservationDTO> dtos = reservations.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
@@ -102,7 +100,11 @@ public class ReservationController {
             @RequestBody ReservationStatus status
     ) {
         Reservation updated = reservationService.updateReservationStatus(id, status);
-        return updated != null ? ResponseEntity.ok(convertToDTO(updated)) : ResponseEntity.notFound().build();
+        if (updated != null) {
+            return ResponseEntity.ok(convertToDTO(updated));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     /**
