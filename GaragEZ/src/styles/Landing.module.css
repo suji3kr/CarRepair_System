@@ -124,3 +124,41 @@ video {
 .btn:hover {
   background: rgba(255, 255, 255, 0.6);
 }
+
+/* 📌 모바일 최적화 */
+@media screen and (max-width: 768px) {
+  .content {
+    margin-left: 15px;
+  }
+
+  .content h1 {
+    font-size: 14vw;
+  }
+
+  .content p {
+    font-size: 5.5vw;
+    max-width: 90%;
+    margin-left: 5px;
+    margin-top: 20px;
+  }
+
+  .btn {
+    font-size: 3.5vw;
+    padding: 8px 16px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .content h1 {
+    font-size: 6.5vw;
+  }
+
+  .content p {
+    font-size: 3vw;
+  }
+
+  .btn {
+    font-size: 3vw;
+    padding: 6px 12px;
+  }
+}
