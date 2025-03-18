@@ -9,7 +9,7 @@ const PartShopManagement: React.FC = () => {
     const token = localStorage.getItem("token");
 
     axios
-      .get("http://localhost:8094/api/admin/partshop", {
+      .get(`${import.meta.env.VITE_API_URL}/api/admin/partshop`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
