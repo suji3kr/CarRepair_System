@@ -1,28 +1,25 @@
 package com.company.entity.repair;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+
 
 import java.time.LocalDateTime;
 
-@Setter
-@Getter
+@Data
 public class ReservationDTO {
     private Long id;
     private Long repairStoreId;
+    private String repairStoreName;
     private String repairStoreLocation;
-    private String userId; // 문자열로 저장된 사용자 ID (예: "alice123")
-
-    // 새로 추가된 차량 정보
+    private String userId; // User 엔티티의 user_id (문자열)
     private Long carId;
-    private String carModel;
     private String carMake;
-
+    private String carModel;
     private LocalDateTime reservationTime;
     private String details;
     private String status;
 
-    // 기본 생성자
+    // 기본 생성자, Getters 및 Setters
     public ReservationDTO() {}
 
 }
