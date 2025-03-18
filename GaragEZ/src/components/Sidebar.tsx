@@ -66,7 +66,7 @@ const Sidebar: React.FC = () => {
 
         {/* 🔥 TOP 아이콘 */}
         <div className={styles.topIcon} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
-          ⬆️
+          ⬆️ <p className={styles.text}>TOP</p>
         </div>
 
         {/* 로그아웃 버튼 */}

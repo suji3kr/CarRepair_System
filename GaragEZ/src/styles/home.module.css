@@ -5,6 +5,7 @@
   scroll-snap-type: none;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  position: relative; /* ✅ 추가: 네비게이션과 충돌 방지 */
 }
 
 /* ✅ 스크롤이 멈추면 스냅 적용 */
@@ -44,7 +45,7 @@
   opacity: 0;
 }
 
-/* ✅ 네비게이션을 화면 왼쪽 중앙에 배치 */
+/* ✅ 네비게이션을 화면 왼쪽 중앙에 배치 (PC) */
 .navContainer {
   position: fixed; /* ✅ 화면에 항상 유지 */
   left: 20px; /* ✅ 왼쪽에 배치 */
@@ -57,6 +58,30 @@
   padding: 10px;
   border-radius: 10px;
   z-index: 1000;
+}
+
+/* ✅ 모바일에서 네비게이션을 하단 고정 */
+@media (max-width: 768px) {
+  .navContainer {
+    position: fixed;
+    top: 820px;
+    left: 0;
+    width: 100%;
+    height: auto;
+    transform: none;
+    flex-direction: row; /* 가로 정렬 */
+    justify-content: center;
+    gap: 10px;
+    padding: 15px 0;
+    border-radius: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 9999; /* ✅ 다른 요소보다 위에 배치 */
+  }
+
+  .navItem {
+    font-size: 16px;
+    padding: 10px;
+  }
 }
 
 /* ✅ 네비게이션 아이템 */

@@ -8,7 +8,7 @@ a {
   right: 20px;
   top: 50%;
   transform: translateY(-50%);
-  width: 60px;
+  width: 70px;
   background: white;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
@@ -35,6 +35,9 @@ a {
 .text {
   font-size: 12px;
   margin-top: 2px;
+  text-align: center;
+  font-weight: bold;
+  color: #333;
 }
 
 /* ✅ TOP 버튼 스타일 */
@@ -50,6 +53,11 @@ a {
 .topIcon:hover {
   color: #007bff;
   transform: scale(1.2);
+}
+
+.logoutButton {
+  border: none;
+  background: none;
 }
 
 /* ✅ 모바일 버전 - 사이드바 숨기기 */

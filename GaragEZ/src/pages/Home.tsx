@@ -132,7 +132,7 @@ const Home: React.FC = () => {
           { img: "/images/cars.jpg", alt: "Cars", link: "/main", text: "차고지 바로가기" },
           { img: "/images/mechanic.jpg", alt: "Mechanic", link: "/about", text: "차고지 회사소개" },
           { img: "/images/consult.jpg", alt: "Consult", link: "/contact", text: "견적 · 상담 받기" },
-          { img: "/images/repair.jpg", alt: "Repair", link: "/partshop", text: "부품 장만하러 가기" }
+          { img: "/images/repair.jpg", alt: "Repair", link: "/partshop", text: "부품 구매 하기" }
         ].map((item, index) => (
           <section key={index} className={styles.section}>
             <img src={item.img} alt={item.alt} className={hideImage ? styles.hidden : ""} />

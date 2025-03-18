@@ -55,40 +55,39 @@
 
 /* 드롭다운 전체 컨테이너 */
 .dropdownContainer {
-  position: absolute;
-  top: 60px; /* 네비게이션 바로 아래 */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80%;
-  max-width: 1000px;
-  background: rgba(0, 0, 0, 0.8);
+  position: fixed;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 200px;
+  background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(15px);
-  display: none;
+  display: flex;
   justify-content: center;
   align-items: start;
-  border-radius: 10px;
-  padding: 20px;
-  z-index: 999;
-  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
 }
 
-/* 드롭다운이 활성화되었을 때 */
-.dropdownOpen {
-  display: flex !important;
+.menuWrapper:hover .dropdownContainer {
   opacity: 1;
   visibility: visible;
+  transition: opacity 0.3s ease, visibility 0s linear;
 }
 
 /* 드롭다운 내부 박스 */
 .dropdownBox {
-  width: 100%;
+  width: 80%;
+  max-width: 1000px;
+  margin-top: 25px;
 }
 
 /* 드롭다운 내부 컨텐츠 정렬 */
 .dropdownContent {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   gap: 50px;
 }
 
@@ -142,6 +141,10 @@
   transition: color 0.3s ease;
 }
 
+.loginButton:hover, .signupButton:hover, .cartButton:hover {
+  color: #ddd;
+}
+
 /* 로그인 아이콘 스타일 */
 .loginIcon {
   padding-top: 3px;
@@ -158,12 +161,6 @@
 .cartIcon {
   font-size: 23px;
   padding-top: 4px;
-}
-
-.authButtons {
-  display: flex;
-  gap: 15px;
-  margin-left: 0;
 }
 
 .authButtons {
@@ -212,6 +209,13 @@
 
 /* 모바일 스타일 */
 @media (max-width: 768px) {
+  .hamburger {
+    display: block;
+    position: absolute;
+    right: 10px;
+    top: 17px;
+  }
+
   .menuWrapper {
     display: none;
     position: absolute;
@@ -222,15 +226,14 @@
     flex-direction: column;
     align-items: center;
     padding: 20px 0;
+    max-height: 0;
+    overflow: hidden;
     transition: max-height 0.3s ease-in-out;
   }
 
-  .menuOpen {
+  .mobileOpen {
     display: flex;
-  }
-
-  .authButtons {
-    margin-right: 30px;
+    max-height: 500px;
   }
 
   .menu {
@@ -240,24 +243,11 @@
     text-align: center;
   }
 
-  .hamburger {
-    display: block;
-    position: absolute;
-    right: 10px;
-    top: 17px;
-  }
-
-  /* 드롭다운 메뉴 모바일 최적화 */
   .dropdownContainer {
-    position: static;
-    transform: none;
-    width: 100%;
-    background: rgba(0, 0, 0, 0.9);
-    padding: 15px;
+    display: none;
   }
 
-  .dropdownContent {
-    flex-direction: column;
-    align-items: center;
+  .authButtons {
+    margin-right: 30px;
   }
 }
