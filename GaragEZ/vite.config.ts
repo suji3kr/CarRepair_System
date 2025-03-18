@@ -11,4 +11,7 @@ export default defineConfig({
       '/api': 'http://localhost:8094', // '/api'로 시작하는 요청은 백엔드 서버(스프링부트)로 프록시
     },
   },
+  preview: {
+    port: 3000,
+  }
 });

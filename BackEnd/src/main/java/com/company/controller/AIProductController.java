@@ -1,28 +1,29 @@
 package com.company.controller;
 
-import com.company.entity.ai.AIProduct;
-import com.company.repository.AIProductRepository;
+import com.company.entity.part.Part;
+import com.company.repository.PartRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 
 // 최저가 상품 조회기능
 
 @RestController
 @RequestMapping("/api/products")
+@RequiredArgsConstructor
 public class AIProductController {
 
-    private final AIProductRepository aiProductRepository;
+    private final PartRepository partRepository;
 
-    public AIProductController(AIProductRepository aiProductRepository) {
-        this.aiProductRepository = aiProductRepository;
-    }
 
     @GetMapping("/cheapest")
-    public List<AIProduct> getCheapestProducts() {
-        return aiProductRepository.findAll()
+    public List<Part> getCheapestProducts(@RequestParam("category") String category) {
+        return partRepository.findAll()
                 .stream()
-                .sorted((p1, p2) -> Integer.compare(p1.getPrice(), p2.getPrice()))
+                .filter(part -> part.getCategory().equals(category))
+                .sorted(Comparator.comparingDouble(Part::getPrice))
                 .limit(5) // 최저가 상품 5개 반환
                 .toList();
     }
