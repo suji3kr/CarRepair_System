@@ -7,7 +7,7 @@
   background-color: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(10px);
   color: white;
-  z-index: 100;
+  z-index: 1000;
 }
 
 /* 네비게이션 바 */
@@ -29,6 +29,8 @@
 /* 메뉴 */
 .menuWrapper {
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 /* 메뉴 리스트 */
@@ -53,39 +55,40 @@
 
 /* 드롭다운 전체 컨테이너 */
 .dropdownContainer {
-  position: fixed;
-  top: 100%; /* 네비게이션 바로 아래 위치 */
-  left: 0;
-  width: 100%;
-  height: 200px;
-  background: rgba(0, 0, 0, 0.7); /* 어두운 반투명 배경 */
+  position: absolute;
+  top: 60px; /* 네비게이션 바로 아래 */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  max-width: 1000px;
+  background: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(15px);
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: start;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  border-radius: 10px;
+  padding: 20px;
+  z-index: 999;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+/* 드롭다운이 활성화되었을 때 */
+.dropdownOpen {
+  display: flex !important;
+  opacity: 1;
+  visibility: visible;
 }
 
 /* 드롭다운 내부 박스 */
 .dropdownBox {
-  width: 80%;
-  max-width: 1000px;
-  margin-top: 25px;
-}
-
-/* 메뉴 전체를 호버하면 드롭다운 표시 */
-.menuWrapper:hover .dropdownContainer {
-  opacity: 1;
-  visibility: visible;
+  width: 100%;
 }
 
 /* 드롭다운 내부 컨텐츠 정렬 */
 .dropdownContent {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   gap: 50px;
 }
 
@@ -126,7 +129,7 @@
 }
 
 /* 로그인 버튼 스타일 */
-.loginButton, .signupButton, .cartButton{
+.loginButton, .signupButton, .cartButton {
   display: flex;
   align-items: center;
   background: none;
@@ -195,4 +198,66 @@
   color: #fff;
   font-size: 20px;
   margin-top: 5px;
+}
+
+/* 반응형 햄버거 메뉴 */
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: white;
+}
+
+/* 모바일 스타일 */
+@media (max-width: 768px) {
+  .menuWrapper {
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+    transition: max-height 0.3s ease-in-out;
+  }
+
+  .menuOpen {
+    display: flex;
+  }
+
+  .authButtons {
+    margin-right: 30px;
+  }
+
+  .menu {
+    flex-direction: column;
+    width: 100%;
+    gap: 20px;
+    text-align: center;
+  }
+
+  .hamburger {
+    display: block;
+    position: absolute;
+    right: 10px;
+    top: 17px;
+  }
+
+  /* 드롭다운 메뉴 모바일 최적화 */
+  .dropdownContainer {
+    position: static;
+    transform: none;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    padding: 15px;
+  }
+
+  .dropdownContent {
+    flex-direction: column;
+    align-items: center;
+  }
 }
