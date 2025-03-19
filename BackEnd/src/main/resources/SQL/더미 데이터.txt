@@ -21,14 +21,13 @@ select * from car;
 
 -- --------------- 부품 더미 데이터 하단에 추가 해서 합함 --
 
-
 -- 1. 사용자 (users)
 INSERT INTO users (user_id, name, email, password, phone, role)
 VALUES
   ('alice123', 'Alice Smith', 'alice@example.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-1234-5678', 'USER'),
   ('bob456', 'Bob Johnson', 'bob@example.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-2345-6789', 'USER'),
   ('admin001', 'Charlie Admin', 'charlie@admin.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-3456-7890', 'ADMIN'),
-  ('johnDoe', 'John Doe', 'johndoe@example.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-1234-5678', 'USER');
+  ('johnDoe', 'John Doe', 'johndoe@example.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-1234-5678', 'USER'),
   ('admin', 'admin', 'admin@GragEZ.com', '$2a$10$wnqmSFXQNzeFFUFMe5/Aj..yr3a8rilU9TXY7uIxYafbheVbHkZQW', '010-1234-5678', 'ADMIN');
 -- 비번은 항상 password123
 
@@ -36,20 +35,20 @@ VALUES
 INSERT INTO vehicles (owner_id, car_id, car_make, car_model, year, vin, car_number)
 VALUES
   ((SELECT id FROM users WHERE user_id = 'alice123'),
-   (SELECT id FROM car WHERE car_make = 'Toyota' AND car_model = 'Corolla'),
-   'Toyota', 'Corolla', 2015, 'VIN000001', '11가 1234'),
+   (SELECT id FROM car WHERE car_make = '현대' AND car_model = '아반떼'),
+   '현대', '아반떼', 2015, 'VIN000001', '11가 1234'),
 
   ((SELECT id FROM users WHERE user_id = 'alice123'),
-   (SELECT id FROM car WHERE car_make = 'Honda' AND car_model = 'Civic'),
-   'Honda', 'Civic', 2018, 'VIN000002', '22나 5678'),
+   (SELECT id FROM car WHERE car_make = '현대' AND car_model = '아이오닉9'),
+   '현대', '아반떼', 2024, 'VIN000002', '130나 5678'),
 
   ((SELECT id FROM users WHERE user_id = 'bob456'),
-   (SELECT id FROM car WHERE car_make = 'Ford' AND car_model = 'Focus'),
-   'Ford', 'Focus', 2017, 'VIN000003', '33다 9012'),
+   (SELECT id FROM car WHERE car_make = '기아' AND car_model = 'k9'),
+   '기아', 'k9', 2017, 'VIN000003', '114다 9012'),
 
   ((SELECT id FROM users WHERE user_id = 'johnDoe'),
-   (SELECT id FROM car WHERE car_make = 'Hyundai' AND car_model = 'Sonata'),
-   'Hyundai', 'Sonata', 2020, 'VIN123456', '12가 3456');
+   (SELECT id FROM car WHERE car_make = '쌍용' AND car_model = '티볼리'),
+   '쌍용', '티볼리', 2020, 'VIN123456', '12가 3456');
 
 -- 3. 사용자 차량 관계 설정 (M:N 관계)
 INSERT INTO user_vehicles (user_id, vehicle_id)
@@ -330,3 +329,21 @@ INSERT INTO reservations (
 
   -- 예시 3: admin001 사용자가 1번 정비소에서 3번 차량으로 예약 (예약 확정)
   (1, 'admin001', 3, '2025-03-25 09:00:00', '엔진오일 교체 예약', 'CONFIRMED');
+
+
+-- 1️. car_id가 NULL인 차량 확인
+SELECT * FROM vehicles WHERE car_id IS NULL;
+
+-- 2. car_id 업데이트: car_make과 car_model을 기준으로 car 테이블의 id를 참조
+UPDATE vehicles v
+JOIN car c ON v.car_make = c.car_make AND v.car_model = c.car_model
+SET v.car_id = c.id
+WHERE v.car_id IS NULL;
+
+-- 3. vehicles와 car 테이블이 제대로 조인되는지 확인
+SELECT v.*, c.car_model, c.car_make
+FROM vehicles v
+LEFT JOIN car c ON v.car_id = c.id;
+
+-- 4️. 특정 차량(현대 아반떼)이 car 테이블에 존재하는지 확인
+SELECT * FROM car WHERE car_make = '현대' AND car_model = '아반떼';
