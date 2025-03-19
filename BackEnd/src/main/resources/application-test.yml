@@ -1,0 +1,7 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true # 모든 식별자를 따옴표로 감쌈

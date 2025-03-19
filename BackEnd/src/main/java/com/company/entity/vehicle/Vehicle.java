@@ -14,41 +14,53 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Inheritance
 public class Vehicle {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 차량 소유자 (User 엔티티와 다대일 관계; User 엔티티는 별도로 구현되어 있다고 가정)
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
+    // 차량 소유자: users 테이블의 id를 참조 (ON DELETE CASCADE)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id", nullable = false)
     @JsonIgnore
     private User owner;
 
-    private String CarMake;
-    private String CarModel;
+    // car_id: car 테이블과의 외래키 (ON DELETE SET NULL)
+    @Column(name = "car_id")
+    private Long carId;
+
+    @Column(name = "car_make", nullable = false, length = 100)
+    private String carMake;
+
+    @Column(name = "car_model", nullable = false, length = 100)
+    private String carModel;
+
+    @Column(name = "year", nullable = false)
     private int year;
 
-    @Column(unique = true)
+    @Column(name = "vin", nullable = false, unique = true, length = 50)
     private String vin;
 
+    @Column(name = "car_number", nullable = false, unique = true, length = 20)
     private String carNumber;
 
     @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    // 해당 차량에 대한 정비 기록 (양방향 연관관계)
+    // 차량에 대한 정비 기록 (양방향 연관관계)
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<MaintenanceRecord> maintenanceRecords;
 
     // 공동 소유자 관련 정보
+    @Column(name = "co_owner", nullable = false)
     private boolean coOwner = false;
-    private String coOwnerName;
-    private String coOwnerPhone;
 
-    // 차량과 관련된 추가 메소드들을 정의할 수 있음
-    public void setVehicle(Vehicle vehicle) {
-    }
+    @Column(name = "co_owner_name", length = 100)
+    private String coOwnerName;
+
+    @Column(name = "co_owner_phone", length = 20)
+    private String coOwnerPhone;
 }
