@@ -104,6 +104,11 @@
   height: 50px;
 }
 
+
+.coOwnerFields input{
+  margin-bottom: 10px;
+}
+
 /* 모바일 반응형 */
 @media (max-width: 768px) {
   .signupContainer {

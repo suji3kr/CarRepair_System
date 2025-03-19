@@ -2,30 +2,19 @@ import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Layout from "../components/Layout";
 import styles from "../styles/SignUp.module.css";
-import { FormData } from "../types/Signup";
+import { FormData, initialFormData } from "../types/Signup";
 import agreement from "../text/agreement.txt?raw";
 import axios from "axios";
-import { Select, MenuItem, FormControl, InputLabel } from "@mui/material";
+import { Select, MenuItem, FormControl, InputLabel, SelectChangeEvent } from "@mui/material";
 
 const API_URL = `${import.meta.env.VITE_API_URL}/api/users/signup`;
 const CARS_API_URL = `${import.meta.env.VITE_API_URL}/api/cars?car_make=`;
+const CHECK_DUPLICATE_URL = `${import.meta.env.VITE_API_URL}/api/users/check-duplicate`;
 
-const initialFormData: FormData = {
-  userId: "",
-  password: "",
-  name: "",
-  email: "",
-  phone: "",
-  carMake: "",
-  carModel: "",
-  carNumber: "",
-  year: "",
-  vin: "",
-  coOwner: false,
-  coOwnerName: "",
-  coOwnerPhone: "",
-  termsAgreed: false,
-};
+interface Car {
+  id: string;
+  carModel: string;
+}
 
 const SignUp: React.FC = () => {
   const location = useLocation();
@@ -34,7 +23,9 @@ const SignUp: React.FC = () => {
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [isGoogleSignup, setIsGoogleSignup] = useState(false);
   const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
-  const [cars, setCars] = useState<any[]>([]);
+  const [cars, setCars] = useState<Car[]>([]);
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [isIdAvailable, setIsIdAvailable] = useState<boolean | null>(null);
 
   useEffect(() => {
     if (location.state?.email) {
@@ -72,18 +63,25 @@ const SignUp: React.FC = () => {
     }
   }, [formData.carMake]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target;
-    const checked = (e.target as HTMLInputElement).checked;
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>
+  ) => {
+    const { name, value } = e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement
+      ? e.target
+      : (e.target as HTMLSelectElement);
+
+    const checked = e.target instanceof HTMLInputElement && e.target.type === "checkbox" ? e.target.checked : undefined;
 
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: checked !== undefined ? checked : name === "year" ? (value === "" ? "" : parseInt(value, 10)) : value,
     }));
   };
 
   const handleReset = () => {
     setFormData(initialFormData);
+    setPasswordConfirm("");
+    setIsIdAvailable(null);
   };
 
   const handleScroll = () => {
@@ -94,6 +92,30 @@ const SignUp: React.FC = () => {
       }
     }
   };
+
+  // userId 변경 시 중복 확인
+  useEffect(() => {
+    if (formData.userId.trim() === "") {
+      setIsIdAvailable(null);
+      return;
+    }
+
+    const checkId = async () => {
+      try {
+        const response = await axios.post(
+          CHECK_DUPLICATE_URL,
+          { userId: formData.userId },
+          { headers: { "Content-Type": "application/json" } }
+        );
+        setIsIdAvailable(!response.data.isDuplicate);
+      } catch (error) {
+        console.error("아이디 중복 확인 실패:", error);
+        setIsIdAvailable(null);
+      }
+    };
+
+    checkId();
+  }, [formData.userId]);
 
   const signUp = async (data: FormData) => {
     try {
@@ -118,6 +140,18 @@ const SignUp: React.FC = () => {
       alert("약관에 동의해야 합니다.");
       return;
     }
+    if (isIdAvailable === null) {
+      alert("아이디 중복 확인이 필요합니다.");
+      return;
+    }
+    if (isIdAvailable === false) {
+      alert("사용할 수 없는 아이디입니다. 다른 아이디를 입력해 주세요.");
+      return;
+    }
+    if (!isGoogleSignup && formData.password !== passwordConfirm) {
+      alert("비밀번호가 일치하지 않습니다.");
+      return;
+    }
 
     try {
       await signUp(formData);
@@ -133,6 +167,8 @@ const SignUp: React.FC = () => {
     }
   };
 
+  const years = Array.from({ length: new Date().getFullYear() - 1980 + 1 }, (_, i) => 1980 + i).reverse();
+
   return (
     <Layout>
       <div className={styles.signupContainer}>
@@ -142,14 +178,39 @@ const SignUp: React.FC = () => {
         <form onSubmit={handleSubmit} className={styles.signupForm}>
           <div className={styles.signupFormGroup}>
             <label>아이디</label>
-            <input type="text" name="userId" value={formData.userId} onChange={handleChange} required />
+            <input
+              type="text"
+              name="userId"
+              value={formData.userId}
+              onChange={handleChange}
+              required
+            />
+            {isIdAvailable === false && <p style={{ color: "red" }}>중복된 아이디입니다.</p>}
+            {isIdAvailable === true && <p style={{ color: "green" }}>사용 가능한 아이디입니다.</p>}
           </div>
 
           {!isGoogleSignup && (
-            <div className={styles.signupFormGroup}>
-              <label>비밀번호</label>
-              <input type="password" name="password" value={formData.password} onChange={handleChange} required />
-            </div>
+            <>
+              <div className={styles.signupFormGroup}>
+                <label>비밀번호</label>
+                <input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className={styles.signupFormGroup}>
+                <label>비밀번호 확인</label>
+                <input
+                  type="password"
+                  value={passwordConfirm}
+                  onChange={(e) => setPasswordConfirm(e.target.value)}
+                  required
+                />
+              </div>
+            </>
           )}
 
           <div className={styles.signupFormGroup}>
@@ -159,7 +220,14 @@ const SignUp: React.FC = () => {
 
           <div className={styles.signupFormGroup}>
             <label>이메일</label>
-            <input type="email" name="email" value={formData.email} onChange={handleChange} required disabled={isGoogleSignup} />
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              disabled={isGoogleSignup}
+            />
           </div>
 
           <div className={styles.signupFormGroup}>
@@ -183,8 +251,8 @@ const SignUp: React.FC = () => {
                       required
                     >
                       <MenuItem value="">브랜드를 선택하세요</MenuItem>
-                      {["쌍용", "쉐보레", "기아", "현대"].map((manufacturer, index) => (
-                        <MenuItem key={index} value={manufacturer}>
+                      {["쌍용", "쉐보레", "기아", "현대"].map((manufacturer) => (
+                        <MenuItem key={manufacturer} value={manufacturer}>
                           {manufacturer}
                         </MenuItem>
                       ))}
@@ -204,7 +272,7 @@ const SignUp: React.FC = () => {
                       disabled={!formData.carMake || cars.length === 0}
                     >
                       <MenuItem value="">차량을 선택하세요</MenuItem>
-                      {cars.map((car: any) => (
+                      {cars.map((car) => (
                         <MenuItem key={car.id} value={car.carModel}>
                           {car.carModel}
                         </MenuItem>
@@ -221,14 +289,27 @@ const SignUp: React.FC = () => {
                 placeholder="차량 번호"
                 required
               />
-              <input
-                type="text"
-                name="year"
-                value={formData.year}
-                onChange={handleChange}
-                placeholder="연식"
-                required
-              />
+              <br />
+              <br />
+              <FormControl fullWidth className={styles.yearbtn}>
+                <InputLabel id="year-label">연식</InputLabel>
+                <Select
+                  labelId="year-label"
+                  name="year"
+                  value={formData.year === "" ? "" : formData.year.toString()} // string으로 변환
+                  label="연식"
+                  onChange={handleChange}
+                  required
+                >
+                  <MenuItem value="">연식을 선택하세요</MenuItem>
+                  {years.map((year) => (
+                    <MenuItem key={year} value={year.toString()}>
+                      {year}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
               <input
                 type="text"
                 name="vin"
