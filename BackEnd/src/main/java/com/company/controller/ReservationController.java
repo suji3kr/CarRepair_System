@@ -39,7 +39,6 @@ public class ReservationController {
         }
         reservation.setDetails(request.getContent());
 
-        // appointmentDate를 LocalDateTime으로 변환
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate date = LocalDate.parse(request.getAppointmentDate(), formatter);

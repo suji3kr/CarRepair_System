@@ -1,6 +1,6 @@
 // src/types/Car.ts
 export interface Car {
-  id: number; // ✅ Snake_Case → camelCase로 변경
+  carId: number; // ✅ Snake_Case → camelCase로 변경
   carModel: string;
   imageUrl: string;
   carMake: string;

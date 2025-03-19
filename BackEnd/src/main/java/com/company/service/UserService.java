@@ -86,6 +86,7 @@ public class UserService {
         Vehicle vehicle = new Vehicle();
 
         vehicle.setOwner(user);
+        vehicle.setCarId(Long.valueOf(request.getCarId()));
         vehicle.setCarMake(request.getCarMake());
         vehicle.setCarModel(request.getCarModel());
         vehicle.setYear(request.getYear());

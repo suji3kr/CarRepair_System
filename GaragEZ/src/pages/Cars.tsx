@@ -83,14 +83,13 @@ const Cars: React.FC = () => {
     console.log("Navigating to /contact with:", {
       carMake: car.carMake,
       carModel: car.carModel,
-      carId: car.CarId,
-      
+      carId: car.carId,
     });
     navigate("/contact", {
       state: {
         carMake: car.carMake,
         carModel: car.carModel,
-        carId: String(car.CarId), // undefined 방지를 위해 String 사용
+        carId: car.carId,
       },
     });
   };
@@ -136,7 +135,7 @@ const Cars: React.FC = () => {
             ) : displayedItems.length > 0 ? (
               displayedItems.map((car) => (
                 <div
-                  key={car.CarId}
+                  key={car.carId}
                   className={styles.itemCard}
                   onClick={() => handleCarClick(car)}
                   role="button"
