@@ -2,7 +2,7 @@ package com.company.service;
 
 import com.company.dto.UserResponseDto;
 import com.company.dto.UserSignupRequest;
-import com.company.dto.UserUpdateRequest; // 새 DTO 추가 필요
+import com.company.dto.UserUpdateRequest;
 import com.company.entity.role.Role;
 import com.company.entity.user.User;
 import com.company.entity.vehicle.Vehicle;
@@ -28,8 +28,11 @@ public class UserService {
     // ✅ 일반 회원가입 메서드
     @Transactional
     public User registerUser(UserSignupRequest request) {
-        if (userRepository.existsByUserId(request.getUserId())) {
+        if (existsByUserId(request.getUserId())) {
             throw new IllegalArgumentException("이미 존재하는 사용자 ID입니다.");
+        }
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
         }
 
         User user = new User();
@@ -59,6 +62,10 @@ public class UserService {
         }
 
         String userId = email.split("@")[0];
+        if (existsByUserId(userId)) {
+            throw new IllegalArgumentException("이미 존재하는 사용자 ID입니다.");
+        }
+
         User user = new User();
         user.setUserId(userId);
         user.setName(name);
@@ -107,6 +114,12 @@ public class UserService {
 
         vehicleRepository.save(vehicle);
         log.info("[기본 차량 저장] 사용자: {}", user.getUserId());
+    }
+
+    // ✅ userId 기반 중복 확인 메서드
+    public boolean existsByUserId(String userId) {
+        log.debug("중복 확인 요청: userId={}", userId);
+        return userRepository.existsByUserId(userId);
     }
 
     // ✅ userId 기반 사용자 조회
@@ -161,7 +174,6 @@ public class UserService {
                 vehicleRepository.findByOwner(updatedUser)
         );
     }
-
 
     @Transactional(readOnly = true)
     public UserResponseDto getUserById(Long id) {
