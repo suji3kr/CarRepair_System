@@ -269,7 +269,7 @@
   .menuWrapper {
     display: none;
     position: absolute;
-    top: 60px;
+    top: 65px;
     left: 0;
     width: 100%;
     background: rgba(0, 0, 0, 0.9);
@@ -336,5 +336,14 @@
     .menuWrapper {
       top: 65px;
     }
+
+    .welcomeText {
+      font-size: 12px ;
+    }
+
+    .logo img{
+      margin-left: -10px;
+    }
+    
   }
 }

@@ -149,4 +149,8 @@
   .pageButton {
     font-size: 18px;
   }
+
+  .buttonContainer {
+    margin-left: 10px;
+  }
 }
