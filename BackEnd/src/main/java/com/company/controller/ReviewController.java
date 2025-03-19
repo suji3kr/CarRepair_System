@@ -8,7 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/reviews")
-@CrossOrigin(origins = "http://localhost:3000") // 필요에 따라 React 앱의 URL로 변경
+@CrossOrigin(origins = "http://garagez.s3-website.ap-northeast-2.amazonaws.com/") // 필요에 따라 React 앱의 URL로 변경
 public class ReviewController {
 
     @Autowired

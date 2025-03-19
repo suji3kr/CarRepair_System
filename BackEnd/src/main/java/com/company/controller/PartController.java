@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/parts")
-@CrossOrigin(origins = "http://localhost:3000") // React 프론트엔드 허용
+@CrossOrigin(origins = "http://garagez.s3-website.ap-northeast-2.amazonaws.com/") // React 프론트엔드 허용
 public class PartController {
 
     private final PartRepository partRepository;
