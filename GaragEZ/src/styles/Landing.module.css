@@ -150,11 +150,11 @@ video {
 
 @media screen and (max-width: 480px) {
   .content h1 {
-    font-size: 6.5vw;
+    font-size: 15vw;
   }
 
   .content p {
-    font-size: 3vw;
+    font-size: 6vw;
   }
 
   .btn {

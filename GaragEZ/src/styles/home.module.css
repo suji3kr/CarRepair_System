@@ -64,7 +64,7 @@
 @media (max-width: 768px) {
   .navContainer {
     position: fixed;
-    top: 820px;
+    top: 90%;
     left: 0;
     width: 100%;
     height: auto;
@@ -98,13 +98,14 @@
 
 /* ✅ 현재 선택된 네비게이션 스타일 */
 .navItem:hover, .activeNav {
-  background-color: rgba(255, 255, 255, 0.8);
-  color: black;
+  background-color: rgba(56, 56, 56, 0.8);
+  color: rgb(255, 255, 255);
+  width: 118px;
 }
 
 .buttonContainer {
   position: absolute;
-  bottom: 200px; /* 하단에서 약간 위로 */
+  bottom: 300px; /* 하단에서 약간 위로 */
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -126,4 +127,26 @@
 
 .pageButton:hover {
   background: rgba(0, 0, 0, 0.8); /* hover 시 색상 진하게 */
+}
+
+
+@media screen and (max-width: 480px) {
+  .navContainer {
+    top: 85%;
+  }
+
+  .navItem {
+    padding: 12px 18px;
+    color: white;
+    font-size: 13px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.3s ease-in-out;
+    text-align: center;
+    width: 120px;
+  }
+
+  .pageButton {
+    font-size: 18px;
+  }
 }

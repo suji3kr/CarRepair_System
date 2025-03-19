@@ -204,7 +204,7 @@
     height: 150px;
   }
   .partMenu {
-    justify-content: flex-start;
+    justify-content: center;
     overflow-x: auto; /* 가로 스크롤 가능 */
     white-space: nowrap;
     gap: 10px;
