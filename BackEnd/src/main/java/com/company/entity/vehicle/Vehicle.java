@@ -26,9 +26,11 @@ public class Vehicle {
     @JsonIgnore
     private User owner;
 
-    private String CarMake;
-    private String CarModel;
+    private String carId;
+    private String carMake;
+    private String carModel;
     private int year;
+
 
     @Column(unique = true)
     private String vin;

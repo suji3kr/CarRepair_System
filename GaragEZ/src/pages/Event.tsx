@@ -12,8 +12,8 @@ const Event: React.FC = () => {
   // 배너 데이터 (백엔드 없이 하드코딩)
   const [event] = useState<Event[]>([
     { imageUrl: "/images/Event1.jpg", link: "https://example.com/event1" },
-    { imageUrl: "/images/Event2.jpg", link: "https://example.com/event2" },
-    { imageUrl: "/images/Event3.jpg", link: "https://example.com/event3" },
+    { imageUrl: "/images/Event2.jpg", link: "https://www.gongim.com/front/html/branchevent_detail.php?seq=1405813" },
+    { imageUrl: "/images/Event3.jpg", link: "https://www.gongim.com/front/html/branchevent_detail.php?seq=1396890&type=be" },
     { imageUrl: "/images/Event4.jpg", link: "https://www.skzic.com/index.do" },
   ]);
 
