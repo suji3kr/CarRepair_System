@@ -43,7 +43,7 @@ const MyReservationsPage: React.FC = () => {
     const fetchReservations = async () => {
       try {
         // 실제 백엔드 포트/경로에 맞춰 수정
-        const response = await fetch(`http://localhost:8094/api/reservations/user/${userId}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/reservations/user/${userId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
