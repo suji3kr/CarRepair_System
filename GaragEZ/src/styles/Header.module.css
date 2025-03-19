@@ -7,7 +7,7 @@
   background-color: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(10px);
   color: white;
-  z-index: 100;
+  z-index: 1000;
 }
 
 /* 네비게이션 바 */
@@ -29,6 +29,8 @@
 /* 메뉴 */
 .menuWrapper {
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 /* 메뉴 리스트 */
@@ -38,6 +40,26 @@
   margin: 0;
   display: flex;
   gap: 40px;
+}
+
+.menu li {
+  position: relative;
+}
+
+.menuButton {
+  display: none; /* 데스크톱에서는 숨김 */
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.3s ease;
+}
+
+.menuButton:hover {
+  color: #ddd;
 }
 
 .menu li a {
@@ -51,21 +73,57 @@
   color: #ddd;
 }
 
-/* 드롭다운 전체 컨테이너 */
+/* 서브메뉴 (모바일용) */
+.submenu {
+  display: none; /* 데스크톱에서는 숨김 */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out;
+}
+
+.submenu.open {
+  max-height: 200px; /* 충분한 높이 설정 */
+}
+
+.submenu li {
+  padding: 8px 0;
+}
+
+.submenu li a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  display: block;
+}
+
+.submenu li a:hover {
+  color: #007bff;
+}
+
+/* 드롭다운 전체 컨테이너 (데스크톱용) */
 .dropdownContainer {
   position: fixed;
-  top: 100%; /* 네비게이션 바로 아래 위치 */
+  top: 100%;
   left: 0;
   width: 100%;
   height: 200px;
-  background: rgba(0, 0, 0, 0.7); /* 어두운 반투명 배경 */
+  background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(15px);
   display: flex;
   justify-content: center;
   align-items: start;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+}
+
+.menuWrapper:hover .dropdownContainer {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease, visibility 0s linear;
 }
 
 /* 드롭다운 내부 박스 */
@@ -73,12 +131,6 @@
   width: 80%;
   max-width: 1000px;
   margin-top: 25px;
-}
-
-/* 메뉴 전체를 호버하면 드롭다운 표시 */
-.menuWrapper:hover .dropdownContainer {
-  opacity: 1;
-  visibility: visible;
 }
 
 /* 드롭다운 내부 컨텐츠 정렬 */
@@ -126,7 +178,7 @@
 }
 
 /* 로그인 버튼 스타일 */
-.loginButton, .signupButton, .cartButton{
+.loginButton, .signupButton, .cartButton {
   display: flex;
   align-items: center;
   background: none;
@@ -137,6 +189,10 @@
   text-decoration: none;
   cursor: pointer;
   transition: color 0.3s ease;
+}
+
+.loginButton:hover, .signupButton:hover, .cartButton:hover {
+  color: #ddd;
 }
 
 /* 로그인 아이콘 스타일 */
@@ -155,12 +211,6 @@
 .cartIcon {
   font-size: 23px;
   padding-top: 4px;
-}
-
-.authButtons {
-  display: flex;
-  gap: 15px;
-  margin-left: 0;
 }
 
 .authButtons {
@@ -195,4 +245,89 @@
   color: #fff;
   font-size: 20px;
   margin-top: 5px;
+}
+
+/* 반응형 햄버거 메뉴 */
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: white;
+}
+
+/* 모바일 스타일 */
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+    position: absolute;
+    right: 10px;
+    top: 17px;
+  }
+
+  .menuWrapper {
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+  }
+
+  .mobileOpen {
+    display: flex;
+    max-height: 600px; /* 소메뉴를 포함할 충분한 높이 */
+  }
+
+  .menu {
+    flex-direction: column;
+    width: 100%;
+    gap: 20px;
+    text-align: center;
+  }
+
+  .menu li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: -10px;
+  }
+
+  .menu li a {
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+    margin-left: -10px;
+  }
+
+  .menuButton {
+    display: inline-flex; /* 모바일에서만 표시 */
+    align-items: center;
+    margin-left: 5px;
+    position: absolute;
+    left: 60%;
+    top: 13px;
+  }
+
+  .submenu {
+    display: block; /* 모바일에서만 표시 */
+    background: rgba(255, 255, 255, 0.1); /* 소메뉴 구분을 위한 배경 */
+    padding-left: 20px; /* 들여쓰기 */
+    width: 100%;
+  }
+
+  .dropdownContainer {
+    display: none; /* 모바일에서 데스크톱 드롭다운 숨김 */
+  }
+
+  .authButtons {
+    margin-right: 30px;
+  }
 }

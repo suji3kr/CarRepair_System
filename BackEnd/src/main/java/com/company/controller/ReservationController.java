@@ -8,7 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/reservations")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://garagez.s3-website.ap-northeast-2.amazonaws.com/")
 public class ReservationController {
 
     private final ReservationService reservationService;

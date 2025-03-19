@@ -10,43 +10,52 @@ const CarManagement: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    (async () => {
+      await checkAdmin();
+      fetchCars();
+    })();
+  }, []);
+
+  // ✅ 관리자 체크 기능 추가
+  const checkAdmin = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/admin/check`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (res.status !== 200) {
+        throw new Error();
+      }
+    } catch (error: unknown) {
+      console.error("🚨 관리자 접근 오류 발생:", error);
+    
+      let errorMessage = "🚫 관리자만 접근할 수 있습니다."; // 기본 메시지
+    
+      if (axios.isAxiosError(error) && error.response?.data) {
+        errorMessage = typeof error.response.data === "string" ? error.response.data : `⚠ 오류: 관리자가 아닙니다. 접근 불가능합니다.`;
+      }
+
+      alert(`⛔ ${errorMessage}`);
+      navigate("/home");
+    }
+  };
+
+  const fetchCars = async () => {
     const token = localStorage.getItem("token");
 
-    if (!token) {
-      alert("로그인이 필요합니다.");
-      navigate("/login");
-      return;
+    try {
+      const response = await axios.get<Car[]>(`${import.meta.env.VITE_API_URL}/api/admin/cars`, {
+        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true,
+      });
+
+      setCars(response.data);
+    } catch (err) {
+      console.error("🚨 차량 데이터 불러오기 실패:", err);
+      setError("차량 정보를 불러오는 중 오류가 발생했습니다.");
     }
-
-    const fetchCars = async () => {
-      try {
-        // ✅ 응답 타입 명확하게 지정 (Car[])
-        const response = await axios.get<Car[]>("http://localhost:8094/api/admin/cars", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          withCredentials: true,
-        });
-
-        // ✅ `car: any` → `car: Car` 로 변경하여 타입 명확화
-        const formattedCars: Car[] = response.data.map((car: Car) => ({
-          id: car.id, // ✅ car_id → id (이미 Car 인터페이스에 맞게 정의됨)
-          carModel: car.carModel,
-          imageUrl: car.imageUrl,
-          carMake: car.carMake,
-          year: car.year,
-          carNumber: car.carNumber,
-        }));
-
-        setCars(formattedCars);
-      } catch (err) {
-        console.error("🚨 차량 데이터 불러오기 실패:", err);
-        setError("차량 정보를 불러오는 중 오류가 발생했습니다.");
-      }
-    };
-
-    fetchCars();
-  }, [navigate]);
+  };
 
   // ✅ 차량 삭제 함수
   const handleDelete = async (carId: number) => {
@@ -55,9 +64,7 @@ const CarManagement: React.FC = () => {
 
     try {
       await axios.delete(`${import.meta.env.VITE_API_URL}/api/admin/cars/${carId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
         withCredentials: true,
       });
 
@@ -71,7 +78,7 @@ const CarManagement: React.FC = () => {
 
   return (
     <div className="car-management">
-      <h2>🚗전체 차량 관리</h2>
+      <h2>🚗 전체 차량 관리</h2>
       {error ? (
         <p className="error-message">{error}</p>
       ) : cars.length === 0 ? (

@@ -72,12 +72,26 @@ public class JwtTokenProvider {
         return false;
     }
 
-    // ✅ userId 추출
+    // ✅ userId 추출 (예외 처리 강화)
     public String getUserIdFromToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(secretKey).build()
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+        try {
+            if (token == null || token.trim().isEmpty()) {
+                throw new IllegalArgumentException("토큰이 비어있습니다.");
+            }
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(secretKey)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+            String userId = claims.getSubject();
+            if (userId == null || userId.trim().isEmpty()) {
+                throw new JwtException("토큰에서 userId를 추출할 수 없습니다.");
+            }
+            return userId;
+        } catch (Exception e) {
+            log.error("🚨 토큰에서 userId 추출 실패: {}", e.getMessage(), e);
+            throw new JwtException("토큰 파싱 중 오류 발생: " + e.getMessage(), e);
+        }
     }
 
     // ✅ 사용자의 인증 정보 생성

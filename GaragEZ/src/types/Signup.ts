@@ -12,7 +12,7 @@ export interface FormData {
   carMake: string;
   carModel: string;
   carNumber: string;
-  year: number | "";
+  year: number | ""; // 연도는 숫자 또는 빈 문자열
   vin: string;
 
   // 공동 소유자 정보

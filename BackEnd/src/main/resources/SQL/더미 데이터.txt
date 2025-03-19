@@ -437,4 +437,7 @@ SELECT * FROM vehicles WHERE car_id IS NULL;
 
 -- 4️. 특정 차량(현대 아반떼)이 car 테이블에 존재하는지 확인
 SELECT * FROM car WHERE car_make = '현대' AND car_model = '아반떼';
+
+
 SET SQL_SAFE_UPDATES = 1;
+

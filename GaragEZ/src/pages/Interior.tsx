@@ -7,11 +7,11 @@ import { fetchParts } from "../services/partService";
 import { Skeleton } from "@mui/material";
 import { Part } from "../types/part";
 
-const categories = ["엔진오일", "타이어", "와이퍼", "기타"];
+const categories = ["인테리어"];
 
 const Interior: React.FC = () => {
   const navigate = useNavigate();
-  const [selectedCategory, setSelectedCategory] = useState<string>("엔진오일");
+  const [selectedCategory, setSelectedCategory] = useState<string>("인테리어");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [parts, setParts] = useState<Part[]>([]);

@@ -1,23 +1,25 @@
 </br>
-[배포사이트로 이동하기](https://bit.ly/garagez)
+
 </br></br>
 </br>
-
-![qrcode_183859022_e9525d467cf73c86a7e46ea7616e95dd (1)](https://github.com/user-attachments/assets/8a06a584-6ce2-4347-b04c-fac3abe91c8a)
-
 
 
 ## *GaragEZ(차고지)*
 
 </br>
+
+![Image](https://github.com/user-attachments/assets/ac3a9c49-77d3-427e-8237-515b45b0dde3)
+
 </br>
 </br>
 </br>
 
 >차량의 유지 보수를 위한 사이트를 제작하고 사용자의 편의에 맞는 시스템을 구축한다. <br>
  앞서 사용자에게 필요한 유지 기술에 대해 알고 적용하며, <br>
-  차량 별 차이점 및 위치 검색을 통해 사용자에게 쉽게 다가가고자 한다. <br>
+  차량 별 차이점 및 위치 검색을 통해 사용자에게 쉽게 다가가고자 한다.  <br> ![qr코드](https://github.com/user-attachments/assets/59d84fb3-4a56-4fb3-af2f-c1c906f71eb0)
+* 배포사이트 이동  https://bit.ly/garagez  🐱‍🏍
 
+* 유튜브 회사소개 영상 https://youtu.be/ZtAoyW7vyzo?si=ymKbOMGUhuoqBw-y ✨
 <br><br>
 </br>
 </br>

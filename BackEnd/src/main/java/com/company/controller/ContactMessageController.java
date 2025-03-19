@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/contacts")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://garagez.s3-website.ap-northeast-2.amazonaws.com/")
 public class ContactMessageController {
 
     @Autowired
