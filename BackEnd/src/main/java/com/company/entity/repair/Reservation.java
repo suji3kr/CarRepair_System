@@ -1,47 +1,54 @@
 package com.company.entity.repair;
 
-import com.company.entity.user.User;
-import com.company.entity.cars.Car;
 import jakarta.persistence.*;
-import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.Getter;
+import lombok.Setter;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "reservations")
 public class Reservation {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 정비소 정보
-    @ManyToOne
-    @JoinColumn(name = "repair_store_id", nullable = false)
-    private RepairStore repairStore;
+    // DB 컬럼명: repair_store_id
+    @Column(name = "repair_store_id", nullable = false)
+    private Long repairStoreId;
 
-    // 사용자 정보 (User 엔티티의 user_id(문자열)을 참조)
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
-    private User user;
+    // DB 컬럼명: user_id
+    @Column(name = "user_id", nullable = false)
+    private String userId;
 
-    // 차량 정보 (Car 테이블 참조)
-    @ManyToOne
-    @JoinColumn(name = "car_id", nullable = false)
-    private Car car;
+    // DB 컬럼명: car_id
+    @Column(name = "car_id", nullable = false)
+    private Long carId;
 
+    // DB 컬럼명: reservation_time
     @Column(name = "reservation_time", nullable = false)
     private LocalDateTime reservationTime;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "details")
     private String details;
 
+    // DB 컬럼명: status (ENUM)
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "status", nullable = false)
     private ReservationStatus status;
 
-    @CreationTimestamp
-    @Column(name = "created_at", updatable = false)
+    // DB 컬럼명: created_at
+    @Column(name = "created_at", nullable = false, updatable = false,
+            insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 
+    @PrePersist
+    public void onPrePersist() {
+        // 예약 생성 시 기본값을 PENDING으로
+        if (status == null) {
+            status = ReservationStatus.PENDING;
+        }
+    }
 }

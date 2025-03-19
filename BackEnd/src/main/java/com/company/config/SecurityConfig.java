@@ -28,7 +28,7 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true)  // ✅ @PreAuthorize 활성화
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
@@ -45,21 +45,19 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // ✅ CORS 필터 적용
-                .csrf(AbstractHttpConfigurer::disable) // ✅ CSRF 보호 비활성화 (JWT 환경에서는 필요 없음)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // ✅ JWT 기반 세션 없음
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // ✅ Swagger 접근 권한 설정 (관리자만 접근 가능)
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").hasAuthority("ROLE_ADMIN")
-
-                        // ✅ 관리자 API는 ADMIN 권한 필요
-                        .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
-
-                        // ✅ 허용된 API 경로들 (로그인, 회원가입, 기타 공개 API)
+                        // "/api/reservations" 및 "/api/reservations/**"를 인증 없이 접근 허용
+                        .requestMatchers("/api/reservations", "/api/reservations/**").permitAll()
+                        // 나머지 공개 경로들
                         .requestMatchers(
                                 "/api/auth/**",
                                 "/api/users/**",
                                 "/api/signup/**",
+                                "/v3/**",
+                                "/swagger-ui/**",
                                 "/api/vehicles/**",
                                 "/api/payment/**",
                                 "/api/parts/**",
@@ -67,18 +65,16 @@ public class SecurityConfig {
                                 "/images/**",
                                 "/api/store/**",
                                 "/api/storereviews/**",
-                                "/api/chat/**",
-                                "/api/reservations/user/**"
+                                "/api/chat/**"
                         ).permitAll()
-
-                        // ✅ 나머지 요청은 로그인 필요
+                        // 나머지 요청은 인증 필요
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception ->
                         exception.authenticationEntryPoint(authenticationEntryPoint)
                 )
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class) // ✅ JWT 필터 적용
+                .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                 .headers(headers -> headers
                         .addHeaderWriter(new StaticHeadersWriter("Cross-Origin-Opener-Policy", "same-origin-allow-popups"))
                         .addHeaderWriter(new StaticHeadersWriter("Cross-Origin-Embedder-Policy", "require-corp"))
@@ -97,8 +93,8 @@ public class SecurityConfig {
                 "http://15.164.248.15:8094"
         ));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("*")); // ✅ 모든 헤더 허용
-        configuration.setExposedHeaders(List.of("Authorization")); // ✅ 클라이언트에서 Authorization 헤더 접근 허용
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setExposedHeaders(List.of("Authorization"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -126,6 +122,6 @@ public class SecurityConfig {
 
     @Bean
     public JwtTokenFilter jwtTokenFilter() {
-        return new JwtTokenFilter(jwtTokenProvider, userDetailsService); // ✅ 필터를 Bean으로 관리
+        return new JwtTokenFilter(jwtTokenProvider, userDetailsService);
     }
 }

@@ -26,9 +26,10 @@ import Cars from "./pages/Cars";
 import Profile from "./pages/Profile";
 import StoreReviewPage from "./pages/StoreReviewPage";
 import ScrollToTop from "./components/scrollToTop";
-import ReservationPage from "./pages/ReservationPage";
 import AdminRoutes from "./routes/AdminRoutes"; // ✅ 관리자 페이지 추가
 import Interior from "./pages/Interior";
+// 기존 ContactReservation 대신 예약 내역을 보여주는 페이지를 import합니다.
+import MyReservationsPage from "./pages/MyReservationsPage";
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
@@ -89,8 +90,8 @@ const LayoutWrapper: React.FC = () => {
         <Route path="/cars" element={<Cars />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/storereview" element={<StoreReviewPage />} />
-        <Route path="/reservations" element={<ReservationPage />} />
-        <Route path="/interior" element={<ReservationPage />} />
+        {/* 예약 생성은 이미 되어 있으므로, "/reservations" 경로는 예약 내역 조회 페이지로 변경 */}
+        <Route path="/reservations" element={<MyReservationsPage />} />
       </Routes>
     </Layout>
   );
