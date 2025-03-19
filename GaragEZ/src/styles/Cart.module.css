@@ -1,7 +1,7 @@
 .cartContainer {
   text-align: center;
   padding: 20px;
-  max-width: 600px;
+  max-width: 700px;
   margin: 100px auto;
   height: 600px;
   display: flex;
@@ -41,6 +41,21 @@
   font-size: 16px;
 }
 
+.selectAllContainer label {
+  padding-left: 10px;
+}
+
+.deleteAllButton {
+  border: none;
+  background-color: red;
+  color: #fff;
+  border-radius: 15px;
+  padding: 5px 8px;
+  position: absolute;
+  right: 20px;
+  cursor: pointer;
+}
+
 .cartList {
   display: flex;
   flex-direction: column;
@@ -57,6 +72,15 @@
 
 .cartItem input {
   margin-right: 10px;
+}
+
+.cartItem .itemname{
+  width: 300px;
+  text-align: left;
+  display: inline-block; /* 줄바꿈이 잘 적용되도록 */
+  max-width: 30ch; /* 21자 기준으로 자동 줄바꿈 */
+  word-break: break-word; /* 단어가 길 경우 줄바꿈 */
+  white-space: normal; /* 여러 줄 표시 가능하도록 */
 }
 
 /* ✅ 수량 조절 */

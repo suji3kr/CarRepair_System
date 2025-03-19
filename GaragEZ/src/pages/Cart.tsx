@@ -11,14 +11,30 @@ interface CartItem {
   checked?: boolean;
 }
 
+// 결제 응답 타입 정의
+interface PaymentResponse {
+  message?: string;
+  success?: boolean; // 서버 응답에 따라 추가 필드 정의 가능
+}
+
+// PortOne 결제 응답 타입 (필요한 필드만 정의)
+interface PortOnePayment {
+  paymentId: string;
+  code?: string; // 오류 코드
+  message?: string; // 오류 메시지
+}
+
 const Cart: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [selectedItems, setSelectedItems] = useState<CartItem[]>([]);
-  const [paymentStatus, setPaymentStatus] = useState({ status: "IDLE", message: "" });
+  const [paymentStatus, setPaymentStatus] = useState<{
+    status: "IDLE" | "PENDING" | "SUCCESS" | "FAILED";
+    message: string;
+  }>({ status: "IDLE", message: "" });
 
   // ✅ 장바구니 데이터 불러오기
   useEffect(() => {
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]") as CartItem[];
     setCartItems(cart);
   }, []);
 
@@ -71,94 +87,105 @@ const Cart: React.FC = () => {
   };
 
   // ✅ 랜덤 결제 ID 생성
-  function randomId() {
+  function randomId(): string {
     return [...crypto.getRandomValues(new Uint32Array(2))]
       .map((word) => word.toString(16).padStart(8, "0"))
       .join("");
   }
 
-  // Cart.tsx
-interface PaymentResponse {
-  message?: string;
-  [key: string]: any; // 추가 필드 허용
-}
+  // ✅ 결제 처리 함수
+  const handlePayment = async (isAll: boolean) => {
+    const items = isAll ? cartItems : selectedItems;
 
-const handlePayment = async (isAll: boolean) => {
-  const items = isAll ? cartItems : selectedItems;
+    if (items.length === 0) {
+      alert("결제할 상품이 없습니다.");
+      return;
+    }
 
-  if (items.length === 0) {
-    alert("결제할 상품이 없습니다.");
-    return;
-  }
+    const totalAmount = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const orderName = items.map((item) => item.name).join(", ");
 
-  const totalAmount = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const orderName = items.map((item) => item.name).join(", ");
+    setPaymentStatus({ status: "PENDING", message: "" });
 
-  setPaymentStatus({ status: "PENDING", message: "" });
-
-  const paymentId = randomId();
-  const payment = await PortOne.requestPayment({
-    storeId: "store-c04a460a-d3a1-4d5b-a758-620a0019d398",
-    channelKey: "channel-key-9b50a96f-1e67-41c2-81b3-1600e73d2a31",
-    paymentId,
-    orderName: orderName.length > 50 ? orderName.slice(0, 50) + "..." : orderName,
-    totalAmount,
-    currency: "KRW",
-    payMethod: "CARD",
-    customData: {
-      items: items.map((item) => ({ id: item.id, name: item.name, quantity: item.quantity })),
-    },
-  });
-
-  console.log("PortOne Payment Response:", payment);
-  if (payment.code !== undefined) {
-    alert(`결제 실패: ${payment.message}`);
-    return;
-  }
-
-  const paymentData = {
-    paymentId: payment.paymentId,
-    totalAmount,
-    items: items.map((item) => ({ id: item.id, name: item.name, quantity: item.quantity })),
-  };
-  console.log("Request Data:", paymentData);
-
-  try {
-    const completeResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/payment/complete`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(paymentData),
-    });
-
-    const responseText = await completeResponse.text();
-    console.log("Raw Response:", responseText);
-
-    let responseData: PaymentResponse | string;
+    const paymentId = randomId();
+    let payment: PortOnePayment;
     try {
-      responseData = JSON.parse(responseText) as PaymentResponse;
-    } catch (e) {
-      responseData = responseText; // JSON 파싱 실패 시 텍스트로 처리
+      payment = await PortOne.requestPayment({
+        storeId: "store-c04a460a-d3a1-4d5b-a758-620a0019d398",
+        channelKey: "channel-key-9b50a96f-1e67-41c2-81b3-1600e73d2a31",
+        paymentId,
+        orderName: orderName.length > 50 ? orderName.slice(0, 50) + "..." : orderName,
+        totalAmount,
+        currency: "KRW",
+        payMethod: "CARD",
+        customData: {
+          items: items.map((item) => ({ id: item.id, name: item.name, quantity: item.quantity })),
+        },
+      });
+    } catch (error) {
+      setPaymentStatus({ status: "FAILED", message: "결제 요청 중 오류가 발생했습니다." });
+      console.error("PortOne Payment Error:", error);
+      alert("결제 요청 중 오류가 발생했습니다.");
+      return;
     }
 
-    console.log("Parsed Response:", responseData);
-
-    if (completeResponse.ok) {
-      alert("결제가 완료되었습니다.");
-      setCartItems([]);
-      localStorage.removeItem("cart");
-    } else {
-      const errorMessage = typeof responseData === "object" && responseData.message ? responseData.message : responseData;
-      alert(`결제 검증 실패: ${errorMessage}`);
-      console.error("Payment Verification Error:", responseData);
+    console.log("PortOne Payment Response:", payment);
+    if (payment.code) {
+      setPaymentStatus({ status: "FAILED", message: `결제 실패: ${payment.message}` });
+      alert(`결제 실패: ${payment.message}`);
+      return;
     }
-  } catch (error) {
-    alert("결제 요청 중 오류가 발생했습니다.");
-    console.error("Fetch Error:", error);
-  }
-};
-    // ✅ 총 가격 계산 함수
-    const calculateTotal = (items: CartItem[]) =>
-      items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+    const paymentData = {
+      paymentId: payment.paymentId,
+      totalAmount,
+      items: items.map((item) => ({ id: item.id, name: item.name, quantity: item.quantity })),
+    };
+    console.log("Request Data:", paymentData);
+
+    try {
+      const completeResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/payment/complete`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(paymentData),
+      });
+
+      const responseText = await completeResponse.text();
+      console.log("Raw Response:", responseText);
+
+      let responseData: PaymentResponse;
+      try {
+        responseData = JSON.parse(responseText) as PaymentResponse;
+      } catch (e) {
+        console.error("Response Parse Error:", e);
+        setPaymentStatus({ status: "FAILED", message: "서버 응답 파싱 실패" });
+        alert("서버 응답 처리 중 오류가 발생했습니다.");
+        return;
+      }
+
+      console.log("Parsed Response:", responseData);
+
+      if (completeResponse.ok) {
+        setPaymentStatus({ status: "SUCCESS", message: "결제가 완료되었습니다." });
+        alert("결제가 완료되었습니다.");
+        setCartItems([]);
+        localStorage.removeItem("cart");
+      } else {
+        const errorMessage = responseData.message || "알 수 없는 오류";
+        setPaymentStatus({ status: "FAILED", message: `결제 검증 실패: ${errorMessage}` });
+        alert(`결제 검증 실패: ${errorMessage}`);
+        console.error("Payment Verification Error:", responseData);
+      }
+    } catch (error) {
+      setPaymentStatus({ status: "FAILED", message: "결제 요청 중 오류가 발생했습니다." });
+      console.error("Fetch Error:", error);
+      alert("결제 요청 중 오류가 발생했습니다.");
+    }
+  };
+
+  // ✅ 총 가격 계산 함수
+  const calculateTotal = (items: CartItem[]): number =>
+    items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   return (
     <Layout>
@@ -173,7 +200,11 @@ const handlePayment = async (isAll: boolean) => {
             <>
               {/* ✅ 전체 선택 버튼 */}
               <div className={styles.selectAllContainer}>
-                <input type="checkbox" onChange={handleSelectAll} checked={cartItems.every((item) => item.checked)} />
+                <input
+                  type="checkbox"
+                  onChange={handleSelectAll}
+                  checked={cartItems.every((item) => item.checked)}
+                />
                 <label>전체 선택</label>
               </div>
 
@@ -185,8 +216,8 @@ const handlePayment = async (isAll: boolean) => {
                       checked={item.checked || false}
                       onChange={() => handleCheckboxChange(item.id)}
                     />
-                    <p>{item.name}</p>
-                    <p>{item.price.toLocaleString()}원</p>
+                    <p className={styles.itemname}>{item.name}</p>
+                    <p  className={styles.price}>{item.price.toLocaleString()}원</p>
 
                     <div className={styles.quantityControls}>
                       <button onClick={() => decreaseQuantity(item.id)}>-</button>
@@ -201,18 +232,20 @@ const handlePayment = async (isAll: boolean) => {
                 ))}
               </div>
               {/* ✅ 총 가격 표시 */}
-              <br></br>
-              <br></br>
-         <div className={styles.priceSummary}>
-          <h3>총 결제 금액</h3>
-          <p>선택한 상품 합계: <strong>{calculateTotal(selectedItems).toLocaleString()}원</strong></p>
-          <p>전체 상품 합계: <strong>{calculateTotal(cartItems).toLocaleString()}원</strong></p>
-        </div>
+              <br />
+              <br />
+              <div className={styles.priceSummary}>
+                <h3>총 결제 금액</h3>
+                <p>
+                  선택한 상품 합계: <strong>{calculateTotal(selectedItems).toLocaleString()}원</strong>
+                </p>
+                <p>
+                  전체 상품 합계: <strong>{calculateTotal(cartItems).toLocaleString()}원</strong>
+                </p>
+              </div>
             </>
           )}
-          
         </div>
-         
 
         {/* ✅ 주문 버튼 */}
         <div className={styles.orderButtons}>
@@ -237,5 +270,3 @@ const handlePayment = async (isAll: boolean) => {
 };
 
 export default Cart;
-
-
