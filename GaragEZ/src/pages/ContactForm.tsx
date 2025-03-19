@@ -272,13 +272,13 @@ const ContactForm: React.FC = () => {
           </div>
 
           <div className={styles.contactInputGroup}>
-            <label className={styles.selectGarage}>선택한 정비소</label>
+            <label>선택한 정비소 (아래 지도에서 선택 시 자동 입력)</label>
             <input type="text" name="repairStoreName" value={formData.repairStoreName} readOnly />
           </div>
 
           {isLoaded && (
             <div className={styles.mapContainer}>
-              <h3>가까운 정비소 선택</h3>
+              <h3>가까운 정비소 선택 (마커를 선택하세요)</h3>
               <GoogleMap mapContainerStyle={{ width: "100%", height: "400px" }} center={center} zoom={12}>
                 {predefinedMarkers.map((marker) => (
                   <Marker

@@ -31,15 +31,26 @@ const MyReservationsPage: React.FC = () => {
   useEffect(() => {
     if (!userId) return;
 
+    const token = localStorage.getItem("token"); // 토큰 추가
     const fetchReservations = async () => {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/reservations/user/${userId}`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                credentials: "include",
-            });
+
+        // try {
+        //     const response = await fetch(`${import.meta.env.VITE_API_URL}/api/reservations/user/${userId}`, {
+        //         method: "GET",
+        //         headers: {
+        //             "Content-Type": "application/json",
+        //         },
+        //         credentials: "include",
+        //     });
+
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/reservations/user/${userId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            ...(token && { "Authorization": `Bearer ${token}` }), // 토큰이 있을 때만 추가
+          },
+        });
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
@@ -58,6 +69,17 @@ const MyReservationsPage: React.FC = () => {
     fetchReservations();
 }, [userId]);
 
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleString("ko-KR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
   const containerStyle: React.CSSProperties = {
     maxWidth: "800px",
     margin: "4rem auto",
@@ -67,23 +89,12 @@ const MyReservationsPage: React.FC = () => {
     borderRadius: "8px",
   };
 
-  const titleStyle: React.CSSProperties = {
-    marginBottom: "1.5rem",
-    fontSize: "1.5rem",
-    fontWeight: 600,
-    textAlign: "center",
-  };
-
-  const tableStyle: React.CSSProperties = {
-    width: "100%",
-    borderCollapse: "collapse",
-  };
-
   const thTdStyle: React.CSSProperties = {
     border: "1px solid #ccc",
     padding: "12px",
     textAlign: "center",
   };
+
 
   const buttonStyle: React.CSSProperties = {
     marginTop: "1rem",
@@ -102,13 +113,18 @@ const MyReservationsPage: React.FC = () => {
     return <div style={{ marginTop: "100px", textAlign: "center" }}>에러 발생: {error}</div>;
   }
 
+
   return (
     <div style={containerStyle}>
-      <h1 style={titleStyle}>{userId}님의 예약 목록</h1>
+      <h1 style={{ marginBottom: "1.5rem", fontSize: "1.5rem", fontWeight: 600, textAlign: "center" }}>
+        {userId}님의 예약 목록
+      </h1>
       {reservations.length === 0 ? (
-        <p style={{ textAlign: "center" }}>예약 내역이 없습니다.</p>
+        <p style={{ textAlign: "center", color: "#666", padding: "2rem" }}>
+          아직 예약 내역이 없습니다. 새 예약을 시작해보세요!
+        </p>
       ) : (
-        <table style={tableStyle}>
+        <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
             <tr>
               <th style={thTdStyle}>예약 ID</th>
@@ -117,6 +133,7 @@ const MyReservationsPage: React.FC = () => {
               <th style={thTdStyle}>예약 시간</th>
               <th style={thTdStyle}>상태</th>
               <th style={thTdStyle}>생성 일시</th>
+              <th style={thTdStyle}>상세 내용</th>
             </tr>
           </thead>
           <tbody>
@@ -125,16 +142,27 @@ const MyReservationsPage: React.FC = () => {
                 <td style={thTdStyle}>{res.id}</td>
                 <td style={thTdStyle}>{res.repairStoreId}</td>
                 <td style={thTdStyle}>{res.carId}</td>
-                <td style={thTdStyle}>{res.reservationTime}</td>
+                <td style={thTdStyle}>{formatDate(res.reservationTime)}</td>
                 <td style={thTdStyle}>{res.status}</td>
-                <td style={thTdStyle}>{res.createdAt}</td>
+                <td style={thTdStyle}>{formatDate(res.createdAt)}</td>
+                <td style={thTdStyle}>{res.details}</td>
               </tr>
             ))}
           </tbody>
         </table>
       )}
-
-      <button style={buttonStyle} onClick={() => navigate("/contact")}>
+      <button
+        style={{
+          marginTop: "1rem",
+          padding: "0.5rem 1rem",
+          border: "none",
+          borderRadius: "4px",
+          backgroundColor: "#007bff",
+          color: "#fff",
+          cursor: "pointer",
+        }}
+        onClick={() => navigate("/contact")}
+      >
         새 예약하기
       </button>
     </div>
