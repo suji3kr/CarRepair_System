@@ -1,4 +1,3 @@
-// src/pages/PartDetail.tsx
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Layout from "../components/Layout";
@@ -21,6 +20,7 @@ const PartDetail: React.FC = () => {
   const [part, setPart] = useState<Part | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [showModal, setShowModal] = useState<boolean>(false); // 모달 표시 여부
 
   useEffect(() => {
     if (id) {
@@ -52,22 +52,34 @@ const PartDetail: React.FC = () => {
   const addToCart = () => {
     if (!part) return;
     const existingCart = JSON.parse(localStorage.getItem("cart") || "[]");
-    const existingItemIndex = existingCart.findIndex((item: Part & { quantity: number }) => item.id === part.id);
+    const existingItemIndex = existingCart.findIndex(
+      (item: Part & { quantity: number }) => item.id === part.id
+    );
     if (existingItemIndex !== -1) {
       existingCart[existingItemIndex].quantity += quantity;
     } else {
-      existingCart.push({ ...part, quantity });
+      existingCart.push({ ...part, quantity, checked: false }); // checked 속성 추가
     }
     localStorage.setItem("cart", JSON.stringify(existingCart));
-    alert("장바구니 담기 성공★");
-    navigate("/cart");
+    setShowModal(true); // 모달 표시
   };
 
   // 결제 요청 (예시: 아직 구현 중이라 alert로 대체)
   const handlePayment = async () => {
     if (!part) return;
-    // 결제 로직을 추가하세요. 예: PortOne 결제 요청 등
     alert("결제 기능은 아직 구현 중입니다.");
+  };
+
+  // "계속 쇼핑하기" 버튼 클릭 시 /partshop으로 이동
+  const handleContinueShopping = () => {
+    setShowModal(false);
+    navigate("/partshop");
+  };
+
+  // "장바구니 확인하기" 버튼 클릭 시 /cart로 이동
+  const handleViewCart = () => {
+    setShowModal(false);
+    navigate("/cart");
   };
 
   return (
@@ -108,9 +120,16 @@ const PartDetail: React.FC = () => {
 
           {/* 수량 조절 */}
           <div className={styles.quantityContainer}>
-            <button onClick={decreaseQuantity} disabled={quantity === 1}>-</button>
+            <button onClick={decreaseQuantity} disabled={quantity === 1}>
+              -
+            </button>
             <span>{quantity}</span>
-            <button onClick={increaseQuantity} disabled={part ? part.stock === quantity : false}>+</button>
+            <button
+              onClick={increaseQuantity}
+              disabled={part ? part.stock === quantity : false}
+            >
+              +
+            </button>
           </div>
 
           {/* 총 가격 표시 */}
@@ -119,14 +138,20 @@ const PartDetail: React.FC = () => {
             {isLoading ? (
               <Skeleton width={80} height={30} />
             ) : (
-              <span className={styles.totalPrice}>{totalPrice.toLocaleString()}원</span>
+              <span className={styles.totalPrice}>
+                {totalPrice.toLocaleString()}원
+              </span>
             )}
           </div>
 
           {/* 버튼 영역 */}
           <div className={styles.buttonContainer}>
-            <button className={styles.cartButton} onClick={addToCart}>장바구니</button>
-            <button className={styles.buyButton} onClick={handlePayment}>구매하기</button>
+            <button className={styles.cartButton} onClick={addToCart}>
+              장바구니
+            </button>
+            <button className={styles.buyButton} onClick={handlePayment}>
+              구매하기
+            </button>
           </div>
         </div>
       </div>
@@ -140,6 +165,27 @@ const PartDetail: React.FC = () => {
           <p>상품에 대한 상세 설명을 여기에 추가하세요.</p>
         )}
       </div>
+
+      {/* 장바구니 담기 성공 모달 */}
+      {showModal && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
+            <h3>장바구니에 담겼습니다!</h3>
+            <p>상품이 성공적으로 장바구니에 추가되었습니다.</p>
+            <div className={styles.modalButtons}>
+              <button
+                className={styles.continueShoppingButton}
+                onClick={handleContinueShopping}
+              >
+                계속 쇼핑하기
+              </button>
+              <button className={styles.viewCartButton} onClick={handleViewCart}>
+                장바구니 확인하기
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </Layout>
   );
 };
