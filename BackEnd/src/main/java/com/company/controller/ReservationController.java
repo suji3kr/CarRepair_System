@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/reservations")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://garagez.s3-website.ap-northeast-2.amazonaws.com/")
 public class ReservationController {
 
     @Autowired
