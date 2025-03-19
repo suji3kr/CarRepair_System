@@ -4,6 +4,7 @@ import com.company.entity.repair.Reservation;
 import com.company.entity.repair.ReservationStatus;
 import com.company.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,21 +17,23 @@ public class ReservationService {
         this.reservationRepository = reservationRepository;
     }
 
-    // 예약 생성
+    @Transactional
     public Reservation createReservation(Reservation reservation) {
-        // 기본 상태를 설정 (예약 생성 시 전달되지 않았다면)
+        if (reservation.getUserId() == null || reservation.getRepairStoreId() == null ||
+                reservation.getCarId() == null || reservation.getReservationTime() == null) {
+            throw new IllegalArgumentException("필수 필드가 누락되었습니다.");
+        }
         if (reservation.getStatus() == null) {
             reservation.setStatus(ReservationStatus.PENDING);
         }
-        return reservationRepository.save(reservation);
+        Reservation saved = reservationRepository.save(reservation);
+        return saved;
     }
 
-    // 전체 예약 목록 조회
     public List<Reservation> getAllReservations() {
         return reservationRepository.findAll();
     }
 
-    // 특정 사용자(userId)의 예약 목록 조회
     public List<Reservation> getReservationsByUserId(String userId) {
         return reservationRepository.findByUserId(userId);
     }
