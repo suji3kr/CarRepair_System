@@ -149,12 +149,5 @@
   .quantityContainer{
     justify-content: flex-end
   }
-
-  .partMenu{
-    justify-content: center;
-    overflow-x: auto;
-    white-space: nowrap;
-    gap: 10px;
-    display: flex;}
   
 }
