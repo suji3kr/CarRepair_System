@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/storereviews")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://garagez.s3-website.ap-northeast-2.amazonaws.com/")
 public class StoreReviewController {
 
     @Autowired

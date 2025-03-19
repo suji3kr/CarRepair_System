@@ -18,7 +18,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+@CrossOrigin(origins = "http://garagez.s3-website.ap-northeast-2.amazonaws.com", allowCredentials = "true")
 public class AuthController {
 
     private final AuthenticationService authenticationService;
