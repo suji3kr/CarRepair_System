@@ -84,6 +84,7 @@ public class UserService {
     // ✅ 차량 정보 저장 로직
     private void saveVehicleInfo(User user, UserSignupRequest request) {
         Vehicle vehicle = new Vehicle();
+
         vehicle.setOwner(user);
         vehicle.setCarMake(request.getCarMake());
         vehicle.setCarModel(request.getCarModel());
