@@ -1,4 +1,3 @@
-// components/PartsShop.tsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/PartsShop.module.css";
@@ -7,7 +6,7 @@ import { fetchParts } from "../services/partService";
 import { Skeleton } from "@mui/material";
 import { Part } from "../types/part";
 
-const categories = ["엔진오일", "타이어", "와이퍼", "기타"];
+const categories = ["엔진오일", "타이어", "와이퍼"];
 
 const PartsShop: React.FC = () => {
   const navigate = useNavigate();
@@ -27,7 +26,7 @@ const PartsShop: React.FC = () => {
         console.error("Error fetching parts:", error);
         setIsLoading(false);
       });
-    }, [selectedCategory]);  // selectedCategory가 변경될 때마다 다시 호출
+  }, [selectedCategory]);
 
   const handlePageChange = (newPage: number) => {
     if (newPage !== currentPage) {
@@ -37,9 +36,10 @@ const PartsShop: React.FC = () => {
       }, 100);
     }
   };
+
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
-    setCurrentPage(1); // 페이지 초기화
+    setCurrentPage(1);
     setTimeout(() => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }, 100);
@@ -54,7 +54,11 @@ const PartsShop: React.FC = () => {
       <div className={styles.container}>
         <div className={styles.partMenu}>
           {categories.map((category, index) => (
-            <div key={index} className={styles.category} onClick={() => handleCategoryChange(category)}>
+            <div
+              key={index}
+              className={`${styles.category} ${selectedCategory === category ? styles.active : ""}`}
+              onClick={() => handleCategoryChange(category)}
+            >
               <h3>{category}</h3>
             </div>
           ))}
@@ -62,44 +66,37 @@ const PartsShop: React.FC = () => {
 
         <div className={styles.itemsContainer}>
           <div className={styles.itemsGrid}>
-            {isLoading
-              ? Array.from({ length: 10 }).map((_, index) => (
-                  <div key={index} className={styles.itemCard}>
-                    <Skeleton variant="rectangular" width={120} height={120} />
-                    <div className={styles.itemInfo}>
-                      <Skeleton width="80%" height={20} />
-                      <Skeleton width="60%" height={20} />
-                    </div>
+            {isLoading ? (
+              Array.from({ length: 10 }).map((_, index) => (
+                <div key={index} className={styles.itemCard}>
+                  <Skeleton variant="rectangular" width={120} height={120} />
+                  <div className={styles.itemInfo}>
+                    <Skeleton width="80%" height={20} />
+                    <Skeleton width="60%" height={20} />
                   </div>
-                ))
-              : displayedItems.length > 0 ? (
-                  displayedItems.map((part) => (
-                    <div
-                      key={part.id}
-                      className={styles.itemCard}
-                      onClick={() => navigate(`/part/${part.id}`)}
-                    >
-                      <img
-                        src={`/images/${part.imageUrl}`}
-                        alt={part.name}
-                      />
-
-                      <div className={styles.itemInfo}>
-                        <p className={styles.itemName} title={part.name}>
-                          {part.name.length > 14 ? `${part.name.slice(0, 14)}...` : part.name}
-                        </p>
-                        <p className={styles.itemPrice}>
-                          {part.price.toLocaleString("ko-KR")}원
-                        </p>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p>해당 카테고리에 상품이 없습니다.</p>
-                )}
+                </div>
+              ))
+            ) : displayedItems.length > 0 ? (
+              displayedItems.map((part) => (
+                <div
+                  key={part.id}
+                  className={styles.itemCard}
+                  onClick={() => navigate(`/part/${part.id}`)}
+                >
+                  <img src={`/images/${part.imageUrl}`} alt={part.name} />
+                  <div className={styles.itemInfo}>
+                    <p className={styles.itemName} title={part.name}>
+                      {part.name.length > 14 ? `${part.name.slice(0, 14)}...` : part.name}
+                    </p>
+                    <p className={styles.itemPrice}>{part.price.toLocaleString("ko-KR")}원</p>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>해당 카테고리에 상품이 없습니다.</p>
+            )}
           </div>
 
-          {/* 페이지네이션 */}
           <div className={styles.pagination}>
             <button disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>
               이전
