@@ -49,6 +49,7 @@ public class VehicleService {
         validateCoOwnerInfo(vehicle);
 
         // 필요한 업데이트 로직 (예: 기존 차량 정보 업데이트)
+        existingVehicle.setCarId(vehicle.getCarId());
         existingVehicle.setCarMake(vehicle.getCarMake());
         existingVehicle.setCarModel(vehicle.getCarModel());
         existingVehicle.setYear(vehicle.getYear());

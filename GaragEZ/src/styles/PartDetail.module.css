@@ -28,7 +28,9 @@
   gap: 10px;
 }
 
-.category, .stock, .price {
+.category,
+.stock,
+.price {
   font-size: 16px;
   color: #666;
 }
@@ -119,25 +121,96 @@
   margin-bottom: 10px;
 }
 
+/* ✅ 모달 스타일 */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
 
+.modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal h3 {
+  margin-bottom: 10px;
+  font-size: 20px;
+  color: #333;
+}
+
+.modal p {
+  margin-bottom: 20px;
+  color: #666;
+}
+
+.modalButtons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.continueShoppingButton,
+.viewCartButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.continueShoppingButton {
+  background-color: #3b7c3d;
+  color: white;
+}
+
+.continueShoppingButton:hover {
+  background-color: #45a049;
+}
+
+.viewCartButton {
+  background-color: #549ad3;
+  color: white;
+}
+
+.viewCartButton:hover {
+  background-color: #1e88e5;
+}
+
+/* ✅ 반응형 디자인 */
 @media (max-width: 480px) {
   .imageContainer {
     display: block;
   }
+
   .productInfo {
-    margin-right: 20px
+    margin-right: 20px;
   }
+
   .cartButton {
     width: 120px;
-    font-size: 14px; 
+    font-size: 14px;
   }
 
   .buyButton {
     width: 120px;
-    font-size: 14px; 
+    font-size: 14px;
   }
 
-  .container{
+  .container {
     flex-direction: column;
   }
 
@@ -146,8 +219,28 @@
     margin-bottom: 20px;
     font-size: 17px;
   }
-  .quantityContainer{
-    justify-content: flex-end
+
+  .quantityContainer {
+    justify-content: flex-end;
   }
-  
+
+  .modalButtons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .continueShoppingButton,
+  .viewCartButton {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .modal h3 {
+    font-size: 18px;
+  }
+
+  .modal p {
+    font-size: 14px;
+  }
 }

@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -23,9 +25,38 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserDetailsService userDetailsService;
 
+    // 인증이 필요 없는 경로 목록
+    private static final List<String> EXCLUDED_PATHS = Arrays.asList(
+            "/api/reservations",
+            "/api/reservations/",
+            "/api/reservations/user/",
+            "/api/auth/",
+            "/api/users/",
+            "/api/signup/",
+            "/v3/",
+            "/swagger-ui/",
+            "/api/vehicles/",
+            "/api/payment/",
+            "/api/parts/",
+            "/api/cars/",
+            "/images/",
+            "/api/store/",
+            "/api/storereviews/",
+            "/api/chat/"
+    );
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
+
+        String path = request.getRequestURI();
+
+        // 제외된 경로인지 확인
+        if (EXCLUDED_PATHS.stream().anyMatch(path::startsWith)) {
+            log.info("🔹 인증 제외 경로: [{}] {}", request.getMethod(), path);
+            chain.doFilter(request, response);
+            return;
+        }
 
         String token = getTokenFromRequest(request);
 

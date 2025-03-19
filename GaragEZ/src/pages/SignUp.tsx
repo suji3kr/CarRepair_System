@@ -6,15 +6,11 @@ import { FormData, initialFormData } from "../types/Signup";
 import agreement from "../text/agreement.txt?raw";
 import axios from "axios";
 import { Select, MenuItem, FormControl, InputLabel, SelectChangeEvent } from "@mui/material";
+import { Car } from "../types/car";
 
 const API_URL = `${import.meta.env.VITE_API_URL}/api/users/signup`;
 const CARS_API_URL = `${import.meta.env.VITE_API_URL}/api/cars?car_make=`;
 const CHECK_DUPLICATE_URL = `${import.meta.env.VITE_API_URL}/api/users/check-duplicate`;
-
-interface Car {
-  id: string;
-  carModel: string;
-}
 
 const SignUp: React.FC = () => {
   const location = useLocation();
@@ -26,7 +22,15 @@ const SignUp: React.FC = () => {
   const [cars, setCars] = useState<Car[]>([]);
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [isIdAvailable, setIsIdAvailable] = useState<boolean | null>(null);
-  const [isPasswordMatch, setIsPasswordMatch] = useState<boolean | null>(null); // 비밀번호 일치 여부 상태 추가
+  const [isPasswordMatch, setIsPasswordMatch] = useState<boolean | null>(null);
+  const [isEmailValid, setIsEmailValid] = useState<boolean | null>(null); // 이메일 유효성 상태
+  const [isPhoneValid, setIsPhoneValid] = useState<boolean | null>(null); // 전화번호 유효성 상태 추가
+
+  // 이메일 유효성 검사 정규표현식
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  // 전화번호 유효성 검사 정규표현식 (010-1234-5678 또는 01012345678 형식)
+  const phoneRegex = /^010-?\d{4}-?\d{4}$/;
 
   useEffect(() => {
     if (location.state?.email) {
@@ -64,14 +68,32 @@ const SignUp: React.FC = () => {
     }
   }, [formData.carMake]);
 
-  // 비밀번호와 비밀번호 확인 일치 여부 실시간 확인
+  // 비밀번호 일치 여부 확인
   useEffect(() => {
     if (formData.password === "" && passwordConfirm === "") {
-      setIsPasswordMatch(null); // 둘 다 비어있으면 상태 초기화
+      setIsPasswordMatch(null);
     } else {
       setIsPasswordMatch(formData.password === passwordConfirm);
     }
   }, [formData.password, passwordConfirm]);
+
+  // 이메일 유효성 실시간 확인
+  useEffect(() => {
+    if (formData.email.trim() === "") {
+      setIsEmailValid(null);
+    } else {
+      setIsEmailValid(emailRegex.test(formData.email));
+    }
+  }, [formData.email]);
+
+  // 전화번호 유효성 실시간 확인
+  useEffect(() => {
+    if (formData.phone.trim() === "") {
+      setIsPhoneValid(null);
+    } else {
+      setIsPhoneValid(phoneRegex.test(formData.phone));
+    }
+  }, [formData.phone]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>
@@ -85,6 +107,7 @@ const SignUp: React.FC = () => {
     setFormData((prev) => ({
       ...prev,
       [name]: checked !== undefined ? checked : name === "year" ? (value === "" ? "" : parseInt(value, 10)) : value,
+      ...(name === "carModel" ? { carId: String(cars.find(v => v.carModel===value)?.carId) } : {}),
     }));
   };
 
@@ -92,7 +115,9 @@ const SignUp: React.FC = () => {
     setFormData(initialFormData);
     setPasswordConfirm("");
     setIsIdAvailable(null);
-    setIsPasswordMatch(null); // 초기화 시 비밀번호 일치 상태도 리셋
+    setIsPasswordMatch(null);
+    setIsEmailValid(null);
+    setIsPhoneValid(null); // 리셋 시 전화번호 유효성 상태도 초기화
   };
 
   const handleScroll = () => {
@@ -155,11 +180,27 @@ const SignUp: React.FC = () => {
       return;
     }
     if (isIdAvailable === false) {
-      alert("사용 workplaces 수 없는 아이디입니다. 다른 아이디를 입력해 주세요.");
+      alert("사용할 수 없는 아이디입니다. 다른 아이디를 입력해 주세요.");
       return;
     }
     if (!isGoogleSignup && isPasswordMatch === false) {
       alert("비밀번호가 일치하지 않습니다.");
+      return;
+    }
+    if (isEmailValid === false) {
+      alert("유효하지 않은 이메일 형식입니다.");
+      return;
+    }
+    if (isEmailValid === null) {
+      alert("이메일을 입력해 주세요.");
+      return;
+    }
+    if (isPhoneValid === false) {
+      alert("유효하지 않은 전화번호 형식입니다. (예: 010-1234-5678 또는 01012345678)");
+      return;
+    }
+    if (isPhoneValid === null) {
+      alert("전화번호를 입력해 주세요.");
       return;
     }
 
@@ -240,11 +281,24 @@ const SignUp: React.FC = () => {
               required
               disabled={isGoogleSignup}
             />
+            {isEmailValid === false && <p style={{ color: "red" }}>유효하지 않은 이메일 형식입니다.</p>}
+            {isEmailValid === true && <p style={{ color: "green" }}>유효한 이메일입니다.</p>}
           </div>
 
           <div className={styles.signupFormGroup}>
             <label>휴대전화</label>
-            <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required />
+            <input
+              type="tel"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              required
+              placeholder="010-1234-5678"
+            />
+            {isPhoneValid === false && (
+              <p style={{ color: "red" }}>유효하지 않은 전화번호 형식입니다. (예: 010-1234-5678)</p>
+            )}
+            {isPhoneValid === true && <p style={{ color: "green" }}>유효한 전화번호입니다.</p>}
           </div>
 
           <div className={styles.signupFormGroup}>

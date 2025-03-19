@@ -136,7 +136,7 @@
   }
 
   .navItem {
-    padding: 12px 18px;
+    padding: 12px 10px;
     color: white;
     font-size: 13px;
     cursor: pointer;
@@ -147,6 +147,10 @@
   }
 
   .pageButton {
-    font-size: 18px;
+    font-size: 16px;
+  }
+
+  .buttonContainer {
+    margin-left: 10px;
   }
 }
