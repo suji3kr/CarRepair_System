@@ -77,14 +77,16 @@ CREATE TABLE vehicles (
 
 --  유저의 고유 차량
 
+-- 🚘 사용자의 차량 테이블 (1:N 관계 설정, vehicle_id 추가)
 CREATE TABLE user_vehicles (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     user_id BIGINT NOT NULL,
-    vehicle_id BIGINT NOT NULL,
+    vehicle_id BIGINT NOT NULL,  -- vehicles 테이블의 개별 차량 ID 추가
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (vehicle_id) REFERENCES vehicles(id) ON DELETE CASCADE
 );
+
 
 -- 🏪 부품 판매점(파트샵) 테이블
 CREATE TABLE parts (

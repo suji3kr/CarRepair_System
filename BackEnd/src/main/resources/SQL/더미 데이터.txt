@@ -21,42 +21,214 @@ select * from car;
 
 -- --------------- 부품 더미 데이터 하단에 추가 해서 합함 --
 
--- 1. 사용자 (users)
+-- 1. 👤 사용자(users) 데이터 삽입 (기존 + 추가 10명)
 INSERT INTO users (user_id, name, email, password, phone, role)
 VALUES
+  -- 기존 사용자
   ('alice123', 'Alice Smith', 'alice@example.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-1234-5678', 'USER'),
   ('bob456', 'Bob Johnson', 'bob@example.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-2345-6789', 'USER'),
   ('admin001', 'Charlie Admin', 'charlie@admin.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-3456-7890', 'ADMIN'),
   ('johnDoe', 'John Doe', 'johndoe@example.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-1234-5678', 'USER'),
-  ('admin', 'admin', 'admin@GragEZ.com', '$2a$10$wnqmSFXQNzeFFUFMe5/Aj..yr3a8rilU9TXY7uIxYafbheVbHkZQW', '010-1234-5678', 'ADMIN');
--- 비번은 항상 password123
+  ('admin', 'admin', 'admin@GragEZ.com', '$2a$10$wnqmSFXQNzeFFUFMe5/Aj..yr3a8rilU9TXY7uIxYafbheVbHkZQW', '010-1234-5678', 'ADMIN'),
 
--- 2. 차량 정보 추가 (car_id 포함)
+  -- 추가 사용자 10명
+  ('eva567', 'Eva Green', 'eva@example.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-5678-9012', 'USER'),
+  ('mike789', 'Mike Brown', 'mike@example.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-6789-0123', 'USER'),
+  ('sara901', 'Sara Wilson', 'sara@example.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-7890-1234', 'USER'),
+  ('david234', 'David Lee', 'david@example.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-8901-2345', 'USER'),
+  ('nina345', 'Nina Gomez', 'nina@example.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-9012-3456', 'USER'),
+  ('chris456', 'Chris Evans', 'chris@example.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-1234-5678', 'USER'),
+  ('julia567', 'Julia Roberts', 'julia@example.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-2345-6789', 'USER'),
+  ('robert678', 'Robert Downey', 'robert@example.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-3456-7890', 'USER'),
+  ('emma789', 'Emma Watson', 'emma@example.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-4567-8901', 'USER'),
+  ('jack890', 'Jack Sparrow', 'jack@example.com', '$2y$05$LsZ70wxUblI1Ui/IJNjC9O7TkOImWZW7oveDn4O647Jlun0d2buBO', '010-5678-9012', 'USER');
+
+
 INSERT INTO vehicles (owner_id, car_id, car_make, car_model, year, vin, car_number)
 VALUES
-  ((SELECT id FROM users WHERE user_id = 'alice123'),
-   (SELECT id FROM car WHERE car_make = '현대' AND car_model = '아반떼'),
-   '현대', '아반떼', 2015, 'VIN000001', '11가 1234'),
+  ((SELECT id FROM users WHERE user_id = 'eva567'),
+   (SELECT id FROM car WHERE car_make = '기아' AND car_model = '모닝'),
+   '기아', '모닝', 2020, 'VIN000019', '77가 1234'),
 
-  ((SELECT id FROM users WHERE user_id = 'alice123'),
-   (SELECT id FROM car WHERE car_make = '현대' AND car_model = '아이오닉9'),
-   '현대', '아반떼', 2024, 'VIN000002', '130나 5678'),
+  ((SELECT id FROM users WHERE user_id = 'mike789'),
+   (SELECT id FROM car WHERE car_make = '현대' AND car_model = '팰리세이드'),
+   '현대', '팰리세이드', 2021, 'VIN000020', '88나 5678'),
+
+  ((SELECT id FROM users WHERE user_id = 'sara901'),
+   (SELECT id FROM car WHERE car_make = '기아' AND car_model = '카니발 하이리무진'),
+   '기아', '카니발 하이리무진', 2022, 'VIN000021', '99다 4321'),
+
+  ((SELECT id FROM users WHERE user_id = 'david234'),
+   (SELECT id FROM car WHERE car_make = '쌍용' AND car_model = '토레스_EVX'),
+   '쌍용', '토레스_EVX', 2023, 'VIN000022', '11라 8765'),
+
+  ((SELECT id FROM users WHERE user_id = 'nina345'),
+   (SELECT id FROM car WHERE car_make = '쉐보레' AND car_model = '트레일블레이저'),
+   '쉐보레', '트레일블레이저', 2022, 'VIN000023', '22마 3456'),
+
+  ((SELECT id FROM users WHERE user_id = 'chris456'),
+   (SELECT id FROM car WHERE car_make = '현대' AND car_model = '아반떼'),
+   '현대', '아반떼', 2019, 'VIN000024', '33바 7890'),
+
+  ((SELECT id FROM users WHERE user_id = 'julia567'),
+   (SELECT id FROM car WHERE car_make = '기아' AND car_model = 'EV6_GT'),
+   '기아', 'EV6_GT', 2024, 'VIN000025', '44사 5678'),
+
+  ((SELECT id FROM users WHERE user_id = 'robert678'),
+   (SELECT id FROM car WHERE car_make = '쌍용' AND car_model = '코란도_EV'),
+   '쌍용', '코란도_EV', 2023, 'VIN000026', '55아 3344'),
+
+  ((SELECT id FROM users WHERE user_id = 'emma789'),
+   (SELECT id FROM car WHERE car_make = '쉐보레' AND car_model = '콜로라도'),
+   '쉐보레', '콜로라도', 2021, 'VIN000027', '66자 1234'),
+
+  ((SELECT id FROM users WHERE user_id = 'jack890'),
+   (SELECT id FROM car WHERE car_make = '현대' AND car_model = '코나 하이브리드'),
+   '현대', '코나 하이브리드', 2022, 'VIN000028', '77차 5678'),
 
   ((SELECT id FROM users WHERE user_id = 'bob456'),
-   (SELECT id FROM car WHERE car_make = '기아' AND car_model = 'k9'),
-   '기아', 'k9', 2017, 'VIN000003', '114다 9012'),
+   (SELECT id FROM car WHERE car_make = '기아' AND car_model = 'K8'),
+   '기아', 'K8', 2023, 'VIN000029', '88카 7890'),
 
-  ((SELECT id FROM users WHERE user_id = 'johnDoe'),
-   (SELECT id FROM car WHERE car_make = '쌍용' AND car_model = '티볼리'),
-   '쌍용', '티볼리', 2020, 'VIN123456', '12가 3456');
+  ((SELECT id FROM users WHERE user_id = 'alice123'),
+   (SELECT id FROM car WHERE car_make = '기아' AND car_model = '니로 전기차'),
+   '기아', '니로 전기차', 2024, 'VIN000001', '98칠 6543'),
 
--- 3. 사용자 차량 관계 설정 (M:N 관계)
+   ((SELECT id FROM users WHERE user_id = 'alice123'),
+   (SELECT id FROM car WHERE car_make = '기아' AND car_model = '니로 전기차'),
+   '기아', '니로 전기차', 2024, 'VIN000017', '99구 9999'),
+
+   ((SELECT id FROM users WHERE user_id = 'admin001'),
+   (SELECT id FROM car WHERE car_make = '현대' AND car_model = '팰리세이드'),
+   '현대', '팰리세이드', 2021, 'VIN123456', '87육 5432'),
+
+   ((SELECT id FROM users WHERE user_id = 'admin001'),
+   (SELECT id FROM car WHERE car_make = '현대' AND car_model = '팰리세이드'),
+   '현대', '팰리세이드', 2021, 'VIN000012', '88칠 6543'),
+
+   ((SELECT id FROM users WHERE user_id = 'mike789'),
+   (SELECT id FROM car WHERE car_make = '현대' AND car_model = '팰리세이드'),
+   '현대', '팰리세이드', 2021, 'VIN000018', '88팔 8888');
+
+SELECT id, vin, car_make, car_model FROM vehicles WHERE vin IN
+('VIN000001', 'VIN123456', 'VIN000012', 'VIN000017', 'VIN000018');
+
+INSERT INTO car (car_model, image_url, car_make) VALUES
+('아반떼', 'avante.jpg', '현대'),
+('아반떼 하이브리드', 'avante_Hybrid.jpg', '현대'),
+('아반떼 N', 'avante_N.jpg', '현대'),
+('캐스퍼 전기', 'casper_electric.jpg', '현대'),
+('캐스퍼', 'casper.jpg', '현대'),
+('그랜져 하이브리드', 'grandeur_Hybrid.jpg', '현대'),
+('그랜져', 'grandeur.jpg', '현대'),
+('아이오닉 5', 'ioniq_5.jpg', '현대'),
+('아이오닉 6', 'ioniq_6.jpg', '현대'),
+('아이오닉 9', 'ioniq_9.jpg', '현대'),
+('코나 전기', 'kona_Electric.jpg', '현대'),
+('코나 하이브리드', 'kona_Hybrid.jpg', '현대'),
+('코나', 'kona.jpg', '현대'),
+('넥소', 'nexo.jpg', '현대'),
+('팰리세이드', 'palisade.jpg', '현대'),
+('포터 2', 'porter_2.jpg', '현대'),
+('산타페 하이브리드', 'santafe_Hybrid.jpg', '현대'),
+('산타페', 'santafe.jpg', '현대'),
+('ST1', 'ST1.jpg', '현대'),
+('스타리아', 'staria.jpg', '현대'),
+('스타리아 하이브리드', 'staria_Hybrid.jpg', '현대'),
+('투산 하이브리드', 'tucsan_Hybrid.jpg', '현대'),
+('투산', 'tucsan.jpg', '현대'),
+('베뉴', 'venue.jpg', '현대');
+
+
+INSERT INTO car (car_model, image_url, car_make) VALUES
+('EV3', 'EV3_1.jpg', '기아'),
+('EV6', 'EV6_1.jpg', '기아'),
+('EV6_GT', 'EV6_GT_1.jpg', '기아'),
+('EV9_1', 'EV9_1.jpg', '기아'),
+('EV9_GT', 'EV9_GT_1.jpg', '기아'),
+('K5', 'K5_1.jpg', '기아'),
+('K8', 'K8_1.jpg', '기아'),
+('K9', 'K9_1.jpg', '기아'),
+('모닝', 'morning_1.jpg', '기아'),
+('니로', 'niro_1.jpg', '기아'),
+('니로 전기차', 'niro_EV_1.jpg', '기아'),
+('레이', 'ray_1.jpg', '기아'),
+('레이 전기차', 'ray_EV_1.jpg', '기아'),
+('쏘렌토', 'sorento.jpg', '기아'),
+('스포티지', 'sportage.jpg', '기아'),
+('타스만', 'tasman.jpg', '기아'),
+('봉고3_파워게이트', 'bongo3_powergate.jpg', '기아'),
+('카니발 하이리무진', 'carnival_hign.jpg', '기아');
+
+
+INSERT INTO car (car_model, image_url, car_make) VALUES
+('콜로라도', 'colorado.jpg', '쉐보레'),
+('타호', 'taho.jpg', '쉐보레'),
+('트레버스', 'travers.jpg', '쉐보레'),
+('트레일블레이저', 'trailblazer.jpg', '쉐보레'),
+('트렉스크로스오버', 'trexcrossover.jpg', '쉐보레');
+
+
+
+INSERT INTO car (car_model, image_url, car_make) VALUES
+('렉스턴_뉴_아레나', '렉스턴_뉴_아레나.jpg', '쌍용'),
+('렉스턴_스포츠', '렉스턴_스포츠.jpg', '쌍용'),
+('렉스턴_스포츠_칸', '렉스턴_스포츠_칸.jpg', '쌍용'),
+('렉스턴_써밋', '렉스턴_써밋.jpg', '쌍용'),
+('무쏘EV', '무쏘EV.jpg', '쌍용'),
+('액티언', '액티언.jpg', '쌍용'),
+('코란도', '코란도.jpg', '쌍용'),
+('코란도_EV', '코란도_EV.jpg', '쌍용'),
+('코란도_EV_택시', '코란도_EV_택시.jpg', '쌍용'),
+('토레스', '토레스.jpg', '쌍용'),
+('토레스_EVX', '토레스_EVX.jpg', '쌍용'),
+('토레스_EVX_밴', '토레스_EVX_밴.jpg', '쌍용'),
+('토레스_EVX_택시', '토레스_EVX_택시.jpg', '쌍용'),
+('토레스_바이퓨얼_택시', '토레스_바이퓨얼_택시.jpg', '쌍용'),
+('토레스_밴', '토레스_밴.jpg', '쌍용'),
+('티볼리', '티볼리.jpg', '쌍용');
+
+SET SQL_SAFE_UPDATES = 0;
+
+-- 1️. car_id가 NULL인 차량 확인
+SELECT * FROM vehicles WHERE car_id IS NULL;
+
+-- 2. car_id 업데이트: car_make과 car_model을 기준으로 car 테이블의 id를 참조
+UPDATE vehicles v
+JOIN car c ON v.car_make = c.car_make AND v.car_model = c.car_model
+SET v.car_id = c.id
+WHERE v.car_id IS NULL;
+
+-- 3. vehicles와 car 테이블이 제대로 조인되는지 확인
+SELECT v.*, c.car_model, c.car_make
+FROM vehicles v
+LEFT JOIN car c ON v.car_id = c.id;
+
+
+
 INSERT INTO user_vehicles (user_id, vehicle_id)
 VALUES
-  ((SELECT id FROM users WHERE user_id = 'alice123'), (SELECT id FROM vehicles WHERE vin = 'VIN000001')),
-  ((SELECT id FROM users WHERE user_id = 'alice123'), (SELECT id FROM vehicles WHERE vin = 'VIN000002')),
-  ((SELECT id FROM users WHERE user_id = 'bob456'), (SELECT id FROM vehicles WHERE vin = 'VIN000003')),
-  ((SELECT id FROM users WHERE user_id = 'johnDoe'), (SELECT id FROM vehicles WHERE vin = 'VIN123456'));
+  -- 아반떼 (VIN000001)을 alice123과 bob456이 공유
+  ((SELECT id FROM users WHERE user_id = 'alice123'), (SELECT id FROM vehicles WHERE vin = 'VIN000001' LIMIT 1)),
+  ((SELECT id FROM users WHERE user_id = 'bob456'), (SELECT id FROM vehicles WHERE vin = 'VIN000001' LIMIT 1)),
+
+  -- 티볼리 (VIN123456)을 johnDoe와 admin001이 공유
+  ((SELECT id FROM users WHERE user_id = 'johnDoe'), (SELECT id FROM vehicles WHERE vin = 'VIN123456' LIMIT 1)),
+  ((SELECT id FROM users WHERE user_id = 'admin001'), (SELECT id FROM vehicles WHERE vin = 'VIN123456' LIMIT 1)),
+
+  -- EV6 (VIN000012)을 admin001과 eva567이 공유
+  ((SELECT id FROM users WHERE user_id = 'admin001'), (SELECT id FROM vehicles WHERE vin = 'VIN000012' LIMIT 1)),
+  ((SELECT id FROM users WHERE user_id = 'eva567'), (SELECT id FROM vehicles WHERE vin = 'VIN000012' LIMIT 1)),
+
+  -- 코란도 (VIN000017)을 alice123과 nina345가 공유
+  ((SELECT id FROM users WHERE user_id = 'alice123'), (SELECT id FROM vehicles WHERE vin = 'VIN000017' LIMIT 1)),
+  ((SELECT id FROM users WHERE user_id = 'nina345'), (SELECT id FROM vehicles WHERE vin = 'VIN000017' LIMIT 1)),
+
+  -- 카니발 하이리무진 (VIN000018)을 robert678과 mike789가 공유
+  ((SELECT id FROM users WHERE user_id = 'robert678'), (SELECT id FROM vehicles WHERE vin = 'VIN000018' LIMIT 1)),
+  ((SELECT id FROM users WHERE user_id = 'mike789'), (SELECT id FROM vehicles WHERE vin = 'VIN000018' LIMIT 1));
+
+
 
 -- 부품 테이블에 엔진오일 데이터 삽입 (이미지 URL 추가)
 INSERT INTO parts (name, category, price, stock, created_at, image_url) VALUES
@@ -219,80 +391,7 @@ VALUES
   (3, 200.00, 'ONLINE', 'FAILED');
 
 
-INSERT INTO car (car_model, image_url, car_make) VALUES
-('아반떼', 'avante.jpg', '현대'),
-('아반떼 하이브리드', 'avante_Hybrid.jpg', '현대'),
-('아반떼 N', 'avante_N.jpg', '현대'),
-('캐스퍼 전기', 'casper_electric.jpg', '현대'),
-('캐스퍼', 'casper.jpg', '현대'),
-('그랜져 하이브리드', 'grandeur_Hybrid.jpg', '현대'),
-('그랜져', 'grandeur.jpg', '현대'),
-('아이오닉 5', 'ioniq_5.jpg', '현대'),
-('아이오닉 6', 'ioniq_6.jpg', '현대'),
-('아이오닉 9', 'ioniq_9.jpg', '현대'),
-('코나 전기', 'kona_Electric.jpg', '현대'),
-('코나 하이브리드', 'kona_Hybrid.jpg', '현대'),
-('코나', 'kona.jpg', '현대'),
-('넥소', 'nexo.jpg', '현대'),
-('팰리세이드', 'palisade.jpg', '현대'),
-('포터 2', 'porter_2.jpg', '현대'),
-('산타페 하이브리드', 'santafe_Hybrid.jpg', '현대'),
-('산타페', 'santafe.jpg', '현대'),
-('ST1', 'ST1.jpg', '현대'),
-('스타리아', 'staria.jpg', '현대'),
-('스타리아 하이브리드', 'staria_Hybrid.jpg', '현대'),
-('투산 하이브리드', 'tucsan_Hybrid.jpg', '현대'),
-('투산', 'tucsan.jpg', '현대'),
-('베뉴', 'venue.jpg', '현대');
 
-
-INSERT INTO car (car_model, image_url, car_make) VALUES
-('EV3', 'EV3_1.jpg', '기아'),
-('EV6', 'EV6_1.jpg', '기아'),
-('EV6_GT', 'EV6_GT_1.jpg', '기아'),
-('EV9_1', 'EV9_1.jpg', '기아'),
-('EV9_GT', 'EV9_GT_1.jpg', '기아'),
-('K5', 'K5_1.jpg', '기아'),
-('K8', 'K8_1.jpg', '기아'),
-('K9', 'K9_1.jpg', '기아'),
-('모닝', 'morning_1.jpg', '기아'),
-('니로', 'niro_1.jpg', '기아'),
-('니로 전기차', 'niro_EV_1.jpg', '기아'),
-('레이', 'ray_1.jpg', '기아'),
-('레이 전기차', 'ray_EV_1.jpg', '기아'),
-('쏘렌토', 'sorento.jpg', '기아'),
-('스포티지', 'sportage.jpg', '기아'),
-('타스만', 'tasman.jpg', '기아'),
-('봉고3_파워게이트', 'bongo3_powergate.jpg', '기아'),
-('카니발 하이리무진', 'carnival_hign.jpg', '기아');
-
-
-INSERT INTO car (car_model, image_url, car_make) VALUES
-('콜로라도', 'colorado.jpg', '쉐보레'),
-('타호', 'taho.jpg', '쉐보레'),
-('트레버스', 'travers.jpg', '쉐보레'),
-('트레일블레이저', 'trailblazer.jpg', '쉐보레'),
-('트렉스크로스오버', 'trexcrossover.jpg', '쉐보레');
-
-
-
-INSERT INTO car (car_model, image_url, car_make) VALUES
-('렉스턴_뉴_아레나', '렉스턴_뉴_아레나.jpg', '쌍용'),
-('렉스턴_스포츠', '렉스턴_스포츠.jpg', '쌍용'),
-('렉스턴_스포츠_칸', '렉스턴_스포츠_칸.jpg', '쌍용'),
-('렉스턴_써밋', '렉스턴_써밋.jpg', '쌍용'),
-('무쏘EV', '무쏘EV.jpg', '쌍용'),
-('액티언', '액티언.jpg', '쌍용'),
-('코란도', '코란도.jpg', '쌍용'),
-('코란도_EV', '코란도_EV.jpg', '쌍용'),
-('코란도_EV_택시', '코란도_EV_택시.jpg', '쌍용'),
-('토레스', '토레스.jpg', '쌍용'),
-('토레스_EVX', '토레스_EVX.jpg', '쌍용'),
-('토레스_EVX_밴', '토레스_EVX_밴.jpg', '쌍용'),
-('토레스_EVX_택시', '토레스_EVX_택시.jpg', '쌍용'),
-('토레스_바이퓨얼_택시', '토레스_바이퓨얼_택시.jpg', '쌍용'),
-('토레스_밴', '토레스_밴.jpg', '쌍용'),
-('티볼리', '티볼리.jpg', '쌍용');
 
 -- 각 가게별 리뷰 삽입 (평점 추가)
 INSERT INTO store_reviews (store_name, content, rating, created_at)
@@ -330,20 +429,12 @@ INSERT INTO reservations (
   -- 예시 3: admin001 사용자가 1번 정비소에서 3번 차량으로 예약 (예약 확정)
   (1, 'admin001', 3, '2025-03-25 09:00:00', '엔진오일 교체 예약', 'CONFIRMED');
 
+SET SQL_SAFE_UPDATES = 0;
 
 -- 1️. car_id가 NULL인 차량 확인
 SELECT * FROM vehicles WHERE car_id IS NULL;
 
--- 2. car_id 업데이트: car_make과 car_model을 기준으로 car 테이블의 id를 참조
-UPDATE vehicles v
-JOIN car c ON v.car_make = c.car_make AND v.car_model = c.car_model
-SET v.car_id = c.id
-WHERE v.car_id IS NULL;
-
--- 3. vehicles와 car 테이블이 제대로 조인되는지 확인
-SELECT v.*, c.car_model, c.car_make
-FROM vehicles v
-LEFT JOIN car c ON v.car_id = c.id;
 
 -- 4️. 특정 차량(현대 아반떼)이 car 테이블에 존재하는지 확인
 SELECT * FROM car WHERE car_make = '현대' AND car_model = '아반떼';
+SET SQL_SAFE_UPDATES = 1;
