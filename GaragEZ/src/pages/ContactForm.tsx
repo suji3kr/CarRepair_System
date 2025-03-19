@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, ChangeEvent } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Layout from "../components/Layout";
@@ -10,11 +11,11 @@ import dayjs, { Dayjs } from "dayjs";
 import { Select, MenuItem, FormControl, InputLabel, SelectChangeEvent } from "@mui/material";
 
 const predefinedMarkers = [
-  { id: "101", lat: 37.5665, lng: 126.978, name: "서울" },
-  { id: "102", lat: 35.1796, lng: 129.0756, name: "부산" },
-  { id: "103", lat: 33.4996, lng: 126.5312, name: "제주" },
-  { id: "104", lat: 37.2928, lng: 126.9910, name: "스타필드점" },
-  { id: "105", lat: 37.2374, lng: 127.2052, name: "용인중앙지점" },
+  { id: "1", lat: 37.2928, lng: 126.9910, name: "스타필드점" },
+  { id: "2", lat: 37.2374, lng: 127.2052, name: "용인중앙지점" },
+  { id: "3", lat: 37.5665, lng: 126.978, name: "서울" },
+  { id: "4", lat: 35.1796, lng: 129.0756, name: "부산" },
+  { id: "5", lat: 33.4996, lng: 126.5312, name: "제주" },
 ];
 
 interface Car {
@@ -49,7 +50,6 @@ const fetchCarsByMake = async (carMake: string): Promise<Car[]> => {
     throw new Error(`Failed to fetch cars: ${response.status} ${response.statusText}`);
   }
   const data = await response.json();
-  console.log("Fetched cars:", data); // 디버깅용
   return Array.isArray(data) ? data : data.cars || [];
 };
 
@@ -95,11 +95,13 @@ const ContactForm: React.FC = () => {
 
   useEffect(() => {
     const { state } = location;
+    console.log(state);
     if (state && state.carMake && state.carModel) {
       setFormData((prev) => ({
         ...prev,
         carMake: state.carMake,
         carModel: state.carModel,
+        carId: state.carId,
       }));
     }
   }, [location]);
@@ -150,6 +152,7 @@ const ContactForm: React.FC = () => {
       ...prevData,
       [name]: value,
       ...(name === "carMake" ? { carModel: "" } : {}), // carMake 변경 시 carModel 초기화
+      ...(name === "carModel" ? { carId: cars.find(v => v.carModel===value)?.carId } : {}), // carModel 변경시 carId 등록
     }));
   };
 
@@ -166,14 +169,32 @@ const ContactForm: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Submitted Data:", {
+    const token = localStorage.getItem("jwtToken");
+    const requestData = {
       ...formData,
       appointmentDate: formData.appointmentDate?.format("YYYY-MM-DD"),
-    });
-    alert("문의 및 예약이 성공적으로 제출되었습니다!");
-    navigate("/reservations");
+    };  
+    try{
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/reservations`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": token ? `Bearer ${token}` : "",
+        },
+        body: JSON.stringify(requestData),
+      });
+      if (!response.ok) {
+        throw new Error("예약 요청에 실패했습니다.");
+      }
+      alert("문의 및 예약이 성공적으로 제출되었습니다!");
+      navigate("/reservations");
+    }catch(e){
+      console.error("Error submitting reservation:", e);
+      alert("예약 요청 중 오류가 발생했습니다. 다시 시도해주세요.");
+    }
+    
   };
 
   return (
@@ -272,13 +293,13 @@ const ContactForm: React.FC = () => {
           </div>
 
           <div className={styles.contactInputGroup}>
-            <label className={styles.selectGarage}>선택한 정비소</label>
+            <label>선택한 정비소 (아래 지도에서 선택 시 자동 입력)</label>
             <input type="text" name="repairStoreName" value={formData.repairStoreName} readOnly />
           </div>
 
           {isLoaded && (
             <div className={styles.mapContainer}>
-              <h3>가까운 정비소 선택</h3>
+              <h3>가까운 정비소 선택 (마커를 선택하세요)</h3>
               <GoogleMap mapContainerStyle={{ width: "100%", height: "400px" }} center={center} zoom={12}>
                 {predefinedMarkers.map((marker) => (
                   <Marker

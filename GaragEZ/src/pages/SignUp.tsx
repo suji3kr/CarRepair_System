@@ -6,15 +6,11 @@ import { FormData, initialFormData } from "../types/Signup";
 import agreement from "../text/agreement.txt?raw";
 import axios from "axios";
 import { Select, MenuItem, FormControl, InputLabel, SelectChangeEvent } from "@mui/material";
+import { Car } from "../types/car";
 
 const API_URL = `${import.meta.env.VITE_API_URL}/api/users/signup`;
 const CARS_API_URL = `${import.meta.env.VITE_API_URL}/api/cars?car_make=`;
 const CHECK_DUPLICATE_URL = `${import.meta.env.VITE_API_URL}/api/users/check-duplicate`;
-
-interface Car {
-  id: string;
-  carModel: string;
-}
 
 const SignUp: React.FC = () => {
   const location = useLocation();
@@ -111,6 +107,7 @@ const SignUp: React.FC = () => {
     setFormData((prev) => ({
       ...prev,
       [name]: checked !== undefined ? checked : name === "year" ? (value === "" ? "" : parseInt(value, 10)) : value,
+      ...(name === "carModel" ? { carId: String(cars.find(v => v.carModel===value)?.carId) } : {}),
     }));
   };
 
