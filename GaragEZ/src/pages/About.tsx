@@ -102,7 +102,7 @@ export default function About() {
                 <img src={mechanic.image} alt={mechanic.name} className={styles.image} />
                 <h3>{mechanic.name}</h3>
                 <p className={styles.role}>{mechanic.role}</p> {/* 직책 추가 */}
-                <p>{mechanic.specialty}</p>
+                <p className={styles.specialty}>{mechanic.specialty}</p>
               </div>
             ))}
           </div>
