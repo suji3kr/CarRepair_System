@@ -82,6 +82,23 @@
   background: #0056b3;
 }
 
+.carSelectionGroup {
+  display: flex;
+  gap: 20px; /* 이 값을 조정하여 간격을 조절 */
+  margin-bottom: 16px;
+}
+
+.carSelectionGroup > div {
+  flex: 1; /* 입력창 너비를 균등하게 설정 */
+}
+
+.selectGarage::after {
+  content: " (아래 지도에서 선택 시 자동 입력)";
+}
+.mapContainer  h3::after {
+  content:"(마커를 선택하세요)";
+}
+
 /* 반응형 */
 @media (max-width: 768px) {
   .contactContainer {
@@ -92,13 +109,21 @@
   .contactSubmitButton {
     width: 100%;
   }
-}
-.carSelectionGroup {
-  display: flex;
-  gap: 20px; /* 이 값을 조정하여 간격을 조절 */
-  margin-bottom: 16px;
+  .selectGarage::after {
+    display: block;
+  }
+
+  .mapContainer h3::after {
+    display: block;
+  }
+
+
 }
 
-.carSelectionGroup > div {
-  flex: 1; /* 입력창 너비를 균등하게 설정 */
+
+@media (max-width: 400px) {
+  
 }
+
+
+

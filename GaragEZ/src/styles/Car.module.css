@@ -4,8 +4,10 @@
   justify-content: center;
   margin-top: 100px;
   position: relative;
+  padding: 0 20px; /* 부품샵에서 가져온 여백 추가 */
 }
 
+/* ✅ 메뉴 스타일 */
 .partMenu {
   position: sticky; /* 스크롤 시 고정 */
   top: 100px; /* 상단에서 100px 떨어진 위치 유지 */
@@ -20,42 +22,42 @@
 }
 
 /* ✅ 카테고리 스타일 수정 */
-.category h3 {
-  margin-bottom: 50px;
+.category {
+  margin-bottom: 50px; /* h3 대신 상위 요소에 직접 적용 */
   cursor: pointer;
   transition: color 0.3s;
 }
 
-.category h3:hover {
-  color: #007bff; /* ✅ 호버 시 색상 변경 */
+.category h3 {
+  margin: 0; /* 불필요한 마진 제거 */
 }
 
-/* ✅ 카테고리 리스트 스타일 */
-.category ul {
-  list-style: none;
-  padding: 0;
+.category:hover {
+  color: #007bff; /* 호버 시 색상 변경 */
 }
 
-.category li {
-  padding: 5px 0;
-  cursor: pointer;
+.category.active {
+  color: #007bff;
+  font-weight: bold; /* 부품샵에서 가져온 활성 상태 스타일 */
 }
 
-/* ✅ 아이템 컨테이너: 아이템 그리드와 페이지네이션을 감싸는 요소 */
+/* ✅ 아이템 컨테이너 */
 .itemsContainer {
   min-height: 600px;
   width: 100%;
+  max-width: 1200px; /* 부품샵에서 가져온 최대 너비 */
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* ✅ 아이템 그리드: 5열 그리드 레이아웃 */
+/* ✅ 아이템 그리드 */
 .itemsGrid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr); /* 기본 4열 */
   gap: 20px;
   justify-content: center;
+  width: 100%;
 }
 
 /* ✅ 개별 아이템 카드 */
@@ -68,21 +70,19 @@
   width: 320px;
   height: 250px;
   transition: transform 0.2s ease-in-out;
-  cursor: pointer; /* ✅ 커서 변경 */
+  cursor: pointer;
 }
 
-/* ✅ 마우스를 올렸을 때 약간 확대 효과 추가 */
 .itemCard:hover {
   transform: scale(1.05);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
-/* ✅ 아이템 이미지 스타일 */
 .itemCard img {
   margin-top: 20px;
   width: 300px;
   height: 150px;
-  position: relative;
+  object-fit: cover; /* 이미지 비율 유지 */
 }
 
 /* ✅ 아이템 정보 스타일 */
@@ -109,7 +109,6 @@
   width: 100%;
 }
 
-/* ✅ 페이지네이션 버튼 스타일 */
 .pagination button {
   padding: 8px 12px;
   border: none;
@@ -119,14 +118,102 @@
   border-radius: 5px;
 }
 
-/* ✅ 비활성화된 버튼 스타일 */
 .pagination button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
 
-/* ✅ 페이지네이션 텍스트 */
 .pagination span {
   font-size: 16px;
   font-weight: bold;
+}
+
+/* ✅ 반응형 디자인 */
+@media (max-width: 1200px) {
+  .itemsGrid {
+    grid-template-columns: repeat(3, 1fr); /* 1200px 이하에서 3열 */
+  }
+  .itemCard {
+    width: 250px; /* 부품샵에서 가져온 크기 조정 */
+    height: 240px;
+  }
+  .itemCard img {
+    width: 230px;
+    height: 140px;
+  }
+}
+
+@media (max-width: 992px) {
+  .itemsGrid {
+    grid-template-columns: repeat(2, 1fr); /* 992px 이하에서 2열 */
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .partMenu {
+    position: static; /* 모바일에서는 고정 해제 */
+    width: 100%;
+    height: auto;
+    padding: 10px 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap; /* 부품샵에서 가져온 줄바꿈 */
+  }
+
+  .category {
+    margin-bottom: 0; /* 세로 간격 제거 */
+    padding: 8px 15px;
+    border-radius: 5px;
+  }
+
+  .category.active {
+    background-color: #007bff; /* 부품샵에서 가져온 활성 배경 */
+    color: white;
+  }
+
+  .itemsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    margin-left: 0; /* 부품샵의 margin-left 제거 */
+  }
+  .itemCard {
+    width: 180px;
+    height: 220px;
+  }
+  .itemCard img {
+    width: 160px;
+    height: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .itemsGrid {
+    grid-template-columns: 1fr; /* 480px 이하에서 1열 */
+  }
+  .itemCard {
+    width: 100%;
+    max-width: 300px;
+    height: 250px;
+    margin-left: 22px;
+  }
+  .itemCard img {
+    width: 280px;
+    height: 150px;
+  }
+  .partMenu {
+    justify-content: center;
+    overflow-x: auto; /* 가로 스크롤 가능 */
+    white-space: nowrap;
+    gap: 10px;
+  }
+  .category {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+  }
 }
