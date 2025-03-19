@@ -330,4 +330,11 @@
   .authButtons {
     margin-right: 30px;
   }
+
+  
+  @media (max-width: 480px) {
+    .menuWrapper {
+      top: 65px;
+    }
+  }
 }

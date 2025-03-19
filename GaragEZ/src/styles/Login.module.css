@@ -132,3 +132,18 @@ input[type="submit"]:hover {
 .signup {
   padding-top: 10px;
 }
+
+
+@media (max-width: 480px) {
+  .signup {
+    font-size: 14px;
+  }
+
+  .signup a{
+    color: #093a4d;
+  }
+
+  .signup a:hover{
+    color: #34b3e6;
+  }
+}

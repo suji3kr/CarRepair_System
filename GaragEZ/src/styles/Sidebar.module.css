@@ -73,7 +73,7 @@ a {
 
 
 /* ✅ 모바일 버전 - 사이드바 숨기기 */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .sidebar {
       right: -70px; /* 기본적으로 숨김 */
       transition: right 0.3s ease-in-out;

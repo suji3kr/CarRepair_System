@@ -187,3 +187,17 @@
   object-fit: cover;
   border-radius: 8px;
 }
+
+@media (max-width: 480px) {
+  .hero h1 {
+    font-size: 28px;
+  }
+
+  .hero p {
+    font-size: 23px;
+  }
+
+  .services h2{
+    font-size: 23px;
+  }
+}

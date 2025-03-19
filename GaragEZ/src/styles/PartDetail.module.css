@@ -118,3 +118,43 @@
   font-size: 22px;
   margin-bottom: 10px;
 }
+
+
+@media (max-width: 480px) {
+  .imageContainer {
+    display: block;
+  }
+  .productInfo {
+    margin-right: 20px
+  }
+  .cartButton {
+    width: 120px;
+    font-size: 14px; 
+  }
+
+  .buyButton {
+    width: 120px;
+    font-size: 14px; 
+  }
+
+  .container{
+    flex-direction: column;
+  }
+
+  .container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 17px;
+  }
+  .quantityContainer{
+    justify-content: flex-end
+  }
+
+  .partMenu{
+    justify-content: center;
+    overflow-x: auto;
+    white-space: nowrap;
+    gap: 10px;
+    display: flex;}
+  
+}
