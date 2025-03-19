@@ -190,7 +190,7 @@
 
 @media (max-width: 480px) {
   .hero h1 {
-    font-size: 28px;
+    font-size: 26px;
   }
 
   .hero p {
@@ -198,6 +198,14 @@
   }
 
   .services h2{
+    font-size: 23px;
+  }
+
+  .videoWrapper {
+    margin-left: 5px;
+  }
+
+  .mechanicsSection h2{
     font-size: 23px;
   }
 }
