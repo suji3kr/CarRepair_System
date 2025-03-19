@@ -26,6 +26,7 @@ const SignUp: React.FC = () => {
   const [cars, setCars] = useState<Car[]>([]);
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [isIdAvailable, setIsIdAvailable] = useState<boolean | null>(null);
+  const [isPasswordMatch, setIsPasswordMatch] = useState<boolean | null>(null); // 비밀번호 일치 여부 상태 추가
 
   useEffect(() => {
     if (location.state?.email) {
@@ -63,6 +64,15 @@ const SignUp: React.FC = () => {
     }
   }, [formData.carMake]);
 
+  // 비밀번호와 비밀번호 확인 일치 여부 실시간 확인
+  useEffect(() => {
+    if (formData.password === "" && passwordConfirm === "") {
+      setIsPasswordMatch(null); // 둘 다 비어있으면 상태 초기화
+    } else {
+      setIsPasswordMatch(formData.password === passwordConfirm);
+    }
+  }, [formData.password, passwordConfirm]);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>
   ) => {
@@ -82,6 +92,7 @@ const SignUp: React.FC = () => {
     setFormData(initialFormData);
     setPasswordConfirm("");
     setIsIdAvailable(null);
+    setIsPasswordMatch(null); // 초기화 시 비밀번호 일치 상태도 리셋
   };
 
   const handleScroll = () => {
@@ -93,7 +104,6 @@ const SignUp: React.FC = () => {
     }
   };
 
-  // userId 변경 시 중복 확인
   useEffect(() => {
     if (formData.userId.trim() === "") {
       setIsIdAvailable(null);
@@ -145,10 +155,10 @@ const SignUp: React.FC = () => {
       return;
     }
     if (isIdAvailable === false) {
-      alert("사용할 수 없는 아이디입니다. 다른 아이디를 입력해 주세요.");
+      alert("사용 workplaces 수 없는 아이디입니다. 다른 아이디를 입력해 주세요.");
       return;
     }
-    if (!isGoogleSignup && formData.password !== passwordConfirm) {
+    if (!isGoogleSignup && isPasswordMatch === false) {
       alert("비밀번호가 일치하지 않습니다.");
       return;
     }
@@ -209,6 +219,8 @@ const SignUp: React.FC = () => {
                   onChange={(e) => setPasswordConfirm(e.target.value)}
                   required
                 />
+                {isPasswordMatch === false && <p style={{ color: "red" }}>비밀번호가 일치하지 않습니다.</p>}
+                {isPasswordMatch === true && <p style={{ color: "green" }}>비밀번호가 일치합니다.</p>}
               </div>
             </>
           )}
@@ -296,7 +308,7 @@ const SignUp: React.FC = () => {
                 <Select
                   labelId="year-label"
                   name="year"
-                  value={formData.year === "" ? "" : formData.year.toString()} // string으로 변환
+                  value={formData.year === "" ? "" : formData.year.toString()}
                   label="연식"
                   onChange={handleChange}
                   required

@@ -1,10 +1,20 @@
+@font-face {
+  font-family: 'Pretendard-Regular';
+  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
 /* 전체 컨테이너 */
 .container {
   width: 100%;
-  background: white;
   font-family: "Inter", sans-serif;
   padding: 40px 20px;
-  margin-top: 100px;
+  margin-top: 65px;
+  background-image: linear-gradient(rgb(117, 112, 112), rgba(255, 255, 255, 0.5)), url('/images/back1.jpg');
+  background-size: cover; /* 전체 화면을 채우도록 설정 */
+  background-position: center; /* 가운데 정렬 */
+  background-repeat: no-repeat; /* 반복 없음 */
 }
 
 .aboutUs h2 {
@@ -23,20 +33,27 @@
 }
 
 .hero h1 {
-  font-size: 64px;
+  font-size: 45px;
   font-weight: 700;
   margin-bottom: 10px;
+  color: #fff;
+  font-family: 'Pretendard-Regular';
 }
 
 .hero p {
   font-size: 24px;
-  color: rgba(0, 0, 0, 0.75);
+  color: #ccc;
 }
 
 /* YouTube 비디오 섹션 */
 .videoSection {
   text-align: center;
   margin-top: 40px;
+}
+
+.videoSection h2{
+  font-size: 35px;
+  font-family: 'Pretendard-Regular';
 }
 
 .videoWrapper {
@@ -78,7 +95,7 @@
 
 /* 개별 서비스 카드 */
 .serviceCard {
-  background: white;
+  background: rgb(224, 224, 224);
   padding: 20px;
   width: 280px;
   border-radius: 10px;
@@ -136,20 +153,28 @@
 
 .role {
   font-size: 16px;
-  font-weight: bold;
-  color: #333;
+  color: #ffffff;
   margin: 5px 0;
+  font-weight: normal;
 }
 
+.card .specialty{
+  color: #e4d6d6;
+}
 
 .card {
   width: 250px;
-  background: white;
+  background: rgb(68, 68, 68);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   padding: 20px;
   text-align: center;
   transition: transform 0.3s ease-in-out;
+}
+
+.card h3 {
+  font-weight: normal;
+  color: #fff;
 }
 
 .card:hover {
