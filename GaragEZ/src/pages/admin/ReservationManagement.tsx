@@ -121,6 +121,20 @@ const ReservationManagement: React.FC = () => {
     }
   }, [updating]);
 
+  // ✅ 예약 상태를 한글로 변환하는 함수 추가
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case "CONFIRMED":
+        return "예약 완료";
+      case "CANCELLED":
+        return "예약 취소";
+      case "PENDING":
+        return "예약 대기 중";
+      default:
+        return "알 수 없음";
+    }
+  };
+
   if (loading) {
     return (
       <div style={{ textAlign: "center", marginTop: "50px" }}>
@@ -153,7 +167,7 @@ const ReservationManagement: React.FC = () => {
                   <TableCell>{res.id}</TableCell>
                   <TableCell>{res.userId}</TableCell>
                   <TableCell>{format(new Date(res.reservationTime), "yyyy-MM-dd HH:mm:ss", { locale: ko })}</TableCell>
-                  <TableCell>{res.status}</TableCell>
+                  <TableCell>{getStatusLabel(res.status)}</TableCell> {/* ✅ 상태 한글 변환 */}
                   <TableCell>
                     {res.status === "PENDING" && (
                       <>

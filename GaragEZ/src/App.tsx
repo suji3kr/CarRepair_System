@@ -90,7 +90,6 @@ const LayoutWrapper: React.FC = () => {
         <Route path="/cars" element={<Cars />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/storereview" element={<StoreReviewPage />} />
-        {/* 예약 생성은 이미 되어 있으므로, "/reservations" 경로는 예약 내역 조회 페이지로 변경 */}
         <Route path="/reservations" element={<MyReservationsPage />} />
       </Routes>
     </Layout>

@@ -1,0 +1,62 @@
+.container {
+    max-width: 1000px;
+    margin: 4rem auto;
+    padding: 1rem;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-top: 100px;
+  }
+  
+  .title {
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+  }
+  .reservtable {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .thTd {
+    border: 1px solid #ccc;
+    padding: 12px;
+    text-align: center;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  .message {
+    text-align: center;
+    color: #666;
+    padding: 2rem;
+  }
+  
+  .button {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .reservtable tr th:nth-child(2) {
+    width: 150px;
+  }
+  .reservtable tr th:nth-child(4) {
+    width: 130px;
+  }
+  .reservtable tr th:nth-child(5) {
+    width: 130px;
+  }
+  .reservtable tr th:nth-child(7) {
+    width: 200px;
+  }
+
+  
+  
