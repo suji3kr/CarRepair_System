@@ -10,6 +10,7 @@ import { GoogleMap, Marker, InfoWindow, useJsApiLoader } from "@react-google-map
 import dayjs, { Dayjs } from "dayjs";
 import { Select, MenuItem, FormControl, InputLabel, SelectChangeEvent } from "@mui/material";
 
+
 const predefinedMarkers = [
   { id: "1", lat: 37.2928, lng: 126.9910, name: "스타필드점" },
   { id: "2", lat: 37.2374, lng: 127.2052, name: "용인중앙지점" },
@@ -35,6 +36,7 @@ interface FormData {
   repairStoreId: string;
   repairStoreName: string;
   appointmentDate: Dayjs | null;
+  createdAt: Dayjs | null;
 }
 
 const fetchCarsByMake = async (carMake: string): Promise<Car[]> => {
@@ -71,6 +73,7 @@ const ContactForm: React.FC = () => {
     repairStoreId: "",
     repairStoreName: "",
     appointmentDate: null,
+    createdAt: null
   });
 
   const [cars, setCars] = useState<Car[]>([]);
@@ -172,9 +175,11 @@ const ContactForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const token = localStorage.getItem("jwtToken");
+    const createdAtKst = formData.createdAt?.format("YYYY-MM-DD HH:mm:ss");  //일시적으로 한국시간 나오게 하기
     const requestData = {
       ...formData,
       appointmentDate: formData.appointmentDate?.format("YYYY-MM-DD"),
+      createdAt: createdAtKst,
     };  
     try{
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/reservations`, {
