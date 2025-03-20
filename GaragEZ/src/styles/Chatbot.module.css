@@ -169,3 +169,9 @@
 .inputArea button:hover {
   background: #73b5ee;
 }
+
+@media (max-width: 480px) {
+  .chatbot {
+    width: 340px;
+  }
+}
