@@ -1,5 +1,6 @@
 package com.company.controller;
 
+import com.company.dto.UpdatePartStockRequest;
 import com.company.dto.UpdateReservationStatusRequest;
 import com.company.dto.UserDTO;
 import com.company.entity.cars.Car;
@@ -45,10 +46,12 @@ public class AdminController {
 
             if (isAdmin) {
                 return ResponseEntity.ok().body("✅ 관리자 확인 완료");
+            } else {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("🚫 관리자 권한이 없습니다.");
             }
         }
 
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("🚫 접근 권한이 없습니다.");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("🔒 인증이 필요합니다.");
     }
 
     @GetMapping("/reservations")
@@ -143,6 +146,26 @@ public class AdminController {
         return parts.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(parts);
     }
 
+    @PutMapping("/partshop/{id}/stock")
+    public ResponseEntity<?> updatePartStock(@PathVariable Long id, @RequestBody UpdatePartStockRequest request,
+                                             @RequestHeader(value = "Authorization", required = false) String authHeader) {
+        if (authHeader == null || authHeader.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("🔒 인증 토큰이 필요합니다.");
+        }
+
+        if (request == null || request.getStock() == null || request.getStock() < 0) {
+            return ResponseEntity.badRequest().body("🚨 재고는 0 이상이어야 합니다.");
+        }
+
+        return partRepository.findById(id)
+                .map(part -> {
+                    part.setStock(request.getStock());
+                    partRepository.save(part);
+                    return ResponseEntity.ok("✅ 부품 ID " + id + " 재고가 " + request.getStock() + "으로 업데이트되었습니다.");
+                })
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("❌ 부품을 찾을 수 없습니다."));
+    }
+
     @DeleteMapping("/partshop/{id}")
     public ResponseEntity<String> deletePart(@PathVariable Long id, @RequestHeader(value = "Authorization", required = false) String authHeader) {
         if (authHeader == null || authHeader.isEmpty()) {
@@ -151,8 +174,12 @@ public class AdminController {
 
         return partRepository.findById(id)
                 .map(part -> {
-                    partRepository.delete(part);
-                    return ResponseEntity.ok("✅ 부품 ID " + id + " 삭제 완료.");
+                    try {
+                        partRepository.delete(part);
+                        return ResponseEntity.ok("✅ 부품 ID " + id + " 삭제 완료.");
+                    } catch (Exception e) {
+                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("❌ 부품 삭제 중 오류가 발생했습니다.");
+                    }
                 })
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("❌ 부품을 찾을 수 없습니다."));
     }

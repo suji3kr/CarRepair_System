@@ -42,7 +42,7 @@ public class PartController {
         return ResponseEntity.ok(savedPart);
     }
 
-    /*// 🔹 4. 특정 부품 정보 수정
+/*    // 🔹 4. 특정 부품 정보 수정
     @PutMapping("/{id}")
     public ResponseEntity<Part> updatePart(@PathVariable Long id, @RequestBody Part updatedPart) {
         return partRepository.findById(id)
@@ -55,7 +55,7 @@ public class PartController {
                     return ResponseEntity.ok(savedPart);
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
-    }
+    }*/
 
     // 🔹 5. 특정 부품 삭제
     @DeleteMapping("/{id}")
@@ -82,5 +82,5 @@ public class PartController {
                     return ResponseEntity.ok(part);
                 })
                 .orElseGet(() -> ResponseEntity.status(404).body("❌ 부품을 찾을 수 없습니다."));
-    }*/
+    }
 }
