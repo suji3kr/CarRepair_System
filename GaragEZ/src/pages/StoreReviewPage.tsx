@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import Layout from "../components/Layout";
 import styles from "../styles/StoreReview.module.css";
-import { Rating } from "@mui/material"; // MUI Rating 컴포넌트 import
+import { Rating } from "@mui/material";
 
 interface StoreReview {
   id: number;
@@ -81,6 +81,23 @@ const StoreReviewPage: React.FC = () => {
     }
   };
 
+  // 리뷰 삭제 핸들러
+  const handleDeleteReview = async (id: number) => {
+    if (!window.confirm("해당 리뷰를 삭제하시겠습니까?")) return;
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/storereviews/${id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error("리뷰 삭제 실패");
+      }
+      await fetchReviews(); // 삭제 후 목록 갱신
+    } catch (err) {
+      console.error(err);
+      alert("리뷰 삭제 중 오류가 발생했습니다.");
+    }
+  };
+
   return (
     <Layout>
       <div className={styles.container}>
@@ -116,6 +133,12 @@ const StoreReviewPage: React.FC = () => {
                       <span className={styles.reviewDate}>
                         {new Date(review.createdAt).toLocaleString()}
                       </span>
+                      <button
+                        className={styles.deleteButton}
+                        onClick={() => handleDeleteReview(review.id)}
+                      >
+                        삭제
+                      </button>
                     </li>
                   ))}
                 </ul>
