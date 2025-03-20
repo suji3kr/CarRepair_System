@@ -1,14 +1,17 @@
 package com.company.controller;
 
+import com.company.dto.UpdateReservationStatusRequest;
 import com.company.dto.UserDTO;
 import com.company.entity.cars.Car;
 import com.company.entity.part.Part;
-import com.company.entity.user.User;
+import com.company.entity.repair.Reservation;
+import com.company.entity.repair.ReservationStatus;
 import com.company.repository.CarRepository;
 import com.company.repository.PartRepository;
 import com.company.repository.UserRepository;
+import com.company.service.ReservationService;
+import jakarta.persistence.OptimisticLockException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,6 +30,7 @@ public class AdminController {
     private final UserRepository userRepository;
     private final CarRepository carRepository;
     private final PartRepository partRepository;
+    private final ReservationService reservationService;
 
     @GetMapping("/check")
     public ResponseEntity<?> checkAdmin(@RequestHeader(value = "Authorization", required = false) String authHeader) {
@@ -34,7 +38,6 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("🔒 인증 토큰이 필요합니다.");
         }
 
-        // 현재 로그인한 사용자 정보 가져오기
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails userDetails) {
             boolean isAdmin = userDetails.getAuthorities().stream()
@@ -48,149 +51,109 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("🚫 접근 권한이 없습니다.");
     }
 
-
-
-    // ✅ 현재 인증된 사용자 정보 가져오기
-    private String getAuthenticatedUsername() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof UserDetails) {
-            return ((UserDetails) principal).getUsername();
+    @GetMapping("/reservations")
+    public ResponseEntity<List<Reservation>> getAllReservations(@RequestHeader(value = "Authorization", required = false) String authHeader) {
+        if (authHeader == null || authHeader.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        return null;
+
+        List<Reservation> reservations = reservationService.getAllReservations();
+        return reservations.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(reservations);
     }
 
-    // ✅ 전체 사용자 목록 조회
+    @PutMapping("/reservations/{id}/status")
+    public ResponseEntity<?> updateReservationStatus(
+            @PathVariable Long id,
+            @RequestBody UpdateReservationStatusRequest request,
+            @RequestHeader(value = "Authorization", required = false) String authHeader) {
+
+        if (authHeader == null || authHeader.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("🔒 인증 토큰이 필요합니다.");
+        }
+
+        try {
+            ReservationStatus updatedStatus = request.toReservationStatus();
+            reservationService.updateReservationStatus(id, updatedStatus);
+            return ResponseEntity.ok("✅ 예약 ID " + id + " 상태가 " + updatedStatus + "로 업데이트되었습니다.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (OptimisticLockException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("❌ 다른 요청에 의해 예약 상태가 이미 변경되었습니다. 다시 시도해주세요.");
+        }
+    }
+
     @GetMapping("/users")
     public ResponseEntity<List<UserDTO>> getAllUsers(@RequestHeader(value = "Authorization", required = false) String authHeader) {
         if (authHeader == null || authHeader.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
         List<UserDTO> users = userRepository.findAll().stream()
                 .map(UserDTO::new)
                 .collect(Collectors.toList());
 
-        if (users.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-
-        return ResponseEntity.ok(users);
+        return users.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(users);
     }
 
-    // ✅ 사용자 삭제
     @DeleteMapping("/users/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id, @RequestHeader(value = "Authorization", required = false) String authHeader) {
         if (authHeader == null || authHeader.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("🔒 인증 토큰이 필요합니다.");
         }
 
-        if (!userRepository.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("❌ 사용자를 찾을 수 없습니다.");
-        }
-
-        userRepository.deleteById(id);
-        return ResponseEntity.ok("✅ 사용자 ID " + id + " 삭제 완료.");
+        return userRepository.findById(id)
+                .map(user -> {
+                    userRepository.delete(user);
+                    return ResponseEntity.ok("✅ 사용자 ID " + id + " 삭제 완료.");
+                })
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("❌ 사용자를 찾을 수 없습니다."));
     }
 
-    // ✅ 전체 차량 목록 조회
     @GetMapping("/cars")
     public ResponseEntity<List<Car>> getAllCars(@RequestHeader(value = "Authorization", required = false) String authHeader) {
         if (authHeader == null || authHeader.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
         List<Car> cars = carRepository.findAll();
-        if (cars.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-
-        return ResponseEntity.ok(cars);
+        return cars.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(cars);
     }
 
-    // ✅ 특정 차량 삭제
     @DeleteMapping("/cars/{carId}")
     public ResponseEntity<String> deleteCar(@PathVariable Long carId, @RequestHeader(value = "Authorization", required = false) String authHeader) {
         if (authHeader == null || authHeader.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("🔒 인증 토큰이 필요합니다.");
         }
 
-        if (!carRepository.existsById(carId)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("❌ 차량을 찾을 수 없습니다.");
-        }
-
-        carRepository.deleteById(carId);
-        return ResponseEntity.ok("✅ 차량 ID " + carId + " 삭제 완료.");
+        return carRepository.findById(carId)
+                .map(car -> {
+                    carRepository.delete(car);
+                    return ResponseEntity.ok("✅ 차량 ID " + carId + " 삭제 완료.");
+                })
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("❌ 차량을 찾을 수 없습니다."));
     }
 
-    // ✅ 모든 부품 조회
     @GetMapping("/partshop")
     public ResponseEntity<List<Part>> getAllParts(@RequestHeader(value = "Authorization", required = false) String authHeader) {
         if (authHeader == null || authHeader.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
         List<Part> parts = partRepository.findAll();
-        if (parts.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-
-        return ResponseEntity.ok(parts);
+        return parts.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(parts);
     }
 
-    // ✅ 새로운 부품 추가
-    @PostMapping("/partshop")
-    public ResponseEntity<Part> createPart(@RequestBody Part part, @RequestHeader(value = "Authorization", required = false) String authHeader) {
-        if (authHeader == null || authHeader.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
-
-        Part savedPart = partRepository.save(part);
-        return ResponseEntity.ok(savedPart);
-    }
-
-    @PutMapping("/partshop/{id}")
-    public ResponseEntity<?> updatePart(@PathVariable Long id, @RequestBody Part updatedPart,
-                                        @RequestHeader(value = "Authorization", required = false) String authHeader) {
-        if (authHeader == null || authHeader.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("🔒 인증 토큰이 필요합니다.");
-        }
-
-        Optional<Part> partOptional = partRepository.findById(id);
-        if (partOptional.isPresent()) {
-            Part part = partOptional.get();
-
-            // ✅ null 또는 빈 값 체크 (필수 컬럼 보호)
-            if (updatedPart.getName() == null || updatedPart.getName().trim().isEmpty()) {
-                return ResponseEntity.badRequest().body("❌ 부품명(name)은 비워둘 수 없습니다.");
-            }
-            if (updatedPart.getCategory() == null || updatedPart.getCategory().trim().isEmpty()) {
-                return ResponseEntity.badRequest().body("❌ 카테고리(category)는 비워둘 수 없습니다.");
-            }
-
-            // ✅ 값이 null이 아닌 경우만 업데이트
-            part.setName(updatedPart.getName());
-            part.setCategory(updatedPart.getCategory());
-            part.setPrice(updatedPart.getPrice());
-            part.setStock(updatedPart.getStock());
-
-            return ResponseEntity.ok(partRepository.save(part));
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("❌ 부품을 찾을 수 없습니다.");
-        }
-    }
-
-    // ✅ 특정 부품 삭제
     @DeleteMapping("/partshop/{id}")
     public ResponseEntity<String> deletePart(@PathVariable Long id, @RequestHeader(value = "Authorization", required = false) String authHeader) {
         if (authHeader == null || authHeader.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("🔒 인증 토큰이 필요합니다.");
         }
 
-        if (!partRepository.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("❌ 부품을 찾을 수 없습니다.");
-        }
-
-        partRepository.deleteById(id);
-        return ResponseEntity.ok("✅ 부품 ID " + id + " 삭제 완료.");
+        return partRepository.findById(id)
+                .map(part -> {
+                    partRepository.delete(part);
+                    return ResponseEntity.ok("✅ 부품 ID " + id + " 삭제 완료.");
+                })
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("❌ 부품을 찾을 수 없습니다."));
     }
 }
