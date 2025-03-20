@@ -3,11 +3,12 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Part } from "../../types/part";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField } from "@mui/material";
+import "../../styles/partManagement.css"; // ✅ CSS 추가
 
 const PartShopManagement: React.FC = () => {
   const [products, setProducts] = useState<Part[]>([]);
   const [editedStock, setEditedStock] = useState<{ [key: number]: number | undefined }>({});
-  const navigate = useNavigate(); // ✅ 페이지 이동을 위한 useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
@@ -19,36 +20,13 @@ const PartShopManagement: React.FC = () => {
   const checkAdmin = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/admin/check`, {
+      await axios.get(`${import.meta.env.VITE_API_URL}/api/admin/check`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
-      if (res.status !== 200) {
-        throw new Error();
-      }
-    } catch (error: unknown) {
+    } catch (error) {
       console.error("🚨 관리자 접근 오류 발생:", error);
-    
-      let errorMessage = "🚫 관리자만 접근할 수 있습니다."; // 기본 메시지
-    
-      // TypeScript에서 안전하게 에러 메시지 가져오기
-      if (error instanceof Error) {
-        errorMessage = error.message;
-      } else if (typeof error === "string") {
-        errorMessage = error;
-      }
-    
-      // ✅ Axios 에러 처리 (응답 데이터가 객체일 경우 JSON.stringify 활용)
-        if (axios.isAxiosError(error) && error.response?.data) {
-          if (typeof error.response.data === "string") {
-            errorMessage = error.response.data;
-          } else {
-            errorMessage = `⚠ 오류: 관리자가 아닙니다. 접근불가능합니다.`;
-          }
-        }
-
-        alert(`⛔ ${errorMessage}`);
-        navigate("/home");
+      alert("⛔ 관리자 권한이 없습니다.");
+      navigate("/home");
     }
   };
 
@@ -64,8 +42,8 @@ const PartShopManagement: React.FC = () => {
     }
   };
 
-  const handleDelete = async (id: number | undefined) => {
-    if (id == null) {
+  const handleDelete = async (id?: number) => {
+    if (!id) {
       alert("🚨 삭제할 부품의 ID가 존재하지 않습니다.");
       return;
     }
@@ -80,14 +58,14 @@ const PartShopManagement: React.FC = () => {
       });
 
       setProducts(products.filter((product) => product.id !== id));
-      window.alert("✅ 삭제 완료되었습니다.");
+      alert("✅ 삭제 완료되었습니다.");
     } catch (error) {
       console.error("Error deleting product:", error);
     }
   };
 
-  const handleUpdateStock = async (id: number | undefined) => {
-    if (id == null) {
+  const handleUpdateStock = async (id?: number) => {
+    if (!id) {
       alert("🚨 수정할 부품의 ID가 존재하지 않습니다.");
       return;
     }
@@ -98,7 +76,8 @@ const PartShopManagement: React.FC = () => {
       return;
     }
 
-    const newStock = editedStock[id] ?? product.stock;
+    const newStock = editedStock[id] ?? product.stock; // ✅ 기존 값 유지
+
     if (isNaN(newStock) || newStock < 0) {
       alert("🚨 재고는 0 이상이어야 합니다.");
       return;
@@ -110,13 +89,8 @@ const PartShopManagement: React.FC = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        `${import.meta.env.VITE_API_URL}/api/admin/partshop/${id}`,
-        {
-          name: product.name, // ✅ 기존 name 값 유지 (null 방지)
-          category: product.category, // ✅ 기존 category 값 유지
-          price: product.price, // ✅ 기존 price 값 유지
-          stock: newStock, // ✅ 새로운 stock 값 반영
-        },
+        `${import.meta.env.VITE_API_URL}/api/admin/partshop/${id}/stock`, // ✅ API 경로 수정
+        { stock: newStock }, // ✅ 기존 데이터 유지 필요 없음
         { headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` } }
       );
 
@@ -126,16 +100,15 @@ const PartShopManagement: React.FC = () => {
         delete updatedStock[id]; // ✅ undefined 대신 delete 사용
         return updatedStock;
       });
-      window.alert("✅ 수정 완료되었습니다.");
+      alert("✅ 수정 완료되었습니다.");
     } catch (error) {
       console.error("Error updating stock:", error);
     }
   };
 
   return (
-    <div>
+    <div className="partlist">
       <h2>🔧 관리자 전용 - 부품샵 관리</h2>
-      <p /><br />
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -157,32 +130,15 @@ const PartShopManagement: React.FC = () => {
                   <TextField
                     type="number"
                     value={editedStock[product.id!] ?? product.stock}
-                    onChange={(e) => {
-                      const newStock = Number(e.target.value);
-                      if (!isNaN(newStock) && newStock >= 0) {
-                        setEditedStock((prev) => ({ ...prev, [product.id!]: newStock }));
-                      }
-                    }}
+                    onChange={(e) => setEditedStock({ ...editedStock, [product.id!]: Number(e.target.value) })}
                     size="small"
                   />
                 </TableCell>
                 <TableCell>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    size="small"
-                    onClick={() => handleUpdateStock(product.id)}
-                    disabled={editedStock[product.id!] === undefined} // ✅ undefined 확인
-                  >
+                  <Button variant="contained" color="secondary" onClick={() => handleUpdateStock(product.id)}>
                     수정
                   </Button>
-                  <Button
-                    variant="contained"
-                    color="error"
-                    size="small"
-                    onClick={() => handleDelete(product.id)}
-                    style={{ marginLeft: "5px" }}
-                  >
+                  <Button variant="contained" color="error" onClick={() => handleDelete(product.id)}>
                     삭제
                   </Button>
                 </TableCell>
