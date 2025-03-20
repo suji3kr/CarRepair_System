@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Footer from "../components/Footer"; // Footer 컴포넌트 추가
 
 interface Reservation {
   id: number;
@@ -113,57 +114,61 @@ const MyReservationsPage: React.FC = () => {
   }
 
   return (
-    <div style={containerStyle}>
-      <h1 style={{ marginBottom: "1.5rem", fontSize: "1.5rem", fontWeight: 600, textAlign: "center" }}>
-        {userId}님의 예약 목록
-      </h1>
-      {reservations.length === 0 ? (
-        <p style={{ textAlign: "center", color: "#666", padding: "2rem" }}>
-          아직 예약 내역이 없습니다. 새 예약을 시작해보세요!
-        </p>
-      ) : (
-        <table style={{ width: "100%", borderCollapse: "collapse" }}>
-          <thead>
-            <tr>
-              <th style={thTdStyle}>예약 ID</th>
-              <th style={thTdStyle}>정비소</th>
-              <th style={hiddenStyle}>차량</th> {/* carId 숨김 */}
-              <th style={thTdStyle}>예약 시간</th>
-              <th style={thTdStyle}>상태</th>
-              <th style={thTdStyle}>생성 일시</th>
-              <th style={thTdStyle}>상세 내용</th>
-            </tr>
-          </thead>
-          <tbody>
-            {reservations.map((res) => (
-              <tr key={res.id}>
-                <td style={thTdStyle}>{res.id}</td>
-                <td style={thTdStyle}>{getRepairStoreName(res.repairStoreId)}</td>
-                <td style={hiddenStyle}>{res.carId}</td> {/* carId 숨김 */}
-                <td style={thTdStyle}>{formatDate(res.reservationTime)}</td>
-                <td style={thTdStyle}>{res.status}</td>
-                <td style={thTdStyle}>{formatDate(res.createdAt)}</td>
-                <td style={thTdStyle}>{res.details}</td>
+    <>
+      <div style={containerStyle}>
+        <h1 style={{ marginBottom: "1.5rem", fontSize: "1.5rem", fontWeight: 600, textAlign: "center" }}>
+          {userId}님의 예약 목록
+        </h1>
+        {reservations.length === 0 ? (
+          <p style={{ textAlign: "center", color: "#666", padding: "2rem" }}>
+            아직 예약 내역이 없습니다. 새 예약을 시작해보세요!
+          </p>
+        ) : (
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <thead>
+              <tr>
+                <th style={thTdStyle}>예약 ID</th>
+                <th style={thTdStyle}>정비소</th>
+                <th style={hiddenStyle}>차량</th> {/* carId 숨김 */}
+                <th style={thTdStyle}>예약 시간</th>
+                <th style={thTdStyle}>상태</th>
+                <th style={thTdStyle}>생성 일시</th>
+                <th style={thTdStyle}>상세 내용</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-      <button
-        style={{
-          marginTop: "1rem",
-          padding: "0.5rem 1rem",
-          border: "none",
-          borderRadius: "4px",
-          backgroundColor: "#007bff",
-          color: "#fff",
-          cursor: "pointer",
-        }}
-        onClick={() => navigate("/contact")}
-      >
-        새 예약하기
-      </button>
-    </div>
+            </thead>
+            <tbody>
+              {reservations.map((res) => (
+                <tr key={res.id}>
+                  <td style={thTdStyle}>{res.id}</td>
+                  <td style={thTdStyle}>{getRepairStoreName(res.repairStoreId)}</td>
+                  <td style={hiddenStyle}>{res.carId}</td> {/* carId 숨김 */}
+                  <td style={thTdStyle}>{formatDate(res.reservationTime)}</td>
+                  <td style={thTdStyle}>{res.status}</td>
+                  <td style={thTdStyle}>{formatDate(res.createdAt)}</td>
+                  <td style={thTdStyle}>{res.details}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+        <button
+          style={{
+            marginTop: "1rem",
+            padding: "0.5rem 1rem",
+            border: "none",
+            borderRadius: "4px",
+            backgroundColor: "#007bff",
+            color: "#fff",
+            cursor: "pointer",
+          }}
+          onClick={() => navigate("/contact")}
+        >
+          새 예약하기
+        </button>
+      </div>
+      {/* Footer 컴포넌트 렌더링 */}
+      <Footer />
+    </>
   );
 };
 
