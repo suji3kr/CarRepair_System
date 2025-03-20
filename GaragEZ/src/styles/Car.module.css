@@ -9,8 +9,8 @@
 
 /* ✅ 메뉴 스타일 */
 .partMenu {
-  position: fixed; /* 스크롤 시 고정 */
-  top: 100px; /* 상단에서 100px 떨어진 위치 유지 */
+  position: absolute;
+  top: 0px;
   left: 0px;
   width: 200px;
   height: 400px;
@@ -20,6 +20,7 @@
   text-align: center;
   padding-top: 70px;
 }
+
 
 /* ✅ 카테고리 스타일 수정 */
 .category {
@@ -56,7 +57,6 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* 기본 4열 */
   gap: 20px;
-  justify-content: center;
   width: 100%;
 }
 
