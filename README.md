@@ -8,7 +8,21 @@
 
 </br>
 
-![Image](https://github.com/user-attachments/assets/ac3a9c49-77d3-427e-8237-515b45b0dde3)
+![image](https://github.com/user-attachments/assets/a50234e0-a0e3-4f32-90b0-4bcad34de118)
+
+</br>
+
+![image](https://github.com/user-attachments/assets/5785eb5d-8f11-4ff8-9b03-22bb517c0e3b)
+
+</br> 
+
+
+![image](https://github.com/user-attachments/assets/284b32a1-ee7d-4dc5-9d6c-068b5c3cdedc)
+
+
+</br>
+
+![image](https://github.com/user-attachments/assets/0d747814-1888-4ac1-a3df-bd3997ca77d6)
 
 </br>
 </br>
@@ -31,9 +45,10 @@
 <br>
 </br>
 </br>
+</br>
+</br>
 
-
-![image](https://github.com/user-attachments/assets/786fe4d8-ce18-4b88-afc2-c9e49068f63e)
+![image](https://github.com/user-attachments/assets/d5e231f1-97ac-49cb-8db4-999029e049c6)
 
 * Usecase Diagram
  >강미림 제작
@@ -63,18 +78,10 @@
 
 </br>
 
-📌 데이터베이스 스키마 정의 (M:N 차량 공유 관계 추가)
 </br>
 
-![image](https://github.com/user-attachments/assets/4679760e-933c-4f8c-9512-764fea155271)
+![image](https://github.com/user-attachments/assets/24cf5a66-09d1-4bba-8429-afd7f46ae7f6)
 
-
-* 데이터 스키마정의
-
- >강미림 제작
-
-
-</br>
 </br>
 </br>
 </br>
@@ -108,16 +115,64 @@
 >황승현 제작
 
 </br>
+
+</br>
+</br>
+
+![image](https://github.com/user-attachments/assets/93ac1d69-6fa5-4687-9e8f-d3decc8edb42)
+
+* 설계 구조 및 ppt
+>강미림 제작
+
+
+</br>
+
+📌 데이터베이스 스키마 정의 (M:N 차량 공유 관계 추가)
+</br>
+
+
+![image](https://github.com/user-attachments/assets/d3ef14a5-6dc3-4a21-8794-84320c62f795)
+
+
+* 데이터 스키마정의
+
+</br>
+
+![image](https://github.com/user-attachments/assets/6b92dc00-ada7-4e3c-89c2-8159b30d6ee2)
+
 </br>
 
 ### 시장 조사  >  DB 설정 (~2/19)  
 
 
 </br>
+
+![image](https://github.com/user-attachments/assets/9dfac4fa-9e3d-4327-82db-bc703a8eb2f2)
+
 </br>
 </br>
 
+![image](https://github.com/user-attachments/assets/80aa7a4b-e48c-429e-be8b-a406bf337eed)
 
+</br>
+
+![image](https://github.com/user-attachments/assets/982115f4-29b1-47cb-8d70-acc0c97dd373)
+
+</br>
+
+![image](https://github.com/user-attachments/assets/2158f41d-a9d9-474b-b65e-b666e6d0f271)
+
+
+</br>
+
+![image](https://github.com/user-attachments/assets/d925c4ee-586a-4927-8490-067a46249aaf)
+
+</br>
+
+![image](https://github.com/user-attachments/assets/2cebc710-2d5c-4819-b276-26a49795bc8d)
+
+>강미림 제작
+</br>
 
 ###  데이터 추출 / 와이어 프레임 ( 2/24 ~ 2/28 )   </br>
 </br></br>
